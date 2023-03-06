@@ -17,3 +17,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "OMH Auth"
 include(":auth")
+include(":omhauthdemo")

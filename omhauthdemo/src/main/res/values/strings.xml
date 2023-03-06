@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">OMH Auth demo</string>
+    <string name="login">Login</string>
+    <string name="revoke_token">Revoke token</string>
+    <string name="logout">Logout</string>
+    <string name="name_placeholder"><b>Name:</b> %s</string>
+    <string name="surname_placeholder"><b>Surname:</b> %s</string>
+    <string name="email_placeholder"><b>Email:</b> %s</string>
+</resources>
