@@ -1,3 +1,5 @@
+import io.gitlab.arturbosch.detekt.Detekt
+
 plugins {
     id("com.android.library")
     id("io.gitlab.arturbosch.detekt")
@@ -57,5 +59,5 @@ android {
 setupJacoco()
 
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${Versions.detekt}")
+    detektPlugins(BuildPlugins.detekt)
 }

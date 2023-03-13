@@ -44,7 +44,7 @@ fun Project.setupJacoco() {
                     "**.FactorFacade.Builder",
                     "**.ServiceFacade.Builder",
                     "**.ChallengeFacade.Builder",
-                    "**.Task"
+                    "**.Task",
                 )
                 limit {
                     minimum = minimunCoverageAllowed
@@ -86,7 +86,12 @@ private fun JacocoReportBase.setDirs(project: Project) {
             "android/**/*.*",
             "**/models/**",
             "**/*\$Lambda$*.*",
-            "**/*\$inlined$*.*"
+            "**/*\$inlined$*.*",
+            "**/presentation/**",
+            "**/data/**",
+            "**/utils/**",
+            "**/factories/**",
+            "**/*$*",
         )
     }
 

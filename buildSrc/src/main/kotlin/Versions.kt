@@ -5,13 +5,17 @@ object Versions {
     const val detekt = "1.22.0"
     const val jacoco = "0.8.6"
 
-    //KTX
+    // KTX
     const val coreKtx = "1.9.0"
     const val lifecycleKtx = "2.5.1"
+    const val activityKtx = "1.6.1"
 
     // Retrofit
     const val retrofit = "2.9.0"
     const val okhttp = "4.10.0"
+
+    // Coroutines
+    const val coroutines = "1.6.4"
 
     // Misc
     const val customTabs = "1.5.0"
@@ -26,4 +30,5 @@ object Versions {
     const val junit = "4.13.2"
     const val androidJunit = "1.1.5"
     const val espresso = "3.5.1"
+    const val mockk = "1.13.4"
 }
