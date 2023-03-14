@@ -35,4 +35,20 @@ internal interface AuthRepository {
         codeChallenge: String,
         redirectUri: String
     ): String
+
+    /**
+     * Requests the access token.
+     *
+     * @return null if not available.
+     */
+    fun getAccessToken(): String?
+
+    /**
+     * Refreshes the access token from the auth provider.
+     *
+     * @param clientId -> clientId from the auth console
+     *
+     * @return a [Flow] with the token inside.
+     */
+    suspend fun refreshAccessToken(clientId: String): Flow<String>
 }

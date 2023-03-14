@@ -62,6 +62,19 @@ class GoogleAuthDataSource(
         }
     }
 
+    override fun getToken(tokenType: String): String? {
+        return sharedPreferences.getString(tokenType, null)
+    }
+
+    private fun getRefreshToken(): String? {
+        return sharedPreferences.getString(AuthDataSource.REFRESH_TOKEN, null)
+    }
+
+    override fun refreshAccessToken(clientId: String): Flow<AuthTokenResponse> = flow {
+        val refreshToken = checkNotNull(getRefreshToken())
+        emit(authService.refreshToken(clientId, refreshToken))
+    }
+
     companion object {
         private const val AUTH_URI = "https://accounts.google.com/o/oauth2/auth"
         private const val CODE_VALUE = "code"

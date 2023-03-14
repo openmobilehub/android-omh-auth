@@ -24,7 +24,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
     private val binding: ActivityLoginBinding by lazy {
-        ActivityLoginBinding.inflate(LayoutInflater.from(this))
+        ActivityLoginBinding.inflate(layoutInflater)
     }
 
     @Inject

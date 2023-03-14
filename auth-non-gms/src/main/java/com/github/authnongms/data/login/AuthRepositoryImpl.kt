@@ -11,7 +11,9 @@ import com.github.authnongms.domain.models.OAuthTokens
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-internal class AuthRepositoryImpl(private val googleAuthDataSource: AuthDataSource) : AuthRepository {
+internal class AuthRepositoryImpl(
+    private val googleAuthDataSource: AuthDataSource
+) : AuthRepository {
 
     override suspend fun requestTokens(
         clientId: String,
@@ -26,11 +28,11 @@ internal class AuthRepositoryImpl(private val googleAuthDataSource: AuthDataSour
             codeVerifier = codeVerifier
         ).map { response ->
             googleAuthDataSource.storeToken(
-                tokenType = ACCESS_TOKEN,
+                tokenType = AuthDataSource.ACCESS_TOKEN,
                 token = checkNotNull(response.accessToken)
             )
             googleAuthDataSource.storeToken(
-                tokenType = REFRESH_TOKEN,
+                tokenType = AuthDataSource.REFRESH_TOKEN,
                 token = checkNotNull(response.refreshToken)
             )
             OAuthTokens(
@@ -55,9 +57,19 @@ internal class AuthRepositoryImpl(private val googleAuthDataSource: AuthDataSour
         ).toString()
     }
 
+    override fun getAccessToken(): String? {
+        return googleAuthDataSource.getToken(AuthDataSource.ACCESS_TOKEN)
+    }
+
+    override suspend fun refreshAccessToken(clientId: String): Flow<String> {
+        return googleAuthDataSource.refreshAccessToken(clientId).map { response ->
+            val accessToken = checkNotNull(response.accessToken)
+            googleAuthDataSource.storeToken(AuthDataSource.ACCESS_TOKEN, response.accessToken)
+            accessToken
+        }
+    }
+
     companion object {
-        private const val ACCESS_TOKEN = "accesstoken"
-        private const val REFRESH_TOKEN = "refreshtoken"
 
         private var authRepository: AuthRepository? = null
 

@@ -35,6 +35,7 @@ internal class ProfileUseCaseTest {
     fun `when idToken or clientId are empty the token is not handled`() = runTest {
         val idToken = " "
         val clientId = " "
+        coEvery { userRepository.handleIdToken(any(), any()) } returns Unit
 
         useCase.resolveIdToken(idToken, clientId)
 

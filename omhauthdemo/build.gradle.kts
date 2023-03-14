@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import java.util.UUID
 
 plugins {
@@ -8,6 +9,14 @@ plugins {
 
 android {
     namespace = "com.github.omhauthdemo"
+
+    defaultConfig {
+        buildConfigField(
+            type = "String",
+            name = "CLIENT_ID",
+            value = gradleLocalProperties(rootDir)["clientId"].toString()
+        )
+    }
 
     buildTypes {
         release {

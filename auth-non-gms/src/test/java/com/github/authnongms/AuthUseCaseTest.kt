@@ -1,7 +1,7 @@
 package com.github.authnongms
 
 import com.github.authnongms.domain.auth.AuthRepository
-import com.github.authnongms.domain.auth.LoginUseCase
+import com.github.authnongms.domain.auth.AuthUseCase
 import com.github.authnongms.domain.models.OAuthTokens
 import com.github.authnongms.domain.utils.Pkce
 import io.mockk.coEvery
@@ -17,32 +17,32 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
-internal class LoginUseCaseTest {
+internal class AuthUseCaseTest {
 
     private val authRepository: AuthRepository = mockk()
     private val pkce: Pkce = mockk() {
         every { codeVerifier } returns "codeverifier"
         every { generateCodeChallenge() } returns "codechallenge"
     }
-    private val loginUseCase = LoginUseCase(authRepository, pkce)
+    private val authUseCase = AuthUseCase(authRepository, pkce)
 
     // TODO when there is more use case logic, create useful tests.
 
     @Before
     fun setupClientId() {
-        loginUseCase.clientId = "clientid"
+        authUseCase.clientId = "clientid"
     }
 
     @After
     fun resetClientId() {
-        loginUseCase.clientId = null
+        authUseCase.clientId = null
     }
 
     @Test
     fun `when given scope and packageName a correct Uri is returned`() {
         val scope = "scope"
         val packageName = "com.package.name"
-        val expectedRedirect: String = LoginUseCase.REDIRECT_FORMAT.format(packageName)
+        val expectedRedirect: String = AuthUseCase.REDIRECT_FORMAT.format(packageName)
 
         val expectedResult = "www.link.com/path?scopes=$scope&redirect=$expectedRedirect"
         every {
@@ -54,7 +54,7 @@ internal class LoginUseCaseTest {
             )
         } returns expectedResult
 
-        val result: String = loginUseCase.getLoginUrl(scope, packageName)
+        val result: String = authUseCase.getLoginUrl(scope, packageName)
 
         assertTrue(result.contains(scope))
         assertTrue(result.contains(expectedRedirect))
@@ -62,11 +62,11 @@ internal class LoginUseCaseTest {
 
     @Test(expected = IllegalStateException::class)
     fun `when no clientId is setup then an error is thrown for get login url`() {
-        loginUseCase.clientId = null
+        authUseCase.clientId = null
 
         val scope = "scope"
         val packageName = "com.package.name"
-        val expectedRedirect: String = LoginUseCase.REDIRECT_FORMAT.format(packageName)
+        val expectedRedirect: String = AuthUseCase.REDIRECT_FORMAT.format(packageName)
         val expectedResult = "www.link.com/path?scopes=$scope&redirect=$expectedRedirect"
 
         every {
@@ -78,7 +78,7 @@ internal class LoginUseCaseTest {
             )
         } returns expectedResult
 
-        loginUseCase.getLoginUrl(scope, packageName)
+        authUseCase.getLoginUrl(scope, packageName)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -97,7 +97,7 @@ internal class LoginUseCaseTest {
             )
         } returns flow { emit(mockedResponse) }
 
-        val result = loginUseCase.requestTokens(authCode, packageName).first()
+        val result = authUseCase.requestTokens(authCode, packageName).first()
 
         assertEquals(mockedResponse, result)
     }
@@ -105,7 +105,7 @@ internal class LoginUseCaseTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test(expected = IllegalStateException::class)
     fun `when no clientId is setup then an error is thrown for request tokens`() = runTest {
-        loginUseCase.clientId = null
+        authUseCase.clientId = null
         val authCode = "auth code"
         val packageName = "com.package.name"
         val mockedResponse: OAuthTokens = mockk()
@@ -119,6 +119,49 @@ internal class LoginUseCaseTest {
             )
         } returns flow { emit(mockedResponse) }
 
-       loginUseCase.requestTokens(authCode, packageName).first()
+        authUseCase.requestTokens(authCode, packageName).first()
+    }
+
+    @Test
+    fun `when the access token is requested then the token is returned`() {
+        val expectedToken = "accesstoken"
+        every { authRepository.getAccessToken() } returns expectedToken
+
+        val result: String? = authUseCase.getAccessToken()
+
+        assertEquals(result, expectedToken)
+    }
+
+    @Test
+    fun `when the access token is requested but no token is stored then null is returned`() {
+        val expectedToken = null
+        every { authRepository.getAccessToken() } returns expectedToken
+
+        val result: String? = authUseCase.getAccessToken()
+
+        assertEquals(result, expectedToken)
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `when a token refresh is requested then a new token is returned`() = runTest {
+        val expectedToken = "newtoken"
+
+        coEvery { authRepository.refreshAccessToken(any()) } returns flow { emit(expectedToken) }
+
+        val newToken = authUseCase.refreshToken().first()
+
+        assertEquals(expectedToken, newToken)
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test(expected = IllegalStateException::class)
+    fun `when a token refresh is requested with no clientId then an exception is thrown`() = runTest {
+        val expectedToken = "newtoken"
+        authUseCase.clientId = null
+
+        coEvery { authRepository.refreshAccessToken(any()) } returns flow { emit(expectedToken) }
+
+        authUseCase.refreshToken().first()
     }
 }
