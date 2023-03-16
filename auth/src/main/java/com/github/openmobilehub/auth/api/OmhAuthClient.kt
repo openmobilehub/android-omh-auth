@@ -1,4 +1,4 @@
-package com.github.openmobilehub.auth
+package com.github.openmobilehub.auth.api
 
 import android.content.Context
 import android.content.Intent
@@ -16,4 +16,6 @@ interface OmhAuthClient {
     fun getUser(context: Context): OmhUserProfile?
 
     fun getCredentials(context: Context): OmhCredentials
+
+    fun signOut(context: Context)
 }

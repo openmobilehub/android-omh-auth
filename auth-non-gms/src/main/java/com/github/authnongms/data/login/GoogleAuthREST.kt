@@ -1,7 +1,6 @@
 package com.github.authnongms.data.login
 
 import com.github.authnongms.data.login.models.AuthTokenResponse
-import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -30,5 +29,5 @@ interface GoogleAuthREST {
     @FormUrlEncoded
     suspend fun revokeToken(
         @Field("token") token: String
-    ): AuthTokenResponse
+    )
 }

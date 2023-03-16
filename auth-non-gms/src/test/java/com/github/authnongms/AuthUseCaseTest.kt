@@ -5,9 +5,11 @@ import com.github.authnongms.domain.auth.AuthUseCase
 import com.github.authnongms.domain.models.OAuthTokens
 import com.github.authnongms.domain.utils.Pkce
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
@@ -156,12 +158,42 @@ internal class AuthUseCaseTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test(expected = IllegalStateException::class)
-    fun `when a token refresh is requested with no clientId then an exception is thrown`() = runTest {
-        val expectedToken = "newtoken"
-        authUseCase.clientId = null
+    fun `when a token refresh is requested with no clientId then an exception is thrown`() {
+        runTest {
+            val expectedToken = "newtoken"
+            authUseCase.clientId = null
 
-        coEvery { authRepository.refreshAccessToken(any()) } returns flow { emit(expectedToken) }
+            coEvery { authRepository.refreshAccessToken(any()) } returns flow { emit(expectedToken) }
 
-        authUseCase.refreshToken().first()
+            authUseCase.refreshToken().first()
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `when logout is requested then a revoke function is called and storage is cleaned up`() {
+        runTest {
+            coEvery { authRepository.revokeToken() } returns flow { emit(Unit) }
+            coEvery { authRepository.clearData() } returns Unit
+
+            authUseCase.logout().collect()
+
+            coVerify { authRepository.revokeToken() }
+            coVerify { authRepository.clearData() }
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test(expected = Exception::class)
+    fun `when logout is requested and the revoke function fails then storage is cleaned up`() {
+        runTest {
+            coEvery { authRepository.revokeToken() } throws Exception("Revoke failed")
+            coEvery { authRepository.clearData() } returns Unit
+
+            authUseCase.logout().collect()
+
+            coVerify { authRepository.revokeToken() }
+            coVerify { authRepository.clearData() }
+        }
     }
 }

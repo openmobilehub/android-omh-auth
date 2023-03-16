@@ -75,6 +75,14 @@ class GoogleAuthDataSource(
         emit(authService.refreshToken(clientId, refreshToken))
     }
 
+    override suspend fun revokeToken(token: String): Flow<Unit> = flow {
+        emit(authService.revokeToken(token))
+    }
+
+    override fun clearData() {
+        sharedPreferences.edit(action = SharedPreferences.Editor::clear)
+    }
+
     companion object {
         private const val AUTH_URI = "https://accounts.google.com/o/oauth2/auth"
         private const val CODE_VALUE = "code"

@@ -40,7 +40,7 @@ interface AuthDataSource {
     /**
      * Stores token in local storage of key value type.
      *
-     * @param key -> one of [ACCESS_TOKEN] or [REFRESH_TOKEN]
+     * @param tokenType -> one of [ACCESS_TOKEN] or [REFRESH_TOKEN]
      * @param token -> token to store.
      */
     fun storeToken(tokenType: String, token: String)
@@ -62,6 +62,19 @@ interface AuthDataSource {
      * @return a [Flow] with the [AuthTokenResponse]
      */
     fun refreshAccessToken(clientId: String): Flow<AuthTokenResponse>
+
+    /**
+     * Indicates the auth provider that the token should be revoked. When logging out, this step is
+     * essential to assure that token can't be used by third parties. This can return HTTP errors.
+     *
+     * @param token -> token to revoke.
+     */
+    suspend fun revokeToken(token: String): Flow<Unit>
+
+    /**
+     * Clears all local data of the user, including any stored tokens.
+     */
+    fun clearData()
 
     companion object {
         const val ACCESS_TOKEN = "accesstoken"

@@ -17,8 +17,7 @@ class ProfileUseCase(private val userRepository: UserRepository) {
 
     companion object {
 
-        fun createUserProfileUseCase(applicationContext: Context): ProfileUseCase {
-            val userRepository = UserRepositoryImpl.getUserRepository(applicationContext)
+        fun createUserProfileUseCase(userRepository: UserRepository): ProfileUseCase {
             return ProfileUseCase(userRepository)
         }
     }

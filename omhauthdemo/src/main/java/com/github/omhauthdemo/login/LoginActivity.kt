@@ -2,14 +2,12 @@ package com.github.omhauthdemo.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.github.omhauthdemo.BuildConfig
 import com.github.omhauthdemo.databinding.ActivityLoginBinding
 import com.github.omhauthdemo.loggedin.LoggedInActivity
-import com.github.openmobilehub.auth.OmhAuthClient
+import com.github.openmobilehub.auth.api.OmhAuthClient
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

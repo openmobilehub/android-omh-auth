@@ -2,15 +2,13 @@ package com.github.omhauthdemo.loggedin
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.github.omhauthdemo.R
 import com.github.omhauthdemo.databinding.ActivityLoggedInBinding
 import com.github.omhauthdemo.login.LoginActivity
-import com.github.openmobilehub.auth.OmhAuthClient
-import com.google.android.material.snackbar.Snackbar
+import com.github.openmobilehub.auth.api.OmhAuthClient
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +30,7 @@ class LoggedInActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnLogout.setOnClickListener {
-            navigateToLogin()
+            logout()
         }
         binding.btnRefresh.setOnClickListener {
             refreshToken()
@@ -45,13 +43,17 @@ class LoggedInActivity : AppCompatActivity() {
         binding.tvToken.text = getString(R.string.token_placeholder, credentials.accessToken)
     }
 
+    private fun logout() = lifecycleScope.launch(Dispatchers.IO) {
+        credentials.logout { e ->
+            launch(Dispatchers.Main) { showRevokeException("Couldn't revoke token: ${e.message}") }
+        }
+        navigateToLogin()
+    }
+
     private fun refreshToken() = lifecycleScope.launch(Dispatchers.IO) {
         val newToken = credentials.refreshAccessToken { e ->
-            Toast.makeText(
-                applicationContext,
-                "Couldn't refresh token: ${e.cause}",
-                Toast.LENGTH_LONG
-            ).show()
+            showRevokeException("Couldn't refresh token: ${e.message}")
+            logout()
         }
 
         if (newToken != null) {
@@ -59,6 +61,9 @@ class LoggedInActivity : AppCompatActivity() {
         }
     }
 
+    private fun showRevokeException(message: String) = lifecycleScope.launch(Dispatchers.Main) {
+        Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
+    }
 
     private fun navigateToLogin() {
         val intent = Intent(this, LoginActivity::class.java)

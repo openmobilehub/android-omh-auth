@@ -9,7 +9,10 @@ import com.github.authnongms.data.utils.getEncryptedSharedPrefs
 import com.github.authnongms.domain.auth.AuthRepository
 import com.github.authnongms.domain.models.OAuthTokens
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 
 internal class AuthRepositoryImpl(
     private val googleAuthDataSource: AuthDataSource
@@ -26,7 +29,7 @@ internal class AuthRepositoryImpl(
             authCode = authCode,
             redirectUri = redirectUri,
             codeVerifier = codeVerifier
-        ).map { response ->
+        ).onEach { response ->
             googleAuthDataSource.storeToken(
                 tokenType = AuthDataSource.ACCESS_TOKEN,
                 token = checkNotNull(response.accessToken)
@@ -35,6 +38,7 @@ internal class AuthRepositoryImpl(
                 tokenType = AuthDataSource.REFRESH_TOKEN,
                 token = checkNotNull(response.refreshToken)
             )
+        }.map { response ->
             OAuthTokens(
                 response.accessToken,
                 checkNotNull(response.refreshToken),
@@ -67,6 +71,16 @@ internal class AuthRepositoryImpl(
             googleAuthDataSource.storeToken(AuthDataSource.ACCESS_TOKEN, response.accessToken)
             accessToken
         }
+    }
+
+    override suspend fun revokeToken(): Flow<Unit> {
+        val accessToken: String? = googleAuthDataSource.getToken(AuthDataSource.ACCESS_TOKEN)
+        if (accessToken == null) return flow { emit(Unit) }
+        return googleAuthDataSource.revokeToken(accessToken)
+    }
+
+    override fun clearData() {
+        googleAuthDataSource.clearData()
     }
 
     companion object {
