@@ -13,7 +13,7 @@ internal interface AuthRepository {
      * @param redirectUri -> the same redirect URI from the login screen
      * @param codeVerifier -> code verifier of the PKCE protocol
      */
-    suspend fun requestTokens(
+    fun requestTokens(
         clientId: String,
         authCode: String,
         redirectUri: String,
@@ -50,13 +50,12 @@ internal interface AuthRepository {
      *
      * @return a [Flow] with the token inside.
      */
-    suspend fun refreshAccessToken(clientId: String): Flow<String>
+    fun refreshAccessToken(clientId: String): Flow<String>
 
     /**
-     * Revokes the access token of the user from the auth provider. to avoid it's future usage.
-     * This is usually performed at logout.
+     * Revokes the access token of the user from the auth provider.
      */
-    suspend fun revokeToken(): Flow<Unit>
+    fun revokeToken(): Flow<Unit>
 
     /**
      * Clears all local data of the user, including stored tokens.

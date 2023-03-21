@@ -29,7 +29,7 @@ internal class RedirectViewModel(
     fun requestTokens(
         authCode: String,
         packageName: String,
-    ) = viewModelScope.launch(Dispatchers.IO) {
+    ) = viewModelScope.launch {
         authUseCase.requestTokens(authCode, packageName)
             .catch { exception ->
                 // Handle exceptions

@@ -14,7 +14,7 @@ interface AuthDataSource {
      * @param redirectUri -> the same redirectUri used for the custom tabs
      * @param codeVerifier -> PKCE implementation against man in the middle attacks.
      */
-    suspend fun getToken(
+    fun getToken(
         clientId: String,
         authCode: String,
         redirectUri: String,
@@ -69,7 +69,7 @@ interface AuthDataSource {
      *
      * @param token -> token to revoke.
      */
-    suspend fun revokeToken(token: String): Flow<Unit>
+    fun revokeToken(token: String): Flow<Unit>
 
     /**
      * Clears all local data of the user, including any stored tokens.

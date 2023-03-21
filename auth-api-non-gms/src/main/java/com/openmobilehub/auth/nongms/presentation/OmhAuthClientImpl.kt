@@ -8,6 +8,9 @@ import com.openmobilehub.auth.nongms.presentation.redirect.RedirectActivity
 import com.openmobilehub.auth.api.OmhAuthClient
 import com.openmobilehub.auth.api.OmhCredentials
 import com.openmobilehub.auth.api.models.OmhUserProfile
+import com.openmobilehub.auth.nongms.data.login.AuthRepositoryImpl
+import com.openmobilehub.auth.nongms.domain.auth.AuthRepository
+import com.openmobilehub.auth.nongms.domain.auth.AuthUseCase
 
 /**
  * Non GMS implementation of the OmhAuthClient abstraction. Required a clientId and defined scopes as
@@ -45,7 +48,8 @@ internal class OmhAuthClientImpl(private val clientId: String, private val scope
     }
 
     override fun signOut(context: Context) {
-        val credentials: OmhCredentials = getCredentials(context)
-        credentials.logout()
+        val authRepository = AuthRepositoryImpl.getAuthRepository(context)
+        val authUseCase = AuthUseCase.createAuthUseCase(authRepository)
+        authUseCase.logout()
     }
 }

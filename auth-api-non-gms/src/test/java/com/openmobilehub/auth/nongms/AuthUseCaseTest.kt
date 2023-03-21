@@ -9,7 +9,6 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
@@ -151,7 +150,7 @@ internal class AuthUseCaseTest {
 
         coEvery { authRepository.refreshAccessToken(any()) } returns flow { emit(expectedToken) }
 
-        val newToken = authUseCase.refreshToken().first()
+        val newToken = authUseCase.blockingRefreshToken().first()
 
         assertEquals(expectedToken, newToken)
     }
@@ -165,35 +164,17 @@ internal class AuthUseCaseTest {
 
             coEvery { authRepository.refreshAccessToken(any()) } returns flow { emit(expectedToken) }
 
-            authUseCase.refreshToken().first()
+            authUseCase.blockingRefreshToken().first()
         }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `when logout is requested then a revoke function is called and storage is cleaned up`() {
-        runTest {
-            coEvery { authRepository.revokeToken() } returns flow { emit(Unit) }
-            coEvery { authRepository.clearData() } returns Unit
+    fun `when logout is requested then storage is cleaned up`() = runTest {
+        coEvery { authRepository.clearData() } returns Unit
 
-            authUseCase.logout().collect()
+        authUseCase.logout()
 
-            coVerify { authRepository.revokeToken() }
-            coVerify { authRepository.clearData() }
-        }
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test(expected = Exception::class)
-    fun `when logout is requested and the revoke function fails then storage is cleaned up`() {
-        runTest {
-            coEvery { authRepository.revokeToken() } throws Exception("Revoke failed")
-            coEvery { authRepository.clearData() } returns Unit
-
-            authUseCase.logout().collect()
-
-            coVerify { authRepository.revokeToken() }
-            coVerify { authRepository.clearData() }
-        }
+        coVerify { authRepository.clearData() }
     }
 }

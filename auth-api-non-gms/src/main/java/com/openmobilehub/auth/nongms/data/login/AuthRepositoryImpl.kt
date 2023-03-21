@@ -8,16 +8,20 @@ import com.openmobilehub.auth.nongms.data.login.datasource.GoogleAuthDataSource
 import com.openmobilehub.auth.nongms.data.utils.getEncryptedSharedPrefs
 import com.openmobilehub.auth.nongms.domain.auth.AuthRepository
 import com.openmobilehub.auth.nongms.domain.models.OAuthTokens
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
 internal class AuthRepositoryImpl(
-    private val googleAuthDataSource: AuthDataSource
+    private val googleAuthDataSource: AuthDataSource,
+    private val ioDispatcher: CoroutineDispatcher,
 ) : AuthRepository {
 
-    override suspend fun requestTokens(
+    override fun requestTokens(
         clientId: String,
         authCode: String,
         redirectUri: String,
@@ -28,22 +32,24 @@ internal class AuthRepositoryImpl(
             authCode = authCode,
             redirectUri = redirectUri,
             codeVerifier = codeVerifier
-        ).onEach { response ->
-            googleAuthDataSource.storeToken(
-                tokenType = AuthDataSource.ACCESS_TOKEN,
-                token = checkNotNull(response.accessToken)
-            )
-            googleAuthDataSource.storeToken(
-                tokenType = AuthDataSource.REFRESH_TOKEN,
-                token = checkNotNull(response.refreshToken)
-            )
-        }.map { response ->
-            OAuthTokens(
-                response.accessToken,
-                checkNotNull(response.refreshToken),
-                response.idToken
-            )
-        }
+        )
+            .flowOn(ioDispatcher)
+            .onEach { response ->
+                googleAuthDataSource.storeToken(
+                    tokenType = AuthDataSource.ACCESS_TOKEN,
+                    token = checkNotNull(response.accessToken)
+                )
+                googleAuthDataSource.storeToken(
+                    tokenType = AuthDataSource.REFRESH_TOKEN,
+                    token = checkNotNull(response.refreshToken)
+                )
+            }.map { response ->
+                OAuthTokens(
+                    response.accessToken,
+                    checkNotNull(response.refreshToken),
+                    response.idToken
+                )
+            }
     }
 
     override fun buildLoginUrl(
@@ -64,18 +70,20 @@ internal class AuthRepositoryImpl(
         return googleAuthDataSource.getToken(AuthDataSource.ACCESS_TOKEN)
     }
 
-    override suspend fun refreshAccessToken(clientId: String): Flow<String> {
-        return googleAuthDataSource.refreshAccessToken(clientId).map { response ->
-            val accessToken = checkNotNull(response.accessToken)
-            googleAuthDataSource.storeToken(AuthDataSource.ACCESS_TOKEN, response.accessToken)
-            accessToken
-        }
+    override fun refreshAccessToken(clientId: String): Flow<String> {
+        return googleAuthDataSource.refreshAccessToken(clientId)
+            .flowOn(ioDispatcher)
+            .map { response ->
+                val accessToken = checkNotNull(response.accessToken)
+                googleAuthDataSource.storeToken(AuthDataSource.ACCESS_TOKEN, response.accessToken)
+                accessToken
+            }
     }
 
-    override suspend fun revokeToken(): Flow<Unit> {
+    override fun revokeToken(): Flow<Unit> {
         val accessToken: String? = googleAuthDataSource.getToken(AuthDataSource.ACCESS_TOKEN)
         if (accessToken == null) return flow { emit(Unit) }
-        return googleAuthDataSource.revokeToken(accessToken)
+        return googleAuthDataSource.revokeToken(accessToken).flowOn(ioDispatcher)
     }
 
     override fun clearData() {
@@ -86,7 +94,10 @@ internal class AuthRepositoryImpl(
 
         private var authRepository: AuthRepository? = null
 
-        fun getAuthRepository(context: Context): AuthRepository {
+        fun getAuthRepository(
+            context: Context,
+            ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+        ): AuthRepository {
             if (authRepository == null) {
                 val authService: GoogleAuthREST = GoogleRetrofitImpl.instance.googleAuthREST
                 val sharedPreferences: SharedPreferences = getEncryptedSharedPrefs(context)
@@ -94,7 +105,7 @@ internal class AuthRepositoryImpl(
                     authService = authService,
                     sharedPreferences = sharedPreferences
                 )
-                authRepository = AuthRepositoryImpl(googleAuthDataSource)
+                authRepository = AuthRepositoryImpl(googleAuthDataSource, ioDispatcher)
             }
 
             return authRepository!!

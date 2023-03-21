@@ -15,7 +15,7 @@ class GoogleAuthDataSource(
     private val sharedPreferences: SharedPreferences
 ) : AuthDataSource {
 
-    override suspend fun getToken(
+    override fun getToken(
         clientId: String,
         authCode: String,
         redirectUri: String,
@@ -75,7 +75,7 @@ class GoogleAuthDataSource(
         emit(authService.refreshToken(clientId, refreshToken))
     }
 
-    override suspend fun revokeToken(token: String): Flow<Unit> = flow {
+    override fun revokeToken(token: String): Flow<Unit> = flow {
         emit(authService.revokeToken(token))
     }
 
