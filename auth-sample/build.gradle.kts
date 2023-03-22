@@ -9,14 +9,6 @@ plugins {
 android {
     namespace = "com.openmobilehub.auth.sample"
 
-    defaultConfig {
-        buildConfigField(
-            type = "String",
-            name = "CLIENT_ID",
-            value = gradleLocalProperties(rootDir)["clientId"].toString()
-        )
-    }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -24,6 +16,21 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+    }
+
+    flavorDimensions += "google_services"
+    productFlavors {
+        create("ngms") {
+            buildConfigField(
+                type = "String",
+                name = "CLIENT_ID",
+                value = gradleLocalProperties(rootDir)["clientId"].toString()
+            )
+            dimension = "google_services"
+        }
+        create("gms") {
+            dimension = "google_services"
         }
     }
 
@@ -39,9 +46,12 @@ android {
     }
 }
 
+val gmsImplementation by configurations
+val ngmsImplementation by configurations
 dependencies {
-    implementation(project(":auth-api-non-gms"))
+    ngmsImplementation(project(":auth-api-non-gms"))
     //    implementation("com.openmobilehub:auth-non-gms:1.0-SNAPSHOT")
+    gmsImplementation(project(":auth-api-gms"))
 
     implementation(Libs.coreKtx)
     implementation(Libs.lifecycleKtx)

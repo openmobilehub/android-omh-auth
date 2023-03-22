@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class LoggedInActivity : AppCompatActivity() {
@@ -52,7 +53,9 @@ class LoggedInActivity : AppCompatActivity() {
         val newToken = credentials.blockingRefreshToken()
 
         if (newToken != null) {
-            binding.tvToken.text = getString(R.string.token_placeholder, newToken)
+            withContext(Dispatchers.Main) {
+                binding.tvToken.text = getString(R.string.token_placeholder, newToken)
+            }
         }
     }
 
