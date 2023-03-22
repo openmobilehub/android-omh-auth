@@ -8,10 +8,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openmobilehub.auth.nongms.domain.auth.AuthUseCase
+import com.openmobilehub.auth.nongms.domain.models.ApiResult
+import com.openmobilehub.auth.nongms.domain.models.OAuthTokens
 import com.openmobilehub.auth.nongms.domain.user.ProfileUseCase
 import com.openmobilehub.auth.nongms.utils.EventWrapper
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 internal class RedirectViewModel(
@@ -30,17 +30,18 @@ internal class RedirectViewModel(
         authCode: String,
         packageName: String,
     ) = viewModelScope.launch {
-        authUseCase.requestTokens(authCode, packageName)
-            .catch { exception ->
-                // Handle exceptions
-                Log.e(RedirectViewModel::class.java.name, "$exception", )
+        when (val apiResult = authUseCase.requestTokens(authCode, packageName)) {
+            is ApiResult.Error -> {
+                Log.e(RedirectViewModel::class.java.name, apiResult.exception)
                 _tokenResponseEvent.postValue(EventWrapper(false))
             }
-            .collect { tokens ->
+            is ApiResult.Success -> {
+                val tokens: OAuthTokens = apiResult.data
                 val clientId = checkNotNull(authUseCase.clientId)
                 profileUseCase.resolveIdToken(tokens.idToken, clientId)
                 _tokenResponseEvent.postValue(EventWrapper(true))
             }
+        }
     }
 
     fun setClientId(clientId: String) {

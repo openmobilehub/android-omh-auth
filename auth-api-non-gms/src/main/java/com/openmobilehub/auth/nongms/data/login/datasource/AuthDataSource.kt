@@ -2,7 +2,7 @@ package com.openmobilehub.auth.nongms.data.login.datasource
 
 import android.net.Uri
 import com.openmobilehub.auth.nongms.data.login.models.AuthTokenResponse
-import kotlinx.coroutines.flow.Flow
+import retrofit2.Response
 
 interface AuthDataSource {
 
@@ -14,12 +14,12 @@ interface AuthDataSource {
      * @param redirectUri -> the same redirectUri used for the custom tabs
      * @param codeVerifier -> PKCE implementation against man in the middle attacks.
      */
-    fun getToken(
+    suspend fun getToken(
         clientId: String,
         authCode: String,
         redirectUri: String,
         codeVerifier: String
-    ) : Flow<AuthTokenResponse>
+    ): Response<AuthTokenResponse>
 
     /**
      * Builds the login URL for the Custom Tabs screen. If the login is successful, an auth code
@@ -59,9 +59,9 @@ interface AuthDataSource {
      *
      * @param clientId -> clientId from the auth console
      *
-     * @return a [Flow] with the [AuthTokenResponse]
+     * @return a [Response] with the [AuthTokenResponse]
      */
-    fun refreshAccessToken(clientId: String): Flow<AuthTokenResponse>
+    suspend fun refreshAccessToken(clientId: String): Response<AuthTokenResponse>
 
     /**
      * Indicates the auth provider that the token should be revoked. When logging out, this step is
@@ -69,7 +69,7 @@ interface AuthDataSource {
      *
      * @param token -> token to revoke.
      */
-    fun revokeToken(token: String): Flow<Unit>
+    suspend fun revokeToken(token: String): Response<Nothing>
 
     /**
      * Clears all local data of the user, including any stored tokens.

@@ -1,11 +1,9 @@
 package com.openmobilehub.auth.nongms.domain.auth
 
+import com.openmobilehub.auth.nongms.domain.models.ApiResult
 import com.openmobilehub.auth.nongms.domain.models.OAuthTokens
 import com.openmobilehub.auth.nongms.domain.utils.Pkce
 import com.openmobilehub.auth.nongms.domain.utils.PkceImpl
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
 
 internal class AuthUseCase(
     private val authRepository: AuthRepository,
@@ -25,7 +23,7 @@ internal class AuthUseCase(
         )
     }
 
-    fun requestTokens(authCode: String, packageName: String): Flow<OAuthTokens> {
+    suspend fun requestTokens(authCode: String, packageName: String): ApiResult<OAuthTokens> {
         return authRepository.requestTokens(
             clientId = _clientId,
             authCode = authCode,
@@ -34,11 +32,8 @@ internal class AuthUseCase(
         )
     }
 
-    fun blockingRefreshToken(): Flow<String?> {
-        return authRepository
-            .refreshAccessToken(_clientId)
-            .map { token -> token.ifEmpty { null } }
-            .catch { emit(null) }
+    suspend fun blockingRefreshToken(): ApiResult<String> {
+        return authRepository.refreshAccessToken(_clientId)
     }
 
     fun getAccessToken(): String? = authRepository.getAccessToken()

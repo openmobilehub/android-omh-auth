@@ -1,7 +1,7 @@
 package com.openmobilehub.auth.nongms.domain.auth
 
+import com.openmobilehub.auth.nongms.domain.models.ApiResult
 import com.openmobilehub.auth.nongms.domain.models.OAuthTokens
-import kotlinx.coroutines.flow.Flow
 
 internal interface AuthRepository {
 
@@ -13,12 +13,12 @@ internal interface AuthRepository {
      * @param redirectUri -> the same redirect URI from the login screen
      * @param codeVerifier -> code verifier of the PKCE protocol
      */
-    fun requestTokens(
+    suspend fun requestTokens(
         clientId: String,
         authCode: String,
         redirectUri: String,
         codeVerifier: String
-    ): Flow<OAuthTokens>
+    ): ApiResult<OAuthTokens>
 
     /**
      * Builds the login URL to use in the custom tabs implementation. This will show the user the
@@ -48,14 +48,14 @@ internal interface AuthRepository {
      *
      * @param clientId -> clientId from the auth console
      *
-     * @return a [Flow] with the token inside.
+     * @return a [ApiResult] with the token inside.
      */
-    fun refreshAccessToken(clientId: String): Flow<String>
+    suspend fun refreshAccessToken(clientId: String): ApiResult<String>
 
     /**
      * Revokes the access token of the user from the auth provider.
      */
-    fun revokeToken(): Flow<Unit>
+    suspend fun revokeToken(): ApiResult<Unit>
 
     /**
      * Clears all local data of the user, including stored tokens.

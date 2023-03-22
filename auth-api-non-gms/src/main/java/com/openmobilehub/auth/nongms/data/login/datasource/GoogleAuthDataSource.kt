@@ -7,27 +7,25 @@ import androidx.core.net.toUri
 import com.openmobilehub.auth.nongms.data.login.GoogleAuthREST
 import com.openmobilehub.auth.nongms.data.login.models.AuthTokenResponse
 import com.openmobilehub.auth.nongms.utils.Constants
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import retrofit2.Response
 
 class GoogleAuthDataSource(
     private val authService: GoogleAuthREST,
     private val sharedPreferences: SharedPreferences
 ) : AuthDataSource {
 
-    override fun getToken(
+    override suspend fun getToken(
         clientId: String,
         authCode: String,
         redirectUri: String,
         codeVerifier: String
-    ): Flow<AuthTokenResponse> = flow {
-        val authTokenResponse: AuthTokenResponse = authService.getToken(
+    ): Response<AuthTokenResponse> {
+        return authService.getToken(
             clientId = clientId,
             code = authCode,
             redirectUri = redirectUri,
             codeVerifier = codeVerifier
         )
-        emit(authTokenResponse)
     }
 
     /**
@@ -70,13 +68,13 @@ class GoogleAuthDataSource(
         return sharedPreferences.getString(AuthDataSource.REFRESH_TOKEN, null)
     }
 
-    override fun refreshAccessToken(clientId: String): Flow<AuthTokenResponse> = flow {
+    override suspend fun refreshAccessToken(clientId: String): Response<AuthTokenResponse> {
         val refreshToken = checkNotNull(getRefreshToken())
-        emit(authService.refreshToken(clientId, refreshToken))
+        return (authService.refreshToken(clientId, refreshToken))
     }
 
-    override fun revokeToken(token: String): Flow<Unit> = flow {
-        emit(authService.revokeToken(token))
+    override suspend fun revokeToken(token: String): Response<Nothing> {
+        return (authService.revokeToken(token))
     }
 
     override fun clearData() {

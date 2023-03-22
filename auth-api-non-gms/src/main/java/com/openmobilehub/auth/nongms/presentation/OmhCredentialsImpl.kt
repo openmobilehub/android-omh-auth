@@ -1,9 +1,9 @@
 package com.openmobilehub.auth.nongms.presentation
 
-import com.openmobilehub.auth.nongms.domain.auth.AuthUseCase
-import com.openmobilehub.auth.nongms.utils.ThreadUtils
 import com.openmobilehub.auth.api.OmhCredentials
-import kotlinx.coroutines.flow.first
+import com.openmobilehub.auth.nongms.domain.auth.AuthUseCase
+import com.openmobilehub.auth.nongms.domain.models.ApiResult
+import com.openmobilehub.auth.nongms.utils.ThreadUtils
 import kotlinx.coroutines.runBlocking
 
 internal class OmhCredentialsImpl(
@@ -18,7 +18,10 @@ internal class OmhCredentialsImpl(
     override fun blockingRefreshToken(): String? {
         ThreadUtils.checkForMainThread()
         return runBlocking {
-            authUseCase.blockingRefreshToken().first()
+            when (val apiResult = authUseCase.blockingRefreshToken()) {
+                is ApiResult.Error -> null
+                is ApiResult.Success -> apiResult.data
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package com.openmobilehub.auth.nongms
 
 import com.openmobilehub.auth.nongms.domain.auth.AuthRepository
 import com.openmobilehub.auth.nongms.domain.auth.AuthUseCase
+import com.openmobilehub.auth.nongms.domain.models.ApiResult
 import com.openmobilehub.auth.nongms.domain.models.OAuthTokens
 import com.openmobilehub.auth.nongms.domain.utils.Pkce
 import io.mockk.coEvery
@@ -9,8 +10,6 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -88,6 +87,7 @@ internal class AuthUseCaseTest {
         val authCode = "auth code"
         val packageName = "com.package.name"
         val mockedResponse: OAuthTokens = mockk()
+        val expectedResult = ApiResult.Success(mockedResponse)
 
         coEvery {
             authRepository.requestTokens(
@@ -96,11 +96,11 @@ internal class AuthUseCaseTest {
                 redirectUri = any(),
                 codeVerifier = any(),
             )
-        } returns flow { emit(mockedResponse) }
+        } returns expectedResult
 
-        val result = authUseCase.requestTokens(authCode, packageName).first()
+        val result = authUseCase.requestTokens(authCode, packageName)
 
-        assertEquals(mockedResponse, result)
+        assertEquals(expectedResult, result)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -118,9 +118,9 @@ internal class AuthUseCaseTest {
                 redirectUri = any(),
                 codeVerifier = any(),
             )
-        } returns flow { emit(mockedResponse) }
+        } returns ApiResult.Success(mockedResponse)
 
-        authUseCase.requestTokens(authCode, packageName).first()
+        authUseCase.requestTokens(authCode, packageName)
     }
 
     @Test
@@ -147,12 +147,13 @@ internal class AuthUseCaseTest {
     @Test
     fun `when a token refresh is requested then a new token is returned`() = runTest {
         val expectedToken = "newtoken"
+        val expectedResult = ApiResult.Success(expectedToken)
 
-        coEvery { authRepository.refreshAccessToken(any()) } returns flow { emit(expectedToken) }
+        coEvery { authRepository.refreshAccessToken(any()) } returns expectedResult
 
-        val newToken = authUseCase.blockingRefreshToken().first()
+        val newToken = authUseCase.blockingRefreshToken()
 
-        assertEquals(expectedToken, newToken)
+        assertEquals(expectedResult, newToken)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -162,9 +163,11 @@ internal class AuthUseCaseTest {
             val expectedToken = "newtoken"
             authUseCase.clientId = null
 
-            coEvery { authRepository.refreshAccessToken(any()) } returns flow { emit(expectedToken) }
+            coEvery {
+                authRepository.refreshAccessToken(any())
+            } returns ApiResult.Success(expectedToken)
 
-            authUseCase.blockingRefreshToken().first()
+            authUseCase.blockingRefreshToken()
         }
     }
 
