@@ -13,7 +13,7 @@ internal class OmhAuthClientImpl(
     private val googleSignInClient: GoogleSignInClient
 ) : OmhAuthClient {
 
-    override fun getLoginIntent(context: Context): Intent {
+    override fun getLoginIntent(): Intent {
         return googleSignInClient.signInIntent
     }
 
@@ -32,11 +32,11 @@ internal class OmhAuthClientImpl(
         )
     }
 
-    override fun getCredentials(context: Context): OmhCredentials {
-        return OmhAuthFactory.getCredentials()
+    override fun getCredentials(): OmhCredentials {
+        return OmhAuthFactoryImpl.getCredentials()
     }
 
-    override fun signOut(context: Context) {
+    override fun signOut() {
         googleSignInClient.signOut()
     }
 }

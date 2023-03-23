@@ -9,6 +9,14 @@ plugins {
 android {
     namespace = "com.openmobilehub.auth.sample"
 
+    defaultConfig {
+        buildConfigField(
+            type = "String",
+            name = "CLIENT_ID",
+            value = gradleLocalProperties(rootDir)["clientId"].toString()
+        )
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -22,11 +30,6 @@ android {
     flavorDimensions += "google_services"
     productFlavors {
         create("ngms") {
-            buildConfigField(
-                type = "String",
-                name = "CLIENT_ID",
-                value = gradleLocalProperties(rootDir)["clientId"].toString()
-            )
             dimension = "google_services"
         }
         create("gms") {

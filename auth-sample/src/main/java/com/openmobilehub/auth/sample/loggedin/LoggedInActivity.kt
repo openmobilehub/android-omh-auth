@@ -20,7 +20,7 @@ class LoggedInActivity : AppCompatActivity() {
 
     @Inject
     lateinit var omhAuthClient: OmhAuthClient
-    private val credentials by lazy { omhAuthClient.getCredentials(this) }
+    private val credentials by lazy { omhAuthClient.getCredentials() }
 
     private val binding: ActivityLoggedInBinding by lazy {
         ActivityLoggedInBinding.inflate(layoutInflater)
@@ -44,8 +44,8 @@ class LoggedInActivity : AppCompatActivity() {
         binding.tvToken.text = getString(R.string.token_placeholder, credentials.accessToken)
     }
 
-    private fun logout() = lifecycleScope.launch(Dispatchers.IO) {
-        omhAuthClient.signOut(applicationContext)
+    private fun logout() {
+        omhAuthClient.signOut()
         navigateToLogin()
     }
 

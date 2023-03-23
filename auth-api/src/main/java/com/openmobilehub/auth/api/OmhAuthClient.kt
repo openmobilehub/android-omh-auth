@@ -8,17 +8,17 @@ interface OmhAuthClient {
 
     interface Builder {
 
-        fun build(): OmhAuthClient
+        fun build(context: Context): OmhAuthClient
     }
 
-    fun getLoginIntent(context: Context): Intent
+    fun getLoginIntent(): Intent
 
     fun getUser(context: Context): OmhUserProfile?
 
-    fun getCredentials(context: Context): OmhCredentials
+    fun getCredentials(): OmhCredentials
 
     /**
      * Logs out the user. This clears any stored data locally.
      */
-    fun signOut(context: Context)
+    fun signOut()
 }

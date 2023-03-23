@@ -39,7 +39,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun startLogin() {
-        val loginIntent = omhAuthClient.getLoginIntent(this)
+        val loginIntent = omhAuthClient.getLoginIntent()
         loginLauncher.launch(loginIntent)
     }
 
