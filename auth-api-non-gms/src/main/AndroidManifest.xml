@@ -5,7 +5,7 @@
 
     <application>
         <activity
-            android:name="com.openmobilehub.auth.nongms.presentation.redirect.RedirectActivity"
+            android:name="com.omh.android.auth.nongms.presentation.redirect.RedirectActivity"
             android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>

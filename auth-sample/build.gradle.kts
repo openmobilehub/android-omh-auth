@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.openmobilehub.auth.sample"
+    namespace = "com.omh.android.auth.sample"
 
     defaultConfig {
         buildConfigField(
