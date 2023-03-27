@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.btnLogin.setOnClickListener { startLogin() }
 
-        if (omhAuthClient.getUser(this) != null) {
+        if (omhAuthClient.getUser() != null) {
             navigateToLoggedIn()
         }
     }

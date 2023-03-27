@@ -53,8 +53,9 @@ val gmsImplementation by configurations
 val ngmsImplementation by configurations
 dependencies {
     ngmsImplementation(project(":auth-api-non-gms"))
-    //    implementation("com.openmobilehub:auth-non-gms:1.0-SNAPSHOT")
     gmsImplementation(project(":auth-api-gms"))
+
+    implementation(Libs.googleApiClientAndroid)
 
     implementation(Libs.coreKtx)
     implementation(Libs.lifecycleKtx)

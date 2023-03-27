@@ -2,11 +2,12 @@ package com.openmobilehub.auth.sample.loggedin
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.openmobilehub.auth.sample.login.LoginActivity
 import com.openmobilehub.auth.api.OmhAuthClient
+import com.openmobilehub.auth.api.OmhCredentials
 import com.openmobilehub.auth.sample.R
 import com.openmobilehub.auth.sample.databinding.ActivityLoggedInBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,7 +21,6 @@ class LoggedInActivity : AppCompatActivity() {
 
     @Inject
     lateinit var omhAuthClient: OmhAuthClient
-    private val credentials by lazy { omhAuthClient.getCredentials() }
 
     private val binding: ActivityLoggedInBinding by lazy {
         ActivityLoggedInBinding.inflate(layoutInflater)
@@ -37,11 +37,23 @@ class LoggedInActivity : AppCompatActivity() {
             refreshToken()
         }
 
-        val profile = requireNotNull(omhAuthClient.getUser(this))
+        val profile = requireNotNull(omhAuthClient.getUser())
         binding.tvEmail.text = getString(R.string.email_placeholder, profile.email)
         binding.tvName.text = getString(R.string.name_placeholder, profile.name)
         binding.tvSurname.text = getString(R.string.surname_placeholder, profile.surname)
-        binding.tvToken.text = getString(R.string.token_placeholder, credentials.accessToken)
+        getToken()
+    }
+
+    private fun getToken() = lifecycleScope.launch(Dispatchers.IO) {
+        val token = when (val credentials = omhAuthClient.getCredentials()) {
+            is OmhCredentials -> credentials.accessToken
+            is GoogleAccountCredential -> credentials.token
+            else -> error("Unsupported credential type")
+        }
+
+        withContext(Dispatchers.Main) {
+            binding.tvToken.text = getString(R.string.token_placeholder, token)
+        }
     }
 
     private fun logout() {
@@ -50,17 +62,17 @@ class LoggedInActivity : AppCompatActivity() {
     }
 
     private fun refreshToken() = lifecycleScope.launch(Dispatchers.IO) {
-        val newToken = credentials.blockingRefreshToken()
+        val newToken = when (val credentials = omhAuthClient.getCredentials()) {
+            is OmhCredentials -> credentials.blockingRefreshToken()
+            is GoogleAccountCredential -> credentials.token
+            else -> error("Unsupported credential type")
+        }
 
         if (newToken != null) {
             withContext(Dispatchers.Main) {
                 binding.tvToken.text = getString(R.string.token_placeholder, newToken)
             }
         }
-    }
-
-    private fun showException(message: String) = lifecycleScope.launch(Dispatchers.Main) {
-        Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
     }
 
     private fun navigateToLogin() {

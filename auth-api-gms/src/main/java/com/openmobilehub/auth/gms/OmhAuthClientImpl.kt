@@ -1,12 +1,11 @@
 package com.openmobilehub.auth.gms
 
-import android.content.Context
 import android.content.Intent
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.openmobilehub.auth.api.OmhAuthClient
-import com.openmobilehub.auth.api.OmhCredentials
 import com.openmobilehub.auth.api.models.OmhUserProfile
 
 internal class OmhAuthClientImpl(
@@ -17,8 +16,8 @@ internal class OmhAuthClientImpl(
         return googleSignInClient.signInIntent
     }
 
-    override fun getUser(context: Context): OmhUserProfile? {
-        val googleUser = GoogleSignIn.getLastSignedInAccount(context)
+    override fun getUser(): OmhUserProfile? {
+        val googleUser = GoogleSignIn.getLastSignedInAccount(googleSignInClient.applicationContext)
         return googleUser?.toOmhProfile()
     }
 
@@ -32,8 +31,13 @@ internal class OmhAuthClientImpl(
         )
     }
 
-    override fun getCredentials(): OmhCredentials {
-        return OmhAuthFactoryImpl.getCredentials()
+    override fun getCredentials(): Any {
+        val context = googleSignInClient.applicationContext
+        val lastSignedInAccount: GoogleSignInAccount? = GoogleSignIn.getLastSignedInAccount(context)
+        val scopes = lastSignedInAccount?.grantedScopes?.map { scope -> scope.scopeUri }
+        return GoogleAccountCredential.usingOAuth2(context, scopes).apply {
+            selectedAccount = lastSignedInAccount?.account
+        }
     }
 
     override fun signOut() {
