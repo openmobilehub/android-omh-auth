@@ -6,13 +6,16 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
+import com.omh.android.auth.nongms.databinding.ActivityRedirectBinding
 import com.omh.android.auth.nongms.factories.ViewModelFactory
 import com.omh.android.auth.nongms.utils.EventWrapper
+import com.omh.android.auth.nongms.utils.lifecycle.LifecycleUtil
 import com.omh.android.auth.nongms.utils.nullOrHandled
-import com.omh.android.auth.nongms.databinding.ActivityRedirectBinding
 
 internal class RedirectActivity : AppCompatActivity() {
 
@@ -20,6 +23,19 @@ internal class RedirectActivity : AppCompatActivity() {
 
     private val binding: ActivityRedirectBinding by lazy {
         ActivityRedirectBinding.inflate(LayoutInflater.from(this))
+    }
+
+    private var caughtRedirect = false
+
+    private val tabsLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            handleCustomTabsClosed()
+        }
+
+    private fun handleCustomTabsClosed() {
+        LifecycleUtil.runOnResume(lifecycle = lifecycle, owner = this) {
+            if (!caughtRedirect) returnResult(Activity.RESULT_CANCELED)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,17 +72,19 @@ internal class RedirectActivity : AppCompatActivity() {
 
         val builder: CustomTabsIntent.Builder = CustomTabsIntent.Builder()
         val customTabsIntent: CustomTabsIntent = builder.build()
-        customTabsIntent.launchUrl(this, uri)
+        customTabsIntent.intent.data = uri
+        tabsLauncher.launch(customTabsIntent.intent)
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        caughtRedirect = true
         val data: Uri? = intent?.data
         val authCode = data?.getQueryParameter("code")
         val error = data?.getQueryParameter("error code")
         if (authCode == null) {
             Toast.makeText(this, "Error: $error", Toast.LENGTH_LONG).show()
-            returnResult(RESULT_CANCELED)
+            returnResult(Activity.RESULT_CANCELED)
             return
         }
         viewModel.requestTokens(authCode, packageName)
