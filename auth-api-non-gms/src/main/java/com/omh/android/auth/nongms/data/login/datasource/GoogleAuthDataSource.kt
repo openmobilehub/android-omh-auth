@@ -6,10 +6,11 @@ import androidx.core.content.edit
 import androidx.core.net.toUri
 import com.omh.android.auth.nongms.data.login.GoogleAuthREST
 import com.omh.android.auth.nongms.data.login.models.AuthTokenResponse
+import com.omh.android.auth.nongms.domain.models.ApiResult
 import com.omh.android.auth.nongms.utils.Constants
 import retrofit2.Response
 
-class GoogleAuthDataSource(
+internal class GoogleAuthDataSource(
     private val authService: GoogleAuthREST,
     private val sharedPreferences: SharedPreferences
 ) : AuthDataSource {
@@ -19,7 +20,7 @@ class GoogleAuthDataSource(
         authCode: String,
         redirectUri: String,
         codeVerifier: String
-    ): Response<AuthTokenResponse> {
+    ): ApiResult<AuthTokenResponse> {
         return authService.getToken(
             clientId = clientId,
             code = authCode,
@@ -68,12 +69,12 @@ class GoogleAuthDataSource(
         return sharedPreferences.getString(AuthDataSource.REFRESH_TOKEN, null)
     }
 
-    override suspend fun refreshAccessToken(clientId: String): Response<AuthTokenResponse> {
+    override suspend fun refreshAccessToken(clientId: String): ApiResult<AuthTokenResponse> {
         val refreshToken = checkNotNull(getRefreshToken())
         return (authService.refreshToken(clientId, refreshToken))
     }
 
-    override suspend fun revokeToken(token: String): Response<Nothing> {
+    override suspend fun revokeToken(token: String): ApiResult<Unit> {
         return (authService.revokeToken(token))
     }
 

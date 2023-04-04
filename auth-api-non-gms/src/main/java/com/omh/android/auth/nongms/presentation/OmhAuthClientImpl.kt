@@ -6,9 +6,11 @@ import com.omh.android.auth.nongms.data.user.UserRepositoryImpl
 import com.omh.android.auth.nongms.domain.user.ProfileUseCase
 import com.omh.android.auth.nongms.presentation.redirect.RedirectActivity
 import com.omh.android.auth.api.OmhAuthClient
+import com.omh.android.auth.api.models.OmhAuthException
 import com.omh.android.auth.api.models.OmhUserProfile
 import com.omh.android.auth.nongms.data.login.AuthRepositoryImpl
 import com.omh.android.auth.nongms.domain.auth.AuthUseCase
+import com.omh.android.auth.nongms.utils.Constants
 
 /**
  * Non GMS implementation of the OmhAuthClient abstraction. Required a clientId and defined scopes as
@@ -63,5 +65,15 @@ internal class OmhAuthClientImpl(
         val authRepository = AuthRepositoryImpl.getAuthRepository(applicationContext)
         val authUseCase = AuthUseCase.createAuthUseCase(authRepository)
         authUseCase.logout()
+    }
+
+    override fun getAccountFromIntent(data: Intent?): OmhUserProfile {
+        if (data?.hasExtra(Constants.CAUSE_KEY) == true) {
+            val exception = data.getSerializableExtra(Constants.CAUSE_KEY) as OmhAuthException
+            throw exception
+        }
+        return getUser() ?: throw OmhAuthException.UnrecoverableLoginException(
+            cause = Throwable(message = "No user profile stored")
+        )
     }
 }

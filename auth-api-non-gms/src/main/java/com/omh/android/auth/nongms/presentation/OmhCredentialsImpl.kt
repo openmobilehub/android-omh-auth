@@ -19,8 +19,8 @@ internal class OmhCredentialsImpl(
         ThreadUtils.checkForMainThread()
         return runBlocking {
             when (val apiResult = authUseCase.blockingRefreshToken()) {
-                is ApiResult.Error -> null
                 is ApiResult.Success -> apiResult.data
+                else -> null
             }
         }
     }

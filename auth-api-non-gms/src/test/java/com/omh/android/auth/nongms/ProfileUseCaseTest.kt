@@ -1,5 +1,6 @@
 package com.omh.android.auth.nongms
 
+import com.omh.android.auth.api.models.OmhAuthException
 import com.omh.android.auth.nongms.domain.user.ProfileUseCase
 import com.omh.android.auth.nongms.domain.user.UserRepository
 import com.omh.android.auth.api.models.OmhUserProfile
@@ -31,7 +32,7 @@ internal class ProfileUseCaseTest {
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
+    @Test(expected = OmhAuthException.UnrecoverableLoginException::class)
     fun `when idToken or clientId are empty the token is not handled`() = runTest {
         val idToken = " "
         val clientId = " "

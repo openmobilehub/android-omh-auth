@@ -13,7 +13,6 @@ import com.omh.android.auth.nongms.domain.models.OAuthTokens
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.Response
 
 internal class AuthRepositoryImpl(
     private val googleAuthDataSource: AuthDataSource,
@@ -26,34 +25,27 @@ internal class AuthRepositoryImpl(
         redirectUri: String,
         codeVerifier: String
     ): ApiResult<OAuthTokens> = withContext(ioDispatcher) {
-        val response: Response<AuthTokenResponse> = googleAuthDataSource.getToken(
+        val result: ApiResult<AuthTokenResponse> = googleAuthDataSource.getToken(
             clientId = clientId,
             authCode = authCode,
             redirectUri = redirectUri,
             codeVerifier = codeVerifier
         )
-        val body: AuthTokenResponse = response.body()
-            ?: return@withContext ApiResult.Error("Null body")
 
-        return@withContext if (response.isSuccessful) {
+        result.map { data: AuthTokenResponse ->
             googleAuthDataSource.storeToken(
                 tokenType = AuthDataSource.ACCESS_TOKEN,
-                token = checkNotNull(body.accessToken)
+                token = data.accessToken
             )
             googleAuthDataSource.storeToken(
                 tokenType = AuthDataSource.REFRESH_TOKEN,
-                token = checkNotNull(body.refreshToken)
+                token = checkNotNull(data.refreshToken)
             )
-            val data = OAuthTokens(
-                accessToken = body.accessToken,
-                refreshToken = checkNotNull(body.refreshToken),
-                idToken = body.idToken
+            OAuthTokens(
+                accessToken = data.accessToken,
+                refreshToken = checkNotNull(data.refreshToken),
+                idToken = data.idToken
             )
-            ApiResult.Success(data)
-        } else {
-            val exception = response.errorBody()?.string()
-            response.errorBody()?.close()
-            ApiResult.Error(exception.orEmpty())
         }
     }
 
@@ -78,18 +70,9 @@ internal class AuthRepositoryImpl(
     override suspend fun refreshAccessToken(
         clientId: String
     ): ApiResult<String> = withContext(ioDispatcher) {
-        val response: Response<AuthTokenResponse> =
-            googleAuthDataSource.refreshAccessToken(clientId)
-        val body: AuthTokenResponse = response.body()
-            ?: return@withContext ApiResult.Error("Null body")
-
-        return@withContext if (response.isSuccessful) {
-            googleAuthDataSource.storeToken(AuthDataSource.ACCESS_TOKEN, body.accessToken)
-            ApiResult.Success(body.accessToken)
-        } else {
-            val exception = response.errorBody()?.string()
-            response.errorBody()?.close()
-            ApiResult.Error(exception.orEmpty())
+        googleAuthDataSource.refreshAccessToken(clientId).map { data: AuthTokenResponse ->
+            googleAuthDataSource.storeToken(AuthDataSource.ACCESS_TOKEN, data.accessToken)
+            data.accessToken
         }
     }
 
@@ -97,15 +80,7 @@ internal class AuthRepositoryImpl(
         val accessToken: String = googleAuthDataSource.getToken(AuthDataSource.ACCESS_TOKEN)
             ?: return@withContext ApiResult.Success(Unit)
 
-        val response: Response<Nothing> = googleAuthDataSource.revokeToken(accessToken)
-
-        return@withContext if (response.isSuccessful) {
-            ApiResult.Success(Unit)
-        } else {
-            val exception = response.errorBody()?.string()
-            response.errorBody()?.close()
-            ApiResult.Error(exception.orEmpty())
-        }
+        return@withContext googleAuthDataSource.revokeToken(accessToken)
     }
 
     override fun clearData() {
