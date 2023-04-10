@@ -8,17 +8,13 @@ import kotlinx.coroutines.runBlocking
 
 internal class OmhCredentialsImpl(
     private val authUseCase: AuthUseCase,
-    clientId: String
+    private val clientId: String
 ) : OmhCredentials {
-
-    init {
-        authUseCase.clientId = clientId
-    }
 
     override fun blockingRefreshToken(): String? {
         ThreadUtils.checkForMainThread()
         return runBlocking {
-            when (val apiResult = authUseCase.blockingRefreshToken()) {
+            when (val apiResult = authUseCase.blockingRefreshToken(clientId)) {
                 is ApiResult.Success -> apiResult.data
                 else -> null
             }

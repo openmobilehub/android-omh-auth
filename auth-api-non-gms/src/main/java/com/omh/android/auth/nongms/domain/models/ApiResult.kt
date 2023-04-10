@@ -13,11 +13,20 @@ internal sealed class ApiResult<out T> {
         data class NetworkError(val exception: Throwable) : Error()
     }
 
+    /**
+     * Maps a result of type [T] to another type [R] with error catching, returning a
+     * [Error.RuntimeError] to represent any exceptions.
+     */
+    @SuppressWarnings("TooGenericExceptionCaught")
     inline fun <R> map(mapFunction: (T) -> R): ApiResult<R> {
         return when (this) {
             is Success -> {
-                val transformedData = mapFunction(data)
-                Success(transformedData)
+                try {
+                    val transformedData = mapFunction(data)
+                    Success(transformedData)
+                } catch (e: RuntimeException) {
+                    Error.RuntimeError(e)
+                }
             }
             is Error -> this
         }

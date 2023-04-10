@@ -30,6 +30,7 @@ internal class RedirectActivity : AppCompatActivity() {
     }
 
     private var caughtRedirect = false
+    private var clientId: String = ""
 
     private val tabsLauncher: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -57,8 +58,7 @@ internal class RedirectActivity : AppCompatActivity() {
             )
             return
         }
-        val clientId: String = intent.getStringExtra(CLIENT_ID)!!
-        viewModel.setClientId(clientId)
+        clientId = intent.getStringExtra(CLIENT_ID)!!
         openCustomTabLogin()
 
         viewModel.tokenResponseEvent.observe(this, this::observeTokenResponse)
@@ -94,7 +94,7 @@ internal class RedirectActivity : AppCompatActivity() {
             )
             return
         }
-        val uri = viewModel.getLoginUrl(scopes, packageName)
+        val uri = viewModel.getLoginUrl(scopes, packageName, clientId)
 
         val builder: CustomTabsIntent.Builder = CustomTabsIntent.Builder()
         val customTabsIntent: CustomTabsIntent = builder.build()
@@ -112,12 +112,12 @@ internal class RedirectActivity : AppCompatActivity() {
             handleLoginError(error)
             return
         }
-        viewModel.requestTokens(authCode, packageName)
+        viewModel.requestTokens(authCode, packageName, clientId)
     }
 
     private fun handleLoginError(error: String?) {
         val code = when (error) {
-            "access_denied" -> OmhAuthStatusCodes.ACCESS_DENIED
+            ACCESS_DENIED_RESPONSE -> OmhAuthStatusCodes.ACCESS_DENIED
             else -> OmhAuthStatusCodes.DEFAULT_ERROR
         }
         returnResult(
@@ -136,7 +136,8 @@ internal class RedirectActivity : AppCompatActivity() {
     }
 
     companion object {
-        internal const val SCOPES = "scopes"
-        internal const val CLIENT_ID = "client_id"
+        const val SCOPES = "scopes"
+        const val CLIENT_ID = "client_id"
+        const val ACCESS_DENIED_RESPONSE = "access_denied"
     }
 }

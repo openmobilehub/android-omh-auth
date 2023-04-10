@@ -70,8 +70,10 @@ internal class GoogleAuthDataSource(
     }
 
     override suspend fun refreshAccessToken(clientId: String): ApiResult<AuthTokenResponse> {
-        val refreshToken = checkNotNull(getRefreshToken())
-        return (authService.refreshToken(clientId, refreshToken))
+        val refreshToken = getRefreshToken() ?: return ApiResult.Error.RuntimeError(
+            IllegalStateException("No refresh token")
+        )
+        return authService.refreshToken(clientId, refreshToken)
     }
 
     override suspend fun revokeToken(token: String): ApiResult<Unit> {

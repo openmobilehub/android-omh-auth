@@ -10,30 +10,30 @@ internal class AuthUseCase(
     private val pkce: Pkce
 ) {
 
-    var clientId: String? = null
-    private val _clientId: String
-        get() = checkNotNull(clientId)
-
-    fun getLoginUrl(scopes: String, packageName: String): String {
+    fun getLoginUrl(scopes: String, packageName: String, clientId: String): String {
         return authRepository.buildLoginUrl(
             scopes = scopes,
-            clientId = _clientId,
+            clientId = clientId,
             codeChallenge = pkce.generateCodeChallenge(),
             redirectUri = REDIRECT_FORMAT.format(packageName)
         )
     }
 
-    suspend fun requestTokens(authCode: String, packageName: String): ApiResult<OAuthTokens> {
+    suspend fun requestTokens(
+        authCode: String,
+        packageName: String,
+        clientId: String,
+    ): ApiResult<OAuthTokens> {
         return authRepository.requestTokens(
-            clientId = _clientId,
+            clientId = clientId,
             authCode = authCode,
             redirectUri = REDIRECT_FORMAT.format(packageName),
             codeVerifier = pkce.codeVerifier
         )
     }
 
-    suspend fun blockingRefreshToken(): ApiResult<String> {
-        return authRepository.refreshAccessToken(_clientId)
+    suspend fun blockingRefreshToken(clientId: String): ApiResult<String> {
+        return authRepository.refreshAccessToken(clientId)
     }
 
     fun getAccessToken(): String? = authRepository.getAccessToken()

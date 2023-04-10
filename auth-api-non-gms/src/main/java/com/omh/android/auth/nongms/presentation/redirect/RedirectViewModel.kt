@@ -22,18 +22,18 @@ internal class RedirectViewModel(
     private val _tokenResponseEvent = MutableLiveData<EventWrapper<ApiResult<OAuthTokens>>>()
     val tokenResponseEvent: LiveData<EventWrapper<ApiResult<OAuthTokens>>> = _tokenResponseEvent
 
-    fun getLoginUrl(scopes: String, packageName: String): Uri {
-        return authUseCase.getLoginUrl(scopes, packageName).toUri()
+    fun getLoginUrl(scopes: String, packageName: String, clientId: String): Uri {
+        return authUseCase.getLoginUrl(scopes, packageName, clientId).toUri()
     }
 
     fun requestTokens(
         authCode: String,
         packageName: String,
+        clientId: String,
     ) = viewModelScope.launch {
-        var apiResult = authUseCase.requestTokens(authCode, packageName)
+        var apiResult = authUseCase.requestTokens(authCode, packageName, clientId)
         if (apiResult is ApiResult.Success) {
             val tokens: OAuthTokens = apiResult.data
-            val clientId = authUseCase.clientId.orEmpty()
             try {
                 profileUseCase.resolveIdToken(tokens.idToken, clientId)
             } catch (omhException: OmhAuthException) {
@@ -41,9 +41,5 @@ internal class RedirectViewModel(
             }
         }
         _tokenResponseEvent.postValue(EventWrapper(apiResult))
-    }
-
-    fun setClientId(clientId: String) {
-        authUseCase.clientId = clientId
     }
 }

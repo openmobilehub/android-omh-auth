@@ -26,23 +26,12 @@ internal class AuthUseCaseTest {
     }
     private val authUseCase = AuthUseCase(authRepository, pkce)
 
-    // TODO when there is more use case logic, create useful tests.
-
-    @Before
-    fun setupClientId() {
-        authUseCase.clientId = "clientid"
-    }
-
-    @After
-    fun resetClientId() {
-        authUseCase.clientId = null
-    }
-
     @Test
     fun `when given scope and packageName a correct Uri is returned`() {
         val scope = "scope"
         val packageName = "com.package.name"
         val expectedRedirect: String = AuthUseCase.REDIRECT_FORMAT.format(packageName)
+        val clientId = "client ID"
 
         val expectedResult = "www.link.com/path?scopes=$scope&redirect=$expectedRedirect"
         every {
@@ -54,31 +43,10 @@ internal class AuthUseCaseTest {
             )
         } returns expectedResult
 
-        val result: String = authUseCase.getLoginUrl(scope, packageName)
+        val result: String = authUseCase.getLoginUrl(scope, packageName, clientId)
 
         assertTrue(result.contains(scope))
         assertTrue(result.contains(expectedRedirect))
-    }
-
-    @Test(expected = IllegalStateException::class)
-    fun `when no clientId is setup then an error is thrown for get login url`() {
-        authUseCase.clientId = null
-
-        val scope = "scope"
-        val packageName = "com.package.name"
-        val expectedRedirect: String = AuthUseCase.REDIRECT_FORMAT.format(packageName)
-        val expectedResult = "www.link.com/path?scopes=$scope&redirect=$expectedRedirect"
-
-        every {
-            authRepository.buildLoginUrl(
-                scopes = any(),
-                clientId = any(),
-                codeChallenge = any(),
-                redirectUri = any()
-            )
-        } returns expectedResult
-
-        authUseCase.getLoginUrl(scope, packageName)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -88,6 +56,7 @@ internal class AuthUseCaseTest {
         val packageName = "com.package.name"
         val mockedResponse: OAuthTokens = mockk()
         val expectedResult = ApiResult.Success(mockedResponse)
+        val clientId = "client ID"
 
         coEvery {
             authRepository.requestTokens(
@@ -98,29 +67,9 @@ internal class AuthUseCaseTest {
             )
         } returns expectedResult
 
-        val result = authUseCase.requestTokens(authCode, packageName)
+        val result = authUseCase.requestTokens(authCode, packageName, clientId)
 
         assertEquals(expectedResult, result)
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test(expected = IllegalStateException::class)
-    fun `when no clientId is setup then an error is thrown for request tokens`() = runTest {
-        authUseCase.clientId = null
-        val authCode = "auth code"
-        val packageName = "com.package.name"
-        val mockedResponse: OAuthTokens = mockk()
-
-        coEvery {
-            authRepository.requestTokens(
-                clientId = any(),
-                authCode = any(),
-                redirectUri = any(),
-                codeVerifier = any(),
-            )
-        } returns ApiResult.Success(mockedResponse)
-
-        authUseCase.requestTokens(authCode, packageName)
     }
 
     @Test
@@ -148,27 +97,13 @@ internal class AuthUseCaseTest {
     fun `when a token refresh is requested then a new token is returned`() = runTest {
         val expectedToken = "newtoken"
         val expectedResult = ApiResult.Success(expectedToken)
+        val clientId = "client ID"
 
         coEvery { authRepository.refreshAccessToken(any()) } returns expectedResult
 
-        val newToken = authUseCase.blockingRefreshToken()
+        val newToken = authUseCase.blockingRefreshToken(clientId)
 
         assertEquals(expectedResult, newToken)
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test(expected = IllegalStateException::class)
-    fun `when a token refresh is requested with no clientId then an exception is thrown`() {
-        runTest {
-            val expectedToken = "newtoken"
-            authUseCase.clientId = null
-
-            coEvery {
-                authRepository.refreshAccessToken(any())
-            } returns ApiResult.Success(expectedToken)
-
-            authUseCase.blockingRefreshToken()
-        }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
