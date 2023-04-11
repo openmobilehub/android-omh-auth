@@ -21,7 +21,7 @@ internal class ProfileUseCaseTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `when idToken and clientId are provided the token is handled`() = runTest {
+    fun `given idToken and clientId then the ID token is resolved`() = runTest {
         val idToken = "idToken"
         val clientId = "clientId"
         coEvery { userRepository.handleIdToken(any(), any()) } returns Unit
@@ -33,7 +33,7 @@ internal class ProfileUseCaseTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test(expected = OmhAuthException.UnrecoverableLoginException::class)
-    fun `when idToken or clientId are empty the token is not handled`() = runTest {
+    fun `given idToken and clientId when they are empty then an exception is thrown`() = runTest {
         val idToken = " "
         val clientId = " "
         coEvery { userRepository.handleIdToken(any(), any()) } returns Unit
@@ -44,7 +44,7 @@ internal class ProfileUseCaseTest {
     }
 
     @Test
-    fun `when no profile data is available a null is returned`() {
+    fun `when no profile data is available then null is returned`() {
         every { userRepository.getProfileData() } returns null
 
         val result = useCase.getProfileData()
@@ -53,7 +53,7 @@ internal class ProfileUseCaseTest {
     }
 
     @Test
-    fun `when profile data is available an object is returned`() {
+    fun `when profile data is available then an OmhUserProfile is returned`() {
         val profileData: OmhUserProfile = mockk()
         every { userRepository.getProfileData() } returns profileData
 

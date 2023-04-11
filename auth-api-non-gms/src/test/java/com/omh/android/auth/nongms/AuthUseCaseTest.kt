@@ -27,7 +27,7 @@ internal class AuthUseCaseTest {
     private val authUseCase = AuthUseCase(authRepository, pkce)
 
     @Test
-    fun `when given scope and packageName a correct Uri is returned`() {
+    fun `given a scope and package name when requesting login URl a correct string is returned`() {
         val scope = "scope"
         val packageName = "com.package.name"
         val expectedRedirect: String = AuthUseCase.REDIRECT_FORMAT.format(packageName)
@@ -51,29 +51,31 @@ internal class AuthUseCaseTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `when given auth code and package name an AuthTokenResponse is returned`() = runTest {
-        val authCode = "auth code"
-        val packageName = "com.package.name"
-        val mockedResponse: OAuthTokens = mockk()
-        val expectedResult = ApiResult.Success(mockedResponse)
+    fun `given an auth code and package name when tokens are requested then they are returned`() {
+        runTest {
+            val authCode = "auth code"
+            val packageName = "com.package.name"
+            val mockedResponse: OAuthTokens = mockk()
+            val expectedResult = ApiResult.Success(mockedResponse)
         val clientId = "client ID"
 
-        coEvery {
-            authRepository.requestTokens(
-                clientId = any(),
-                authCode = any(),
-                redirectUri = any(),
-                codeVerifier = any(),
-            )
-        } returns expectedResult
+            coEvery {
+                authRepository.requestTokens(
+                    clientId = any(),
+                    authCode = any(),
+                    redirectUri = any(),
+                    codeVerifier = any(),
+                )
+            } returns expectedResult
 
-        val result = authUseCase.requestTokens(authCode, packageName, clientId)
+            val result = authUseCase.requestTokens(authCode, packageName, clientId)
 
-        assertEquals(expectedResult, result)
+            assertEquals(expectedResult, result)
+        }
     }
 
     @Test
-    fun `when the access token is requested then the token is returned`() {
+    fun `given that an access token was stored when it's requested then it's returned`() {
         val expectedToken = "accesstoken"
         every { authRepository.getAccessToken() } returns expectedToken
 
@@ -83,7 +85,7 @@ internal class AuthUseCaseTest {
     }
 
     @Test
-    fun `when the access token is requested but no token is stored then null is returned`() {
+    fun `given that an access token wasn't stored when it's requested then null returned`() {
         val expectedToken = null
         every { authRepository.getAccessToken() } returns expectedToken
 
@@ -94,7 +96,7 @@ internal class AuthUseCaseTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `when a token refresh is requested then a new token is returned`() = runTest {
+    fun `when a refresh is requested then a new token is returned`() = runTest {
         val expectedToken = "newtoken"
         val expectedResult = ApiResult.Success(expectedToken)
         val clientId = "client ID"
