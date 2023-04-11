@@ -2,12 +2,16 @@ package com.omh.android.auth.sample.loggedin
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.omh.android.auth.sample.login.LoginActivity
 import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.auth.api.OmhCredentials
+import com.omh.android.auth.api.models.OmhAuthException
+import com.omh.android.auth.api.models.OmhAuthStatusCodes
 import com.omh.android.auth.sample.R
 import com.omh.android.auth.sample.databinding.ActivityLoggedInBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,8 +61,18 @@ class LoggedInActivity : AppCompatActivity() {
     }
 
     private fun logout() {
-        omhAuthClient.signOut()
-        navigateToLogin()
+        omhAuthClient.signOut(
+            onFailure = { omhException ->
+                val errorMessage = OmhAuthStatusCodes.getStatusCodeString(omhException.statusCode)
+                AlertDialog.Builder(this)
+                    .setTitle("An error has occurred.")
+                    .setMessage(errorMessage)
+                    .setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.dismiss() }
+                    .create()
+                    .show()
+            },
+            onSuccess = ::navigateToLogin
+        )
     }
 
     private fun refreshToken() = lifecycleScope.launch(Dispatchers.IO) {

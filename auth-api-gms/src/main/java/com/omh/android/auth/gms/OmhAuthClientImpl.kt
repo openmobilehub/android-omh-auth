@@ -13,6 +13,7 @@ import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.auth.api.models.OmhAuthException
 import com.omh.android.auth.api.models.OmhAuthStatusCodes
 import com.omh.android.auth.api.models.OmhUserProfile
+import java.lang.Exception
 
 internal class OmhAuthClientImpl(
     private val googleSignInClient: GoogleSignInClient
@@ -45,8 +46,25 @@ internal class OmhAuthClientImpl(
         }
     }
 
-    override fun signOut() {
+    override fun signOut(
+        onFailure: (OmhAuthException) -> Unit,
+        onSuccess: () -> Unit,
+        onComplete: () -> Unit
+    ) {
         googleSignInClient.signOut()
+            .addOnFailureListener { exception: Exception ->
+                val statusCode: Int = when ((exception as? ApiException)?.statusCode) {
+                    CommonStatusCodes.API_NOT_CONNECTED -> OmhAuthStatusCodes.GMS_UNAVAILABLE
+                    else -> OmhAuthStatusCodes.INTERNAL_ERROR
+                }
+                val omhException = OmhAuthException.SignOutException(
+                    statusCode = statusCode,
+                    cause = exception
+                )
+                onFailure(omhException)
+            }
+            .addOnSuccessListener { onSuccess() }
+            .addOnCompleteListener { onComplete() }
     }
 
     override fun getAccountFromIntent(data: Intent?): OmhUserProfile {
@@ -55,12 +73,12 @@ internal class OmhAuthClientImpl(
             val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
             return account.toOmhProfile()
         } catch (apiException: ApiException) {
-            val omhException: OmhAuthException = toOmhException(apiException)
+            val omhException: OmhAuthException = toOmhLoginException(apiException)
             throw omhException
         }
     }
 
-    private fun toOmhException(apiException: ApiException) = when (apiException.statusCode) {
+    private fun toOmhLoginException(apiException: ApiException) = when (apiException.statusCode) {
         GoogleSignInStatusCodes.SIGN_IN_CANCELLED -> {
             OmhAuthException.LoginCanceledException(apiException.cause)
         }
