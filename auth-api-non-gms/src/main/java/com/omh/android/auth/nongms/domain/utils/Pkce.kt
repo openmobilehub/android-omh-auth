@@ -1,6 +1,6 @@
 package com.omh.android.auth.nongms.domain.utils
 
-interface Pkce {
+internal interface Pkce {
     val codeVerifier: String
 
     fun generateCodeChallenge(): String

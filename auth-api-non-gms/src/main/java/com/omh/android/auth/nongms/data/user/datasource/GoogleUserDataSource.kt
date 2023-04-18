@@ -10,7 +10,7 @@ import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.api.client.json.gson.GsonFactory
 import java.util.Collections
 
-class GoogleUserDataSource(private val sharedPreferences: SharedPreferences) : UserDataSource {
+internal class GoogleUserDataSource(private val sharedPreferences: SharedPreferences) : UserDataSource {
 
     /**
      * Handles the ID token returned from the Google Auth Provider. This uses the googleapis lib

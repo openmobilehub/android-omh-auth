@@ -2,7 +2,7 @@ package com.omh.android.auth.nongms.data.user.datasource
 
 import com.omh.android.auth.api.models.OmhUserProfile
 
-interface UserDataSource {
+internal interface UserDataSource {
 
     /**
      * Handles the ID token returned from the Auth Provider. The operation can't run on the main thread.

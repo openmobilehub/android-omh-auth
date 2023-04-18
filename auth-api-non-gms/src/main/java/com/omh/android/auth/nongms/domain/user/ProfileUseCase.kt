@@ -3,7 +3,7 @@ package com.omh.android.auth.nongms.domain.user
 import com.omh.android.auth.api.models.OmhAuthException
 import com.omh.android.auth.api.models.OmhUserProfile
 
-class ProfileUseCase(private val userRepository: UserRepository) {
+internal class ProfileUseCase(private val userRepository: UserRepository) {
 
     @Throws(OmhAuthException.UnrecoverableLoginException::class)
     suspend fun resolveIdToken(idToken: String, clientId: String) {

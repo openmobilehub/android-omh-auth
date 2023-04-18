@@ -8,7 +8,7 @@ import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.auth.api.OmhAuthFactory
 import com.omh.android.auth.api.OmhCredentials
 
-object OmhAuthFactoryImpl : OmhAuthFactory {
+internal object OmhAuthFactoryImpl : OmhAuthFactory {
 
     /**
      * Creates an auth client for the user of the non GMS type and returns it as the abstraction.

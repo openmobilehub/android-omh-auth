@@ -2,7 +2,7 @@ package com.omh.android.auth.nongms.utils
 
 import android.os.Looper
 
-object ThreadUtils {
+internal object ThreadUtils {
 
     private val isOnMainThread: Boolean
         get() = Looper.myLooper() == Looper.getMainLooper()

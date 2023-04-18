@@ -7,7 +7,7 @@ import kotlin.contracts.contract
  * Handy event wrapper for events with Observables (like LiveData) to avoid reacting once it has been
  * handled.
  */
-class EventWrapper<T>(private val content: T) {
+internal class EventWrapper<T>(private val content: T) {
     var hasBeenHandled: Boolean = false
 
     /**
@@ -32,7 +32,7 @@ class EventWrapper<T>(private val content: T) {
 }
 
 @OptIn(ExperimentalContracts::class)
-fun EventWrapper<*>?.nullOrHandled(): Boolean {
+internal fun EventWrapper<*>?.nullOrHandled(): Boolean {
     contract {
         returns(false) implies (this@nullOrHandled != null)
     }

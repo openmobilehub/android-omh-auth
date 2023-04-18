@@ -9,7 +9,7 @@ import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.auth.api.OmhAuthFactory
 import com.omh.android.auth.api.OmhCredentials
 
-object OmhAuthFactoryImpl : OmhAuthFactory {
+internal object OmhAuthFactoryImpl : OmhAuthFactory {
     @Suppress("UNUSED_PARAMETER")
     override fun getAuthClient(
         context: Context,
@@ -23,7 +23,4 @@ object OmhAuthFactoryImpl : OmhAuthFactory {
         return OmhAuthClientImpl(client)
     }
 
-    internal fun getCredentials(): OmhCredentials {
-        return OmhCredentialsImpl()
-    }
 }

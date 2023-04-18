@@ -16,7 +16,7 @@ import com.omh.android.auth.nongms.presentation.redirect.RedirectViewModel
  * to the factories.
  */
 @Suppress("UNCHECKED_CAST")
-class ViewModelFactory : ViewModelProvider.Factory {
+internal class ViewModelFactory : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
         // Get the Application object from extras
