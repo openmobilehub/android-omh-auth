@@ -2,7 +2,6 @@ package com.omh.android.auth.sample.loggedin
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -40,6 +39,9 @@ class LoggedInActivity : AppCompatActivity() {
         binding.btnRefresh.setOnClickListener {
             refreshToken()
         }
+        binding.btnRevoke.setOnClickListener {
+            revokeToken()
+        }
 
         val profile = requireNotNull(omhAuthClient.getUser())
         binding.tvEmail.text = getString(R.string.email_placeholder, profile.email)
@@ -48,10 +50,18 @@ class LoggedInActivity : AppCompatActivity() {
         getToken()
     }
 
+    private fun revokeToken() {
+        omhAuthClient.revokeToken(
+            onFailure = ::showErrorDialog,
+            onSuccess = ::logout
+        )
+    }
+
     private fun getToken() = lifecycleScope.launch(Dispatchers.IO) {
         val token = when (val credentials = omhAuthClient.getCredentials()) {
             is OmhCredentials -> credentials.accessToken
             is GoogleAccountCredential -> credentials.token
+            null -> return@launch
             else -> error("Unsupported credential type")
         }
 
@@ -62,17 +72,19 @@ class LoggedInActivity : AppCompatActivity() {
 
     private fun logout() {
         omhAuthClient.signOut(
-            onFailure = { omhException ->
-                val errorMessage = OmhAuthStatusCodes.getStatusCodeString(omhException.statusCode)
-                AlertDialog.Builder(this)
-                    .setTitle("An error has occurred.")
-                    .setMessage(errorMessage)
-                    .setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.dismiss() }
-                    .create()
-                    .show()
-            },
+            onFailure = ::showErrorDialog,
             onSuccess = ::navigateToLogin
         )
+    }
+
+    private fun showErrorDialog(omhException: OmhAuthException) {
+        val errorMessage = OmhAuthStatusCodes.getStatusCodeString(omhException.statusCode)
+        AlertDialog.Builder(this)
+            .setTitle("An error has occurred.")
+            .setMessage(errorMessage)
+            .setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.dismiss() }
+            .create()
+            .show()
     }
 
     private fun refreshToken() = lifecycleScope.launch(Dispatchers.IO) {

@@ -11,10 +11,8 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 
 internal class AuthUseCaseTest {
@@ -116,5 +114,29 @@ internal class AuthUseCaseTest {
         authUseCase.logout()
 
         coVerify { authRepository.clearData() }
+    }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given revoke was requested when revoke succeeds then storage is cleaned up`() = runTest {
+        coEvery { authRepository.revokeToken() } returns ApiResult.Success(Unit)
+        coEvery { authRepository.clearData() } returns Unit
+
+        authUseCase.revokeToken()
+
+        coVerify { authRepository.revokeToken() }
+        coVerify { authRepository.clearData() }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given revoke was requested when revoke fails then storage is not cleaned up`() = runTest {
+        val error: ApiResult.Error = mockk()
+        coEvery { authRepository.revokeToken() } returns error
+        coEvery { authRepository.clearData() } returns Unit
+
+        authUseCase.revokeToken()
+
+        coVerify { authRepository.revokeToken() }
+        coVerify(inverse = true) { authRepository.clearData() }
     }
 }

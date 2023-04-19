@@ -77,8 +77,11 @@ internal class AuthRepositoryImpl(
     }
 
     override suspend fun revokeToken(): ApiResult<Unit> = withContext(ioDispatcher) {
-        val accessToken: String = googleAuthDataSource.getToken(AuthDataSource.ACCESS_TOKEN)
-            ?: return@withContext ApiResult.Success(Unit)
+        val accessToken = googleAuthDataSource.getToken(AuthDataSource.ACCESS_TOKEN)
+        if (accessToken == null) {
+            val noTokenException = IllegalStateException("No token stored")
+            return@withContext ApiResult.Error.RuntimeError(noTokenException)
+        }
 
         return@withContext googleAuthDataSource.revokeToken(accessToken)
     }

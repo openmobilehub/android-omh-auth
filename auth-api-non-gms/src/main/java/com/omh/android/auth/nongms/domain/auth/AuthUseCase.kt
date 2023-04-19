@@ -40,6 +40,14 @@ internal class AuthUseCase(
 
     fun logout() = authRepository.clearData()
 
+    suspend fun revokeToken(): ApiResult<Unit> {
+        val result = authRepository.revokeToken()
+        if (result is ApiResult.Success<*>) {
+            authRepository.clearData()
+        }
+        return result
+    }
+
     companion object {
         const val REDIRECT_FORMAT = "%s:/oauth2redirect"
 

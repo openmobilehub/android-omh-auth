@@ -10,6 +10,7 @@ object OmhAuthStatusCodes {
     const val ACCESS_DENIED = 6
     const val DEFAULT_ERROR = -1
     const val GMS_UNAVAILABLE = 7
+    const val HTTPS_ERROR = 8
 
     fun getStatusCodeString(code: Int): String {
         return when (code) {
@@ -21,6 +22,7 @@ object OmhAuthStatusCodes {
             ACCESS_DENIED -> "Access denied"
             DEFAULT_ERROR -> "An error has occurred."
             GMS_UNAVAILABLE -> "GMS not available."
+            HTTPS_ERROR -> "An HTTPS error has occurred."
             else -> "Unknown status code: $code"
         }
     }

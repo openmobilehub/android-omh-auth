@@ -29,7 +29,7 @@ interface OmhAuthClient {
      * For non GMS this returns the a [OmhCredentials] object that allows you to access and refresh
      * the access token using REST operations.
      */
-    fun getCredentials(): Any
+    fun getCredentials(): Any?
 
     /**
      * Logs out the user. This clears any stored data locally.
@@ -43,4 +43,10 @@ interface OmhAuthClient {
 
     @Throws(OmhAuthException::class)
     fun getAccountFromIntent(data: Intent?): OmhUserProfile
+
+    fun revokeToken(
+        onSuccess: () -> Unit = {},
+        onFailure: (OmhAuthException) -> Unit = {},
+        onComplete: () -> Unit = {}
+    )
 }

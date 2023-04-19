@@ -15,8 +15,8 @@ sealed class OmhAuthException(val statusCode: Int) : Exception() {
         override val cause: Throwable? = null,
     ) : OmhAuthException(statusCode)
 
-    class SignOutException(
+    class ApiException(
         statusCode: Int,
-        override val cause: Throwable?
+        override val cause: Throwable? = null
     ) : OmhAuthException(statusCode)
 }

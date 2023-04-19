@@ -7,6 +7,7 @@ import okhttp3.Request
 import okio.Timeout
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.HttpException
 import retrofit2.Response
 
 internal class ApiResultCall<T>(
@@ -17,6 +18,7 @@ internal class ApiResultCall<T>(
     override fun enqueue(callback: Callback<ApiResult<T>>) {
         delegate.enqueue(ApiResultCallback(callback))
     }
+
     override fun clone(): Call<ApiResult<T>> {
         @Suppress("UNCHECKED_CAST")
         return delegate.clone() as Call<ApiResult<T>>
@@ -54,8 +56,7 @@ internal class ApiResultCall<T>(
         private fun Response<T>.toApiResult(): ApiResult<T> = when {
             // Http error response (4xx - 5xx)
             !isSuccessful -> {
-                val errorBody: String? = errorBody()?.string()
-                ApiResult.Error.ApiError(code(), errorBody.orEmpty())
+                ApiResult.Error.ApiError(HttpException(this))
             }
             // Http success response with body
             body() != null -> {
