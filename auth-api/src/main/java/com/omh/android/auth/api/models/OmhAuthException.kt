@@ -19,4 +19,7 @@ sealed class OmhAuthException(val statusCode: Int) : Exception() {
         statusCode: Int,
         override val cause: Throwable? = null
     ) : OmhAuthException(statusCode)
+
+    override val message: String?
+        get() = OmhAuthStatusCodes.getStatusCodeString(statusCode)
 }

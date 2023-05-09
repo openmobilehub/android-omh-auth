@@ -1,4 +1,4 @@
-package com.omh.android.auth.sample.di
+package di
 
 import android.content.Context
 import com.omh.android.auth.api.OmhAuthClient
@@ -15,7 +15,10 @@ import dagger.hilt.components.SingletonComponent
 object SingletonModule {
     @Provides
     fun providesOmhAuthClient(@ApplicationContext context: Context): OmhAuthClient {
-        return OmhAuthProvider.provideAuthClient(
+        val omhAuthProvider = OmhAuthProvider.Builder()
+            .addNonGmsPath(OmhAuthProvider.NGMS_ADDRESS)
+            .build()
+        return omhAuthProvider.provideAuthClient(
             scopes = listOf("openid", "email", "profile"),
             clientId = BuildConfig.CLIENT_ID,
             context = context

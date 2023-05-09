@@ -27,7 +27,8 @@ object Versions {
     const val material = "1.8.0"
 
     // Google Sign In
-    const val googlesignin = "20.4.1"
+    const val googleSignIn = "20.4.1"
+    const val googlePlayBase = "18.2.0"
 
     // Testing
     const val junit = "4.13.2"

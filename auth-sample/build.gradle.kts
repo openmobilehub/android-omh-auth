@@ -35,6 +35,9 @@ android {
         create("gms") {
             dimension = "google_services"
         }
+        create("singleBuild") {
+            dimension = "google_services"
+        }
     }
 
     viewBinding {
@@ -51,9 +54,14 @@ android {
 
 val gmsImplementation by configurations
 val ngmsImplementation by configurations
+val singleBuildImplementation by configurations
 dependencies {
     ngmsImplementation(project(":auth-api-non-gms"))
+
     gmsImplementation(project(":auth-api-gms"))
+
+    singleBuildImplementation(project(":auth-api-non-gms"))
+    singleBuildImplementation(project(":auth-api-gms"))
 
     implementation(Libs.googleApiClientAndroid)
 

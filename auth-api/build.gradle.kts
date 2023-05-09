@@ -12,6 +12,8 @@ dependencies {
     implementation(Libs.material)
     implementation(Libs.reflection)
 
+    implementation(Libs.googlePlayBase) // Provides a way to check for GMS availability
+
     // Test dependencies
     testImplementation(Libs.junit)
     androidTestImplementation(Libs.androidJunit)
