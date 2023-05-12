@@ -2,6 +2,7 @@ package com.omh.android.auth.api
 
 import android.content.Context
 import android.content.Intent
+import com.omh.android.auth.api.async.OmhTask
 import com.omh.android.auth.api.models.OmhAuthException
 import com.omh.android.auth.api.models.OmhUserProfile
 
@@ -34,19 +35,11 @@ interface OmhAuthClient {
     /**
      * Logs out the user. This clears any stored data locally.
      */
-    @Throws(OmhAuthException::class)
-    fun signOut(
-        onFailure: (OmhAuthException) -> Unit = {},
-        onSuccess: () -> Unit = {},
-        onComplete: () -> Unit = {},
-    )
+
+    fun signOut(): OmhTask<Unit>
 
     @Throws(OmhAuthException::class)
     fun getAccountFromIntent(data: Intent?): OmhUserProfile
 
-    fun revokeToken(
-        onSuccess: () -> Unit = {},
-        onFailure: (OmhAuthException) -> Unit = {},
-        onComplete: () -> Unit = {}
-    )
+    fun revokeToken(): OmhTask<Unit>
 }

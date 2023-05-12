@@ -1,5 +1,8 @@
 package com.omh.android.auth.nongms.domain.models
 
+import com.omh.android.auth.api.models.OmhAuthException
+import com.omh.android.auth.api.models.OmhAuthStatusCodes
+import kotlin.jvm.Throws
 import retrofit2.HttpException
 
 internal sealed class ApiResult<out T> {
@@ -32,5 +35,23 @@ internal sealed class ApiResult<out T> {
             }
             is Error -> this
         }
+    }
+
+    @Throws(OmhAuthException::class)
+    fun extractResult(): T {
+        return when (this) {
+            is Success -> data
+            is Error -> throw getOmhException()
+        }
+    }
+
+    @Throws(OmhAuthException::class)
+    private fun Error.getOmhException(): OmhAuthException {
+        val statusCode = when (this) {
+            is Error.ApiError -> OmhAuthStatusCodes.HTTPS_ERROR
+            is Error.NetworkError -> OmhAuthStatusCodes.NETWORK_ERROR
+            is Error.RuntimeError -> OmhAuthStatusCodes.INTERNAL_ERROR
+        }
+        return OmhAuthException.ApiException(statusCode, cause)
     }
 }

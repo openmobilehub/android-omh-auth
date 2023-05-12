@@ -7,7 +7,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.Scope
 import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.auth.api.OmhAuthFactory
-import com.omh.android.auth.api.OmhCredentials
 
 internal object OmhAuthFactoryImpl : OmhAuthFactory {
     @Suppress("UNUSED_PARAMETER")

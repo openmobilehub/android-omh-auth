@@ -4,16 +4,15 @@ import android.content.Intent
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.tasks.Task
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.omh.android.auth.api.OmhAuthClient
+import com.omh.android.auth.api.async.OmhTask
 import com.omh.android.auth.api.models.OmhAuthException
-import com.omh.android.auth.api.models.OmhAuthStatusCodes
 import com.omh.android.auth.api.models.OmhUserProfile
-import java.lang.Exception
+import com.omh.android.auth.gms.util.mapToOmhExceptions
+import com.omh.android.auth.gms.util.toOmhLoginException
 
 internal class OmhAuthClientImpl(
     private val googleSignInClient: GoogleSignInClient
@@ -47,17 +46,9 @@ internal class OmhAuthClientImpl(
         }
     }
 
-    override fun signOut(
-        onFailure: (OmhAuthException) -> Unit,
-        onSuccess: () -> Unit,
-        onComplete: () -> Unit
-    ) {
-        googleSignInClient.signOut()
-            .addOnFailureListener { exception: Exception ->
-                toOmhApiException(exception, onFailure)
-            }
-            .addOnSuccessListener { onSuccess() }
-            .addOnCompleteListener { onComplete() }
+    override fun signOut(): OmhTask<Unit> {
+        val task: Task<Unit> = googleSignInClient.signOut().mapToOmhExceptions()
+        return OmhGmsTask(task)
     }
 
     override fun getAccountFromIntent(data: Intent?): OmhUserProfile {
@@ -71,49 +62,8 @@ internal class OmhAuthClientImpl(
         }
     }
 
-    private fun toOmhLoginException(apiException: ApiException) = when (apiException.statusCode) {
-        GoogleSignInStatusCodes.SIGN_IN_CANCELLED -> {
-            OmhAuthException.LoginCanceledException(apiException.cause)
-        }
-        GoogleSignInStatusCodes.SIGN_IN_FAILED -> {
-            OmhAuthException.UnrecoverableLoginException(apiException.cause)
-        }
-        else -> {
-            val omhStatusCode = when (apiException.statusCode) {
-                CommonStatusCodes.NETWORK_ERROR -> OmhAuthStatusCodes.NETWORK_ERROR
-                CommonStatusCodes.DEVELOPER_ERROR -> OmhAuthStatusCodes.DEVELOPER_ERROR
-                else -> OmhAuthStatusCodes.INTERNAL_ERROR
-            }
-            OmhAuthException.RecoverableLoginException(omhStatusCode, apiException.cause)
-        }
-    }
-
-    override fun revokeToken(
-        onSuccess: () -> Unit,
-        onFailure: (OmhAuthException) -> Unit,
-        onComplete: () -> Unit
-    ) {
-        googleSignInClient.revokeAccess()
-            .addOnSuccessListener { onSuccess() }
-            .addOnFailureListener { exception ->
-                toOmhApiException(exception, onFailure)
-            }
-            .addOnCompleteListener { onComplete() }
-    }
-
-    private fun toOmhApiException(
-        exception: Exception,
-        onFailure: (OmhAuthException) -> Unit
-    ) {
-        val apiException: ApiException? = exception as? ApiException
-        val statusCode: Int = when (apiException?.statusCode) {
-            CommonStatusCodes.API_NOT_CONNECTED -> OmhAuthStatusCodes.GMS_UNAVAILABLE
-            else -> OmhAuthStatusCodes.INTERNAL_ERROR
-        }
-        val omhException = OmhAuthException.ApiException(
-            statusCode = statusCode,
-            cause = exception
-        )
-        onFailure(omhException)
+    override fun revokeToken(): OmhTask<Unit> {
+        val task: Task<Unit> = googleSignInClient.revokeAccess().mapToOmhExceptions()
+        return OmhGmsTask(task)
     }
 }
