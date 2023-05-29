@@ -1,4 +1,9 @@
 object Versions {
+    // OMH
+    const val authApi = "1.0.1"
+    const val authGms = "1.0"
+    const val authNgms = "1.0"
+
     // Build Plugins
     const val androidGradlePlugin = "7.4.1"
     const val kotlin = "1.7.20"
