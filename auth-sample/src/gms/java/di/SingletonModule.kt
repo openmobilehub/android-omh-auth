@@ -16,7 +16,7 @@ object SingletonModule {
     @Provides
     fun providesOmhAuthClient(@ApplicationContext context: Context): OmhAuthClient {
         val omhAuthProvider = OmhAuthProvider.Builder()
-            .addGmsPath(OmhAuthProvider.GMS_ADDRESS)
+            .addGmsPath()
             .build()
         return omhAuthProvider.provideAuthClient(
             scopes = listOf("openid", "email", "profile"),

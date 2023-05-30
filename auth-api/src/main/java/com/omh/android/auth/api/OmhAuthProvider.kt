@@ -35,7 +35,6 @@ class OmhAuthProvider private constructor(
      * of the [OmhAuthFactory]. If this happens, look if you have configured correctly the gradle
      * plugin or if your obfuscation method hasn't tampered with the library files.
      */
-    @Throws(OmhAuthException.ApiException::class)
     fun provideAuthClient(
         context: Context,
         scopes: Collection<String>,
@@ -52,7 +51,6 @@ class OmhAuthProvider private constructor(
         return omhAuthFactory.getAuthClient(context, scopes, clientId)
     }
 
-    @Throws(ClassNotFoundException::class)
     private fun getOmhAuthFactory(context: Context) = when {
         isSingleBuild -> reflectSingleBuild(context)
         gmsPath != null -> getFactoryImplementation(gmsPath)
@@ -63,7 +61,6 @@ class OmhAuthProvider private constructor(
         )
     }
 
-    @Throws(ClassNotFoundException::class)
     private fun reflectSingleBuild(
         context: Context,
     ): OmhAuthFactory {
@@ -74,31 +71,34 @@ class OmhAuthProvider private constructor(
         }
     }
 
-    @Throws(ClassNotFoundException::class)
     private fun getFactoryImplementation(path: String): OmhAuthFactory {
         val clazz: KClass<out Any> = Class.forName(path).kotlin
         return clazz.objectInstance as OmhAuthFactory
     }
 
     class Builder {
+
+        companion object {
+            private const val NGMS_ADDRESS =
+                "com.omh.android.auth.nongms.presentation.OmhAuthFactoryImpl"
+            private const val GMS_ADDRESS = "com.omh.android.auth.gms.OmhAuthFactoryImpl"
+        }
+
         private var gmsPath: String? = null
         private var nonGmsPath: String? = null
 
-        fun addGmsPath(path: String?): Builder {
+        @JvmOverloads
+        fun addGmsPath(path: String? = GMS_ADDRESS): Builder {
             gmsPath = path
             return this
         }
 
-        fun addNonGmsPath(path: String?): Builder {
+        @JvmOverloads
+        fun addNonGmsPath(path: String? = NGMS_ADDRESS): Builder {
             nonGmsPath = path
             return this
         }
 
         fun build(): OmhAuthProvider = OmhAuthProvider(gmsPath, nonGmsPath)
-    }
-
-    companion object {
-        const val NGMS_ADDRESS = "com.omh.android.auth.nongms.presentation.OmhAuthFactoryImpl"
-        const val GMS_ADDRESS = "com.omh.android.auth.gms.OmhAuthFactoryImpl"
     }
 }

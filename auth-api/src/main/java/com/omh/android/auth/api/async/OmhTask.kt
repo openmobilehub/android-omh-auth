@@ -19,13 +19,13 @@ abstract class OmhTask<T> {
     protected var onSuccess: ((T) -> Unit)? = null
     protected var onFailure: ((Exception) -> Unit)? = null
 
-    fun addOnSuccess(onSuccess: (T) -> Unit): OmhTask<T> {
-        this.onSuccess = onSuccess
+    fun addOnSuccess(successListener: OmhSuccessListener<T>): OmhTask<T> {
+        this.onSuccess = successListener::onSuccess
         return this
     }
 
-    fun addOnFailure(onFailure: (Exception) -> Unit): OmhTask<T> {
-        this.onFailure = onFailure
+    fun addOnFailure(errorListener: OmhErrorListener): OmhTask<T> {
+        this.onFailure = errorListener::onError
         return this
     }
 

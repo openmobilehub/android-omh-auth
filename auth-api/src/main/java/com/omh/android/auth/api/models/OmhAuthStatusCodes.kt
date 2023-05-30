@@ -12,6 +12,7 @@ object OmhAuthStatusCodes {
     const val GMS_UNAVAILABLE = 7
     const val HTTPS_ERROR = 8
 
+    @JvmStatic
     fun getStatusCodeString(code: Int): String {
         return when (code) {
             SIGN_IN_CANCELED -> "Sign in action cancelled"
