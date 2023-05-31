@@ -4,6 +4,34 @@ plugins {
     `android-application`
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android") version "2.44" apply true
+    id("com.openmobilehub.android.omh-core")
+}
+
+omhConfig {
+    bundle("singleBuild") {
+        auth {
+            gmsService {
+                dependency = "com.openmobilehub.android:auth-api-gms:1.0"
+            }
+            nonGmsService {
+                dependency = "com.openmobilehub.android:auth-api-non-gms:1.0"
+            }
+        }
+    }
+    bundle("gms") {
+        auth {
+            gmsService {
+                dependency = "com.openmobilehub.android:auth-api-gms:1.0"
+            }
+        }
+    }
+    bundle("nongms") {
+        auth {
+            nonGmsService {
+                dependency = "com.openmobilehub.android:auth-api-non-gms:1.0"
+            }
+        }
+    }
 }
 
 android {
@@ -27,19 +55,6 @@ android {
         }
     }
 
-    flavorDimensions += "google_services"
-    productFlavors {
-        create("ngms") {
-            dimension = "google_services"
-        }
-        create("gms") {
-            dimension = "google_services"
-        }
-        create("singleBuild") {
-            dimension = "google_services"
-        }
-    }
-
     viewBinding {
         enable = true
     }
@@ -51,18 +66,7 @@ android {
         correctErrorTypes = true
     }
 }
-
-val gmsImplementation by configurations
-val ngmsImplementation by configurations
-val singleBuildImplementation by configurations
 dependencies {
-    ngmsImplementation(project(":auth-api-non-gms"))
-
-    gmsImplementation(project(":auth-api-gms"))
-
-    singleBuildImplementation(project(":auth-api-non-gms"))
-    singleBuildImplementation(project(":auth-api-gms"))
-
     implementation(Libs.googleApiClientAndroid)
 
     implementation(Libs.coreKtx)
