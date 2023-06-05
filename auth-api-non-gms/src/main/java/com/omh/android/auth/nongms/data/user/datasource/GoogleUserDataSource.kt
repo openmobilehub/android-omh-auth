@@ -47,6 +47,7 @@ internal class GoogleUserDataSource(private val sharedPreferences: SharedPrefere
             putString(Constants.EMAIL_KEY, email)
             putString(Constants.PICTURE_KEY, picture)
             putString(Constants.ID_KEY, id)
+            putString(Constants.ID_TOKEN, idToken)
         }
     }
 
@@ -59,6 +60,7 @@ internal class GoogleUserDataSource(private val sharedPreferences: SharedPrefere
         val email = sharedPreferences.getString(Constants.EMAIL_KEY, null)
         val surname = sharedPreferences.getString(Constants.SURNAME_KEY, null)
         val picture = sharedPreferences.getString(Constants.PICTURE_KEY, null)
+        val idToken = sharedPreferences.getString(Constants.ID_TOKEN, null)
 
         if (name == null || email == null || surname == null) return null
 
@@ -66,7 +68,8 @@ internal class GoogleUserDataSource(private val sharedPreferences: SharedPrefere
             name = name,
             surname = surname,
             email = email,
-            profileImage = picture
+            profileImage = picture,
+            idToken = idToken
         )
     }
 }
