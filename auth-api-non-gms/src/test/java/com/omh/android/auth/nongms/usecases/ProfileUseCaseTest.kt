@@ -1,4 +1,4 @@
-package com.omh.android.auth.nongms
+package com.omh.android.auth.nongms.usecases
 
 import com.omh.android.auth.api.models.OmhAuthException
 import com.omh.android.auth.nongms.domain.user.ProfileUseCase

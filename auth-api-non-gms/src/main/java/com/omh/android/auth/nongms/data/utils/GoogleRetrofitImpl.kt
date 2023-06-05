@@ -1,4 +1,4 @@
-package com.omh.android.auth.nongms.data
+package com.omh.android.auth.nongms.data.utils
 
 import com.omh.android.auth.nongms.BuildConfig
 import com.omh.android.auth.nongms.data.login.GoogleAuthREST

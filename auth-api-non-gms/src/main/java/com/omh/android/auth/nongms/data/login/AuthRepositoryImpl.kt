@@ -2,7 +2,7 @@ package com.omh.android.auth.nongms.data.login
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.omh.android.auth.nongms.data.GoogleRetrofitImpl
+import com.omh.android.auth.nongms.data.utils.GoogleRetrofitImpl
 import com.omh.android.auth.nongms.data.login.datasource.AuthDataSource
 import com.omh.android.auth.nongms.data.login.datasource.GoogleAuthDataSource
 import com.omh.android.auth.nongms.data.login.models.AuthTokenResponse
