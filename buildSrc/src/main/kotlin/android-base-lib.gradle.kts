@@ -5,6 +5,7 @@ plugins {
     id("jacoco")
     id("maven-publish")
     id("signing")
+    id("org.jetbrains.dokka")
 }
 
 detekt {
@@ -61,8 +62,15 @@ val androidSourcesJar by tasks.registering(Jar::class) {
     }
 }
 
+val javadocJar by tasks.registering(Jar::class) {
+    dependsOn("dokkaJavadoc")
+    archiveClassifier.set("javadoc")
+    from("dokkaJavadoc.outputDirectory")
+}
+
 artifacts {
     add("archives", androidSourcesJar)
+    add("archives", javadocJar)
 }
 
 val groupProperty = getPropertyOrFail("group")
@@ -104,6 +112,7 @@ fun MavenPublication.setupPublication() {
     }
 
     artifact(androidSourcesJar)
+    artifact(javadocJar)
 
     pom {
         name.set(artifactId)
