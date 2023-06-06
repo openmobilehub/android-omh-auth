@@ -34,10 +34,10 @@ internal fun Exception.toOmhApiException(): OmhAuthException.ApiException {
 
 internal fun toOmhLoginException(apiException: ApiException) = when (apiException.statusCode) {
     GoogleSignInStatusCodes.SIGN_IN_CANCELLED -> {
-        OmhAuthException.LoginCanceledException(apiException.cause)
+        OmhAuthException.LoginCanceledException(apiException)
     }
     GoogleSignInStatusCodes.SIGN_IN_FAILED -> {
-        OmhAuthException.UnrecoverableLoginException(apiException.cause)
+        OmhAuthException.UnrecoverableLoginException(apiException)
     }
     else -> {
         mapToRecoverableLoginException(apiException)
@@ -52,5 +52,5 @@ private fun mapToRecoverableLoginException(
         CommonStatusCodes.DEVELOPER_ERROR -> OmhAuthStatusCodes.DEVELOPER_ERROR
         else -> OmhAuthStatusCodes.INTERNAL_ERROR
     }
-    return OmhAuthException.RecoverableLoginException(omhStatusCode, apiException.cause)
+    return OmhAuthException.RecoverableLoginException(omhStatusCode, apiException)
 }

@@ -85,6 +85,7 @@ class LoggedInActivity : AppCompatActivity() {
     }
 
     private fun showErrorDialog(exception: Throwable) {
+        exception.printStackTrace()
         AlertDialog.Builder(this)
             .setTitle("An error has occurred.")
             .setMessage(exception.message)

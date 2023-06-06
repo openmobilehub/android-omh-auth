@@ -23,10 +23,10 @@ class LoginActivity : AppCompatActivity() {
                 omhAuthClient.getAccountFromIntent(result.data)
                 navigateToLoggedIn()
             } catch (exception: OmhAuthException) {
-                val errorMessage = OmhAuthStatusCodes.getStatusCodeString(exception.statusCode)
+                exception.printStackTrace()
                 AlertDialog.Builder(this)
                     .setTitle("An error has occurred.")
-                    .setMessage(errorMessage)
+                    .setMessage(exception.message)
                     .setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.dismiss() }
                     .create()
                     .show()
