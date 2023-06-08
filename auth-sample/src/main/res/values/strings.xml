@@ -8,5 +8,4 @@
     <string name="surname_placeholder"><b>Surname:</b> %s</string>
     <string name="email_placeholder"><b>Email:</b> %s</string>
     <string name="token_placeholder"><b>Token:</b> %s</string>
-    <string name="id_token_placeholder"><b>ID Token:</b> %s</string>
 </resources>
