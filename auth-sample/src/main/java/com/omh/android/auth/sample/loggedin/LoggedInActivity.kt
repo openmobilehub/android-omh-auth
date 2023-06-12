@@ -5,15 +5,14 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.auth.UserRecoverableAuthException
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
-import com.omh.android.auth.api.async.CancellableCollector
-import com.omh.android.auth.sample.login.LoginActivity
 import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.auth.api.OmhCredentials
-import com.omh.android.auth.api.models.OmhAuthException
-import com.omh.android.auth.api.models.OmhAuthStatusCodes
+import com.omh.android.auth.api.async.CancellableCollector
 import com.omh.android.auth.sample.R
 import com.omh.android.auth.sample.databinding.ActivityLoggedInBinding
+import com.omh.android.auth.sample.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -64,13 +63,25 @@ class LoggedInActivity : AppCompatActivity() {
     private fun getToken() = lifecycleScope.launch(Dispatchers.IO) {
         val token = when (val credentials = omhAuthClient.getCredentials()) {
             is OmhCredentials -> credentials.accessToken
-            is GoogleAccountCredential -> credentials.token
+            is GoogleAccountCredential -> {
+                requestGoogleToken(credentials)
+            }
             null -> return@launch
             else -> error("Unsupported credential type")
         }
 
         withContext(Dispatchers.Main) {
             binding.tvToken.text = getString(R.string.token_placeholder, token)
+        }
+    }
+
+    private fun requestGoogleToken(credentials: GoogleAccountCredential): String? {
+        return try {
+            credentials.token
+        } catch (e: UserRecoverableAuthException) {
+            e.printStackTrace()
+            logout()
+            null
         }
     }
 
@@ -95,14 +106,12 @@ class LoggedInActivity : AppCompatActivity() {
     private fun refreshToken() = lifecycleScope.launch(Dispatchers.IO) {
         val newToken = when (val credentials = omhAuthClient.getCredentials()) {
             is OmhCredentials -> credentials.blockingRefreshToken()
-            is GoogleAccountCredential -> credentials.token
+            is GoogleAccountCredential -> requestGoogleToken(credentials)
             else -> error("Unsupported credential type")
-        }
+        } ?: return@launch
 
-        if (newToken != null) {
-            withContext(Dispatchers.Main) {
-                binding.tvToken.text = getString(R.string.token_placeholder, newToken)
-            }
+        withContext(Dispatchers.Main) {
+            binding.tvToken.text = getString(R.string.token_placeholder, newToken)
         }
     }
 

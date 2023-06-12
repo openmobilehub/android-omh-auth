@@ -67,6 +67,7 @@ dependencies {
     implementation(Libs.androidAppCompat)
     implementation(Libs.material)
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("com.google.android.gms:play-services-auth-base:18.0.8")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.44")
