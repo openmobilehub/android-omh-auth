@@ -1,8 +1,10 @@
 package com.omh.android.auth.nongms.data.login.models
 
+import androidx.annotation.Keep
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
+@Keep
 @JsonIgnoreProperties(ignoreUnknown = true)
 internal class AuthTokenResponse(
     @JsonProperty("access_token")

@@ -66,16 +66,21 @@ internal class RedirectActivity : AppCompatActivity() {
 
     private fun observeTokenResponse(eventWrapper: EventWrapper<ApiResult<OAuthTokens>>?) {
         if (eventWrapper.nullOrHandled()) return
-        when (eventWrapper.getContentIfHandled()) {
+        when (val result: ApiResult<OAuthTokens>? = eventWrapper.getContentIfHandled()) {
             is ApiResult.Success -> {
                 returnResult(Activity.RESULT_OK)
             }
+
             is ApiResult.Error.NetworkError -> {
                 returnResult(
                     Activity.RESULT_CANCELED,
-                    OmhAuthException.RecoverableLoginException(OmhAuthStatusCodes.NETWORK_ERROR)
+                    OmhAuthException.RecoverableLoginException(
+                        OmhAuthStatusCodes.NETWORK_ERROR,
+                        result.cause
+                    )
                 )
             }
+
             else -> {
                 returnResult(
                     Activity.RESULT_CANCELED,
