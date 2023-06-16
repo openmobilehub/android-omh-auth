@@ -1,6 +1,6 @@
 [![GitHub license](https://img.shields.io/github/license/openmobilehub/omh-auth)](https://github.com/openmobilehub/omh-auth/blob/main/LICENSE)
 ![GitHub contributors](https://img.shields.io/github/contributors/openmobilehub/omh-auth)
-[![API](https://img.shields.io/badge/API-21%2B-green.svg?style=flat)](https://developer.android.com/studio/releases/platforms#6.0)
+[![API](https://img.shields.io/badge/API-23%2B-green.svg?style=flat)](https://developer.android.com/studio/releases/platforms#6.0)
 
 # OMH Auth
 
