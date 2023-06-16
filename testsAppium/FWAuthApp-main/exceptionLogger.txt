@@ -1,0 +1,5 @@
+
+
+Date and Time: 06-12-2023 15:02:48
+ERROR MESSAGE LOG
+org.openqa.selenium.NoSuchElementException: Can't locate an element by this strategy: By.chained({AppiumBy.id: com.omh.android.auth.sample:id/tvName})
