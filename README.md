@@ -63,8 +63,9 @@ Complete the required Cloud Console setup steps by clicking through the followin
    page, [Go to the Credentials page](https://console.cloud.google.com/apis/credentials)
    .
 3. On the **Credentials** page, click **Create credentials > OAuth Client ID**. In the
-   Application Type option select Android. Set the package name and you SHA-1 fingerprint and
-   you're all set.
+   Application Type option select Android. Set the package name and you SHA-1 fingerprint.
+4. In the [OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent) add the test users that you will be using for QA and development.
+   Without this step you won't be able to acccess the application while it's in testing mode.
 
 ## Add the Client ID to your app
 
