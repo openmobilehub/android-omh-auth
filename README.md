@@ -41,7 +41,7 @@ Go to the branch "starter-code". The easiest way is cloning the repository.
 - Type git clone, and then paste the URL:
 
    ```
-   git clone --branch guide/starter-code https://github.com/openmobilehub/omh-auth.git
+   git clone --branch code-starter https://github.com/openmobilehub/omh-auth.git
    ```
 
 - Press "Enter" to create your local clone.
