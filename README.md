@@ -55,17 +55,18 @@ Complete the required Cloud Console setup steps by clicking through the followin
 
 ### Steps
 
-1. In the Google Cloud Console, on the project selector page, click **Create Project** to begin
-   creating a new Cloud
-   project, [Go to the project selector page](https://console.cloud.google.com/projectselector2/home/dashboard?utm_source=Docs_ProjectSelector&_gl=1*1ylhfe0*_ga*MTUwMDIzODY1Ni4xNjc1OTYyMDgw*_ga_NRWSTWS78N*MTY4MjA4ODIyNS44NS4xLjE2ODIwODgyMzcuMC4wLjA.)
-   .
-2. Go to the **Credentials**
-   page, [Go to the Credentials page](https://console.cloud.google.com/apis/credentials)
-   .
-3. On the **Credentials** page, click **Create credentials > OAuth Client ID**. In the
-   Application Type option select Android. Set the package name and you SHA-1 fingerprint.
-4. In the [OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent) add the test users that you will be using for QA and development.
-   Without this step you won't be able to acccess the application while it's in testing mode.
+1. [Go to the Google Cloud Console and open the project selector page.](https://console.cloud.google.com/projectselector2/home/dashboard?utm_source=Docs_ProjectSelector&_gl=1*1ylhfe0*_ga*MTUwMDIzODY1Ni4xNjc1OTYyMDgw*_ga_NRWSTWS78N*MTY4MjA4ODIyNS44NS4xLjE2ODIwODgyMzcuMC4wLjA.)
+2. Click on "Create Project" to start creating a new Cloud project.
+3. [Go to the Credentials page](https://console.cloud.google.com/apis/credentials).
+4. On the Credentials page, click on "Create credentials" and choose "OAuth Client ID".
+5. In the "Application Type" option, select "Android".
+6. Set your application package name (Use "com.omh.android.auth.sample" if you are following the
+   starter-code)
+7. Add your debug or release SHA-1 fingerprint.
+8. In the [OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent) add the
+   test users that you will be using for QA and development. Without this step you won't be able to
+   access the application while it's in testing mode.
+9. You're all set!
 
 ## Add the Client ID to your app
 
