@@ -2,27 +2,16 @@
 ![GitHub contributors](https://img.shields.io/github/contributors/openmobilehub/omh-auth)
 [![API](https://img.shields.io/badge/API-23%2B-green.svg?style=flat)](https://developer.android.com/studio/releases/platforms#6.0)
 
-# OMH Auth
+# OMH Auth Client Library Overview
 
-The solution to seamlessly integrating auth services across GMS and non-GMS devices. Our open-source
-Android SDK tackles the problem of device compatibility, allowing developers to use the same SDK
-without worrying about specific device requirements.
+OMH Auth is an Android client library that makes it easy to integrate auth providers on both Google Mobile Services (GMS) and non-GMS devices. It eliminates the need for separate codebases for different Android builds.
 
-With OMH Auth SDK, you can effortlessly incorporate the Google Auth implementation into your
-applications, regardless of whether the device has Google Mobile Services or not.
-Our SDK handles the complexities behind the scenes, providing a unified interface and common
-components for consistent map functionality.
+With the OMH Maps Client Library, you can easily add Google Sign in and other third-party maps to your applications, regardless of whether the device has GMS or not. The library takes care of the technical details, providing a unified interface and components for a consistent auth experience.
 
-# Provider Implementations
+# Getting started
+This section describes how to setup an Android Studio project to use the OMH Auth SDK for Android. For greater ease, a base code will be used within the repository. 
 
-We also believe in the power of community collaboration. That's why OMH Auth SDK is open-source,
-inviting contributions and supporting plugins from other auth providers. Together, we can expand the
-capabilities of the SDK and enhance the range of supported auth services.
-
-# Sample App
-
-This section describes how to setup an Android Studio project to use the OMH Auth SDK for Android.
-For greater ease, a base code will be used within the repository.
+**Note: To quickly run a full-featured app with all OMH Auth functionality, refer to the [`Sample App`](#sample-app) section and follow the provided steps.**
 
 ## Set up the development environment
 
@@ -106,17 +95,13 @@ see [Gradle properties](https://developer.android.com/studio/build#properties-fi
     - Save the file
       and [sync your project with Gradle](https://developer.android.com/studio/build#sync-files).
 
-## Gradle dependencies
+## Gradle configuration
 
 To integrate the OMH Auth SDK in your project is required to add some Gradle dependencies.
 
-## Gradle configuration
-
-To integrate the OMH Auth in your project is required to add some Gradle dependencies.
-
 ### Add OMH Core plugin
 
-To add the core plugin dependency in a new project, follow the next steps:
+To incorporate OMH Auth into your project, you have two options: utilize the OMH Core Plugin or directly include the OMH Client libraries dependencies. The subsequent instructions will outline the necessary steps for including the OMH Core Plugin as a Gradle dependency.
 
 1. In your "auth-starter-sample" module-level `build.gradle` under the `plugins` element add the
    plugin id.
@@ -157,34 +142,12 @@ see [OMH Core Docs](https://github.com/openmobilehub/omh-core/tree/release/1.0).
    see [OMH Core](https://github.com/openmobilehub/omh-core/tree/release/1.0).
 
    #### Basic configuration
-   Define the `Bundle` that represents the build variants names. In this example are `singleBuild`
-   , `gms` and `nongms`.
+    In this step, you will define the OMH Core Plugin bundles to generate multiple build variants with specific suffixes as their names. For example, if your project has `release` and `debug` variants with `singleBuild`, `gms`, and `nonGms` OMH bundles, the following build variants will be generated:
 
-   ##### Variant singleBuild
-    - Define the `Service`. In this example is auth.
-    - Define the `ServiceDetails`. In this example are `gmsService` and `nonGmsService`.
-    - Define the dependency and the path. In this example
-      are `com.openmobilehub.android:auth-api-gms:1.0"`
-      and `com.openmobilehub.android:auth-api-non-gms:1.0`.
-      **Note:** It's important to observe how a single build encompasses both GMS (Google Mobile
-      Services) and Non-GMS configurations.
-
-   ##### Variant gms
-    - Define the `Service`. In this example is auth.
-    - Define the `ServiceDetails` . In this example is `gmsService`.
-    - Define the dependency and the path. In this example
-      is `com.openmobilehub.android:auth-api-gms:1.0"`.
-      **Note:** gms build covers only GMS (Google Mobile Services).
-
-   ##### Variant nongms
-    - Define the `Service`. In this example is auth.
-    - Define the `ServiceDetails` . In this example is `nonGmsService`.
-    - Define the dependency and the path. In this example
-      is `com.openmobilehub.android:auth-api-non-gms:1.0`.
-      **Note:** nongms build covers only Non-GMS configurations.
-
-   In your "auth-starter-sample" module-level `build.gradle` file add the following code at the end
-   of the file.
+   - `releaseSingleBuild`, `releaseGms`, and `releaseNonGms`
+   - `debugSingleBuild`, `debugGms`, and `debugNonGms`
+   
+   In your `maps-starter-sample` module-level `build.gradle` file add the following code at the end of the file.
 
    ```
    omhConfig {
@@ -215,19 +178,45 @@ see [OMH Core Docs](https://github.com/openmobilehub/omh-core/tree/release/1.0).
    }
    ```
 
-3. Save and [sync Project with Gradle Files](https://developer.android.com/studio/build#sync-files).
-4. Now you can select a build variant. To change the build variant Android Studio uses, do one of
+   ##### Variant singleBuild
+    - Define the `Service`. In this example is auth.
+    - Define the `ServiceDetails`. In this example are `gmsService` and `nonGmsService`.
+    - Define the dependency and the path. In this example
+      are `com.openmobilehub.android:auth-api-gms:1.0"`
+      and `com.openmobilehub.android:auth-api-non-gms:1.0`.
+
+   **Note:** It's important to observe how a single build encompasses both GMS (Google MobileServices) and Non-GMS configurations.
+
+   ##### Variant gms
+    - Define the `Service`. In this example is auth.
+    - Define the `ServiceDetails` . In this example is `gmsService`.
+    - Define the dependency and the path. In this example
+      is `com.openmobilehub.android:auth-api-gms:1.0"`.
+   **Note:** gms build covers only GMS (Google Mobile Services).
+
+   ##### Variant nongms
+    - Define the `Service`. In this example is auth.
+    - Define the `ServiceDetails` . In this example is `nonGmsService`.
+    - Define the dependency and the path. In this example
+      is `com.openmobilehub.android:auth-api-non-gms:1.0`.
+   **Note:** nongms build covers only Non-GMS configurations.
+
+   In your "auth-starter-sample" module-level `build.gradle` file add the following code at the end
+   of the file.
+
+4. Save and [sync Project with Gradle Files](https://developer.android.com/studio/build#sync-files).
+5. Now you can select a build variant. To change the build variant Android Studio uses, do one of
    the following:
     - Select "Build" > "Select Build Variant..." in the menu.
     - Select "View" > "Tool Windows" > "Build Variants" in the menu.
     - Click the "Build Variants" tab on the tool window bar.
 
-5. You can select any of the 3 variants for the `:auth-starter-sample`:
+6. You can select any of the 3 variants for the `:auth-starter-sample`:
     - "singleBuild" variant builds for GMS (Google Mobile Services) and Non-GMS devices without
       changes to the code.(Recommended)
     - "gms" variant builds for devices that has GMS (Google Mobile Services).
     - "nongms" variant builds for devices that doesn't have GMS (Google Mobile Services).
-6. In the SingletonModule.kt file in the `:auth-starter-sample` module add the following code to
+7. In the SingletonModule.kt file in the `:auth-starter-sample` module add the following code to
    provide the OMH Auth Client.
 
    ```kotlin
@@ -246,7 +235,7 @@ see [OMH Core Docs](https://github.com/openmobilehub/omh-core/tree/release/1.0).
 library as this will be your only gateway to the OMH Auth SDK and it doesn't change in runtime at
 all.
 
-## Getting Started
+## Adding Auth to your app.
 
 First and foremost, the main interface that you'll be interacting with is called `OmhAuthClient`. In
 contains all your basic authentication functionalities like login, sign out and check for a user
@@ -336,8 +325,12 @@ val cancellable = omhAuthClient.revokeToken()
     .execute()
 cancellableCollector.addCancellable(cancellable)
 ```
+# Sample App
+This repository includes a [auth-sample](/auth-sample) that demonstrates the functionality of the OMH Auth Client Library. By cloning the repo and executing the app, you can explore the various features offered by the library. However, if you prefer a step-by-step approach to learn the SDK from scratch, we recommend following the detailed Getting Started guide provided in this repository. The guide will walk you through the implementation process and help you integrate the OMH Auth Client Library into your projects effectively.
 
-## Documentation
+**Note: Before running the sample application, make sure to follow the steps in Setup your Google Cloud project for application with Google Services to configure your Google Cloud project.**
+
+# Documentation
 
 See example and check the full documentation and add custom implementation at
 our [Wiki](https://github.com/openmobilehub/omh-auth/wiki).
@@ -345,15 +338,11 @@ our [Wiki](https://github.com/openmobilehub/omh-auth/wiki).
 Additionally for more information about the OMH Auth
 functions, [Docs](https://openmobilehub.github.io/omh-auth).
 
-## Contributing
+# Contributing
 
-We'd be glad if you decide to contribute to this project.
+Please contribute! We will gladly review any pull requests. Make sure to read the [CONTRIBUTING](https://github.com/openmobilehub/omh-auth/blob/main/CONTRIBUTING.md) page first though.
 
-All pull request is welcome, just make sure that every work is linked to an issue on this repository
-so everyone can track it. For more information
-check [CONTRIBUTING](https://github.com/openmobilehub/omh-auth/blob/main/CONTRIBUTING.md)
-
-## License
+# License
 
 Copyright 2023 Futurewei, Inc.
 Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements.
