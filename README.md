@@ -97,11 +97,11 @@ see [Gradle properties](https://developer.android.com/studio/build#properties-fi
 
 ## Gradle configuration
 
-To integrate the OMH Auth SDK in your project is required to add some Gradle dependencies.
+To incorporate OMH Auth into your project, you have two options: utilize the OMH Core Plugin or directly include the OMH Client libraries dependencies. This plugin simplifies the addition of Gradle dependencies, allowing you to effortlessly manage and include the necessary dependencies for seamless integration.
 
 ### Add OMH Core plugin
 
-To incorporate OMH Auth into your project, you have two options: utilize the OMH Core Plugin or directly include the OMH Client libraries dependencies. The subsequent instructions will outline the necessary steps for including the OMH Core Plugin as a Gradle dependency.
+ The subsequent instructions will outline the necessary steps for including the OMH Core Plugin as a Gradle dependency.
 
 1. In your "auth-starter-sample" module-level `build.gradle` under the `plugins` element add the
    plugin id.
