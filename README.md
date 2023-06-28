@@ -6,7 +6,7 @@
 
 OMH Auth is an Android client library that makes it easy to integrate auth providers on both Google Mobile Services (GMS) and non-GMS devices. It eliminates the need for separate codebases for different Android builds.
 
-With the OMH Maps Client Library, you can easily add Google Sign in and other third-party maps to your applications, regardless of whether the device has GMS or not. The library takes care of the technical details, providing a unified interface and components for a consistent auth experience.
+With the OMH Auth Client Library, you can easily add Google Sign in and other third-party authentication providers to your applications, regardless of whether the device has GMS or not. The library takes care of the technical details, providing a unified interface and components for a consistent auth experience.
 
 # Getting started
 This section describes how to setup an Android Studio project to use the OMH Auth SDK for Android. For greater ease, a base code will be used within the repository. 
@@ -147,7 +147,7 @@ see [OMH Core Docs](https://github.com/openmobilehub/omh-core/tree/release/1.0).
    - `releaseSingleBuild`, `releaseGms`, and `releaseNonGms`
    - `debugSingleBuild`, `debugGms`, and `debugNonGms`
    
-   In your `maps-starter-sample` module-level `build.gradle` file add the following code at the end of the file.
+   In your `auth-starter-sample` module-level `build.gradle` file add the following code at the end of the file.
 
    ```
    omhConfig {
@@ -201,22 +201,19 @@ see [OMH Core Docs](https://github.com/openmobilehub/omh-core/tree/release/1.0).
       is `com.openmobilehub.android:auth-api-non-gms:1.0`.
    **Note:** nongms build covers only Non-GMS configurations.
 
-   In your "auth-starter-sample" module-level `build.gradle` file add the following code at the end
-   of the file.
-
-4. Save and [sync Project with Gradle Files](https://developer.android.com/studio/build#sync-files).
-5. Now you can select a build variant. To change the build variant Android Studio uses, do one of
+3. Save and [sync Project with Gradle Files](https://developer.android.com/studio/build#sync-files).
+4. Now you can select a build variant. To change the build variant Android Studio uses, do one of
    the following:
     - Select "Build" > "Select Build Variant..." in the menu.
     - Select "View" > "Tool Windows" > "Build Variants" in the menu.
     - Click the "Build Variants" tab on the tool window bar.
 
-6. You can select any of the 3 variants for the `:auth-starter-sample`:
+5. You can select any of the 3 variants for the `:auth-starter-sample`:
     - "singleBuild" variant builds for GMS (Google Mobile Services) and Non-GMS devices without
       changes to the code.(Recommended)
     - "gms" variant builds for devices that has GMS (Google Mobile Services).
     - "nongms" variant builds for devices that doesn't have GMS (Google Mobile Services).
-7. In the SingletonModule.kt file in the `:auth-starter-sample` module add the following code to
+6. In the SingletonModule.kt file in the `:auth-starter-sample` module add the following code to
    provide the OMH Auth Client.
 
    ```kotlin
