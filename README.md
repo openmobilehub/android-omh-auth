@@ -105,21 +105,9 @@ To incorporate OMH Auth into your project, you have two options: utilize the OMH
 
 ### Configure the OMH Core plugin
 
-To use the core plugin is required some minimum configuration, for more details
-see [OMH Core Docs](https://github.com/openmobilehub/omh-core/tree/release/1.0).
+For more details `omhConfig` see [OMH Core Docs](https://github.com/openmobilehub/omh-core/tree/release/1.0).
 
-In your "auth-starter-sample" module-level `build.gradle` file is required to configure
-the `omhConfig`. The `omhConfig` definition is used to extend the existing Android Studio
-variants in the core plugin. For more details `omhConfig`
-see [OMH Core](https://github.com/openmobilehub/omh-core/tree/release/1.0).
-
-   #### Basic configuration
-    In this step, you will define the OMH Core Plugin bundles to generate multiple build variants with specific suffixes as their names. For example, if your project has `release` and `debug` variants with `singleBuild`, `gms`, and `nonGms` OMH bundles, the following build variants will be generated:
-
-   - `releaseSingleBuild`, `releaseGms`, and `releaseNonGms`
-   - `debugSingleBuild`, `debugGms`, and `debugNonGms`
-   
-   In your `auth-starter-sample` module-level `build.gradle` file add the following code at the end of the file.
+In your `auth-starter-sample` module-level `build.gradle` file add the following code at the end of the file.
 
    ```
    omhConfig {
@@ -149,6 +137,18 @@ see [OMH Core](https://github.com/openmobilehub/omh-core/tree/release/1.0).
       }
    }
    ```
+_**NOTE: This section covers concepts about the core plugin**_
+
+In your "auth-starter-sample" module-level `build.gradle` file is required to configure
+the `omhConfig`. The `omhConfig` definition is used to extend the existing Android Studio
+variants in the core plugin. For more details `omhConfig`
+see [OMH Core](https://github.com/openmobilehub/omh-core/tree/release/1.0).
+
+   #### Basic configuration
+    In this step, you will define the OMH Core Plugin bundles to generate multiple build variants with specific suffixes as their names. For example, if your project has `release` and `debug` variants with `singleBuild`, `gms`, and `nonGms` OMH bundles, the following build variants will be generated:
+
+   - `releaseSingleBuild`, `releaseGms`, and `releaseNonGms`
+   - `debugSingleBuild`, `debugGms`, and `debugNonGms`
 
    ##### Variant singleBuild
     - Define the `Service`. In this example is auth.
