@@ -121,25 +121,10 @@ To incorporate OMH Auth into your project, you have two options: utilize the OMH
 To use the core plugin is required some minimum configuration, for more details
 see [OMH Core Docs](https://github.com/openmobilehub/omh-core/tree/release/1.0).
 
-1. In your "auth-starter-sample" module-level `build.gradle` file under the `buildFeatures` element
-   add `buildConfig = true`. For more information
-   see [BuildFeatures](https://developer.android.com/reference/tools/gradle-api/7.0/com/android/build/api/dsl/BuildFeatures)
-
-   ```
-   android {
-      ...
-      buildFeatures {
-         ...
-         buildConfig = true
-      }
-   }
-   ```
-
-2. In your "auth-starter-sample" module-level `build.gradle` file is required to configure
-   the `omhConfig`. The `omhConfig` definition is used to extend the existing Android Studio
-   variants in the core plugin.
-   For more details `omhConfig`
-   see [OMH Core](https://github.com/openmobilehub/omh-core/tree/release/1.0).
+In your "auth-starter-sample" module-level `build.gradle` file is required to configure
+the `omhConfig`. The `omhConfig` definition is used to extend the existing Android Studio
+variants in the core plugin. For more details `omhConfig`
+see [OMH Core](https://github.com/openmobilehub/omh-core/tree/release/1.0).
 
    #### Basic configuration
     In this step, you will define the OMH Core Plugin bundles to generate multiple build variants with specific suffixes as their names. For example, if your project has `release` and `debug` variants with `singleBuild`, `gms`, and `nonGms` OMH bundles, the following build variants will be generated:
