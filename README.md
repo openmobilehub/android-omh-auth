@@ -70,30 +70,7 @@ see [Gradle properties](https://developer.android.com/studio/build#properties-fi
 1. Open the `local.properties` in your project level directory, and then add the following code.
    Replace `YOUR_CLIENT_ID` with your API key.
    `CLIENT_ID=YOUR_CLIENT_ID`
-2. Save the file.
-3. To read the value from the `local.properties` you can
-   use [Secrets Gradle plugin for Android](https://github.com/google/secrets-gradle-plugin). To
-   install the plugin and store your API key:
-    - Open your project level `build.gradle` file and add the following code:
-   ```groovy
-   buildscript {
-       dependencies {
-           classpath "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
-       }
-   }
-   ```
-
-    - Open your application level `build.gradle` file and add the following code to
-      the `plugins` element.
-
-   ```groovy
-   plugins {
-      id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
-   }
-   ```
-
-    - Save the file
-      and [sync your project with Gradle](https://developer.android.com/studio/build#sync-files).
+2. Save the fileand [sync your project with Gradle](https://developer.android.com/studio/build#sync-files).
 
 ## Gradle configuration
 
