@@ -8,6 +8,16 @@ OMH Auth is an Android client library that makes it easy to integrate auth provi
 
 With the OMH Auth Client Library, you can easily add Google Sign in and other third-party authentication providers to your applications, regardless of whether the device has GMS or not. The library takes care of the technical details, providing a unified interface and components for a consistent auth experience.
 
+## A single codebase, running seamlessly on any device
+For instance, the following screenshots showcase multiple devices with Android, both with GMS and Non-GMS. The same app works without changing a single line of code, supporting multiple map provider implementations (Google Maps and OpenStreetMap).
+<div align="center">
+
+| Non-GMS</br>Pixel 6 | GMS</br>Pixel 6 |
+| ----------------------- | ------------ |
+| <img src="https://github.com/openmobilehub/omh-maps/assets/32938335/633fd287-e1f6-440f-9f0e-5a274f0c8227"> | <img src="https://github.com/openmobilehub/omh-auth/assets/32938335/7d345ac3-b7b9-49b4-8044-6c115df992ad"> |
+
+</div>
+
 # Getting started
 This section describes how to setup an Android Studio project to use the OMH Auth SDK for Android. For greater ease, a base code will be used within the repository. 
 
