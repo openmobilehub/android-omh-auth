@@ -271,6 +271,7 @@ private val loginLauncher: ActivityResultLauncher<Intent> =
             // navigate to logged in screen
         } catch (exception: OmhAuthException) {
             // There was an exception whilst logging in. In this case we'll show an error dialog.
+            exception.printStackTrace()
             AlertDialog.Builder(this)
                 .setTitle("An error has occurred.")
                 .setMessage(exception.message)
