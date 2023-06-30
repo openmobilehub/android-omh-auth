@@ -168,7 +168,7 @@ see [OMH Core](https://github.com/openmobilehub/omh-core/tree/release/1.0).
 
 #### Basic configuration
 
-    In this step, you will define the OMH Core Plugin bundles to generate multiple build variants with specific suffixes as their names. For example, if your project has `release` and `debug` variants with `singleBuild`, `gms`, and `nonGms` OMH bundles, the following build variants will be generated:
+In this step, you will define the OMH Core Plugin bundles to generate multiple build variants with specific suffixes as their names. For example, if your project has `release` and `debug` variants with `singleBuild`, `gms`, and `nonGms` OMH bundles, the following build variants will be generated:
 
 - `releaseSingleBuild`, `releaseGms`, and `releaseNonGms`
 - `debugSingleBuild`, `debugGms`, and `debugNonGms`
