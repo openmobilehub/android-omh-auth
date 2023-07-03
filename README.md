@@ -219,8 +219,8 @@ and Non-GMS configurations.
 
    ```kotlin
    val omhAuthProvider = OmhAuthProvider.Builder()
-       .addNonGmsPath(BuildConfig.AUTH_GMS_PATH)
-       .addGmsPath(BuildConfig.AUTH_NON_GMS_PATH)
+       .addNonGmsPath(BuildConfig.AUTH_NON_GMS_PATH)
+       .addGmsPath(BuildConfig.AUTH_GMS_PATH)
        .build()
    return omhAuthProvider.provideAuthClient(
        scopes = listOf("openid", "email", "profile"),
