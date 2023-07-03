@@ -61,7 +61,7 @@ develop branches.
 
 ## Set up your Google Cloud project for applications with Google Services (Google Auth)
 
-Complete the required Cloud Console setup steps by clicking through the following tabs:
+To access Google APIs, generate a unique client_id for your app in the Google API Console. Add the client_id to your app's code and complete the required Cloud Console setup steps:
 
 ### Steps
 
