@@ -1,18 +1,20 @@
 package com.omh.android.auth.sample.loggedin
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.UserRecoverableAuthException
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.auth.api.OmhCredentials
 import com.omh.android.auth.api.async.CancellableCollector
 import com.omh.android.auth.sample.R
-import com.omh.android.auth.sample.databinding.ActivityLoggedInBinding
-import com.omh.android.auth.sample.login.LoginActivity
+import com.omh.android.auth.sample.databinding.FragmentLoggedInBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -20,36 +22,39 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
-class LoggedInActivity : AppCompatActivity() {
+class LoggedInFragment : Fragment() {
 
     @Inject
     lateinit var omhAuthClient: OmhAuthClient
 
-    private val binding: ActivityLoggedInBinding by lazy {
-        ActivityLoggedInBinding.inflate(layoutInflater)
-    }
+    private var binding: FragmentLoggedInBinding? = null
 
     private val cancellableCollector = CancellableCollector()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentLoggedInBinding.inflate(inflater, container, false)
+        return binding!!.root
+    }
 
-        binding.btnLogout.setOnClickListener {
-            logout()
-        }
-        binding.btnRefresh.setOnClickListener {
-            refreshToken()
-        }
-        binding.btnRevoke.setOnClickListener {
-            revokeToken()
-        }
-
-        val profile = requireNotNull(omhAuthClient.getUser())
-        binding.tvEmail.text = getString(R.string.email_placeholder, profile.email)
-        binding.tvName.text = getString(R.string.name_placeholder, profile.name)
-        binding.tvSurname.text = getString(R.string.surname_placeholder, profile.surname)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupUI()
         getToken()
+    }
+
+    private fun setupUI() {
+        val profile = requireNotNull(omhAuthClient.getUser())
+        binding?.run {
+            btnLogout.setOnClickListener { logout() }
+            btnRefresh.setOnClickListener { refreshToken() }
+            btnRevoke.setOnClickListener { revokeToken() }
+            tvEmail.text = getString(R.string.email_placeholder, profile.email)
+            tvName.text = getString(R.string.name_placeholder, profile.name)
+            tvSurname.text = getString(R.string.surname_placeholder, profile.surname)
+        }
     }
 
     private fun revokeToken() {
@@ -66,12 +71,13 @@ class LoggedInActivity : AppCompatActivity() {
             is GoogleAccountCredential -> {
                 requestGoogleToken(credentials)
             }
+
             null -> return@launch
             else -> error("Unsupported credential type")
         }
 
         withContext(Dispatchers.Main) {
-            binding.tvToken.text = getString(R.string.token_placeholder, token)
+            binding?.tvToken?.text = getString(R.string.token_placeholder, token)
         }
     }
 
@@ -95,7 +101,8 @@ class LoggedInActivity : AppCompatActivity() {
 
     private fun showErrorDialog(exception: Throwable) {
         exception.printStackTrace()
-        AlertDialog.Builder(this)
+        val ctx = context ?: return
+        AlertDialog.Builder(ctx)
             .setTitle("An error has occurred.")
             .setMessage(exception.message)
             .setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.dismiss() }
@@ -111,14 +118,12 @@ class LoggedInActivity : AppCompatActivity() {
         } ?: return@launch
 
         withContext(Dispatchers.Main) {
-            binding.tvToken.text = getString(R.string.token_placeholder, newToken)
+            binding?.tvToken?.text = getString(R.string.token_placeholder, newToken)
         }
     }
 
     private fun navigateToLogin() {
-        val intent = Intent(this, LoginActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        startActivity(intent)
+        findNavController().navigate(R.id.action_logged_in_fragment_to_login_fragment)
     }
 
     override fun onDestroy() {

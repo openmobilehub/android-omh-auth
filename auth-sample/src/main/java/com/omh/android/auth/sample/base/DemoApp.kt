@@ -1,4 +1,4 @@
-package com.omh.android.auth.sample
+package com.omh.android.auth.sample.base
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
