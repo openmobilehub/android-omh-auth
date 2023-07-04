@@ -1,6 +1,7 @@
 package com.omh.android.auth.gms
 
 import android.content.Intent
+import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -11,6 +12,7 @@ import com.omh.android.auth.api.OmhAuthClient
 import com.omh.android.auth.api.async.OmhTask
 import com.omh.android.auth.api.models.OmhAuthException
 import com.omh.android.auth.api.models.OmhUserProfile
+import com.omh.android.auth.api.utils.OmhAuthUtils
 import com.omh.android.auth.gms.util.mapToOmhExceptions
 import com.omh.android.auth.gms.util.toOmhLoginException
 
@@ -57,7 +59,11 @@ internal class OmhAuthClientImpl(
             val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
             return account.toOmhProfile()
         } catch (apiException: ApiException) {
-            val omhException: OmhAuthException = toOmhLoginException(apiException)
+            val isRunningOnNonGms = !OmhAuthUtils.isGmsDevice(googleSignInClient.applicationContext)
+            val omhException: OmhAuthException = toOmhLoginException(
+                apiException = apiException,
+                isNonGmsDevice = isRunningOnNonGms
+            )
             throw omhException
         }
     }

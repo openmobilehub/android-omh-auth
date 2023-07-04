@@ -1,10 +1,9 @@
 package com.omh.android.auth.api
 
 import android.content.Context
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GoogleApiAvailability
 import com.omh.android.auth.api.models.OmhAuthException
 import com.omh.android.auth.api.models.OmhAuthStatusCodes
+import com.omh.android.auth.api.utils.OmhAuthUtils
 import kotlin.reflect.KClass
 
 /**
@@ -61,13 +60,11 @@ class OmhAuthProvider private constructor(
         )
     }
 
-    private fun reflectSingleBuild(
-        context: Context,
-    ): OmhAuthFactory {
-        val googleApiAvailability = GoogleApiAvailability.getInstance()
-        return when (googleApiAvailability.isGooglePlayServicesAvailable(context)) {
-            ConnectionResult.SUCCESS -> getFactoryImplementation(gmsPath!!)
-            else -> getFactoryImplementation(nonGmsPath!!)
+    private fun reflectSingleBuild(context: Context): OmhAuthFactory {
+        return if (OmhAuthUtils.isGmsDevice(context)) {
+            getFactoryImplementation(gmsPath!!)
+        } else {
+            getFactoryImplementation(nonGmsPath!!)
         }
     }
 

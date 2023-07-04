@@ -35,15 +35,30 @@ internal fun Exception.toOmhApiException(): OmhAuthException.ApiException {
     )
 }
 
-internal fun toOmhLoginException(apiException: ApiException) = when (apiException.statusCode) {
-    GoogleSignInStatusCodes.SIGN_IN_CANCELLED -> {
-        OmhAuthException.LoginCanceledException(apiException)
+internal fun toOmhLoginException(apiException: ApiException, isNonGmsDevice: Boolean): OmhAuthException {
+    return when (apiException.statusCode) {
+        GoogleSignInStatusCodes.SIGN_IN_CANCELLED -> {
+            OmhAuthException.LoginCanceledException(apiException)
+        }
+
+        GoogleSignInStatusCodes.SIGN_IN_FAILED -> {
+            mapSignInFailed(isNonGmsDevice, apiException)
+        }
+
+        else -> {
+            mapToRecoverableLoginException(apiException)
+        }
     }
-    GoogleSignInStatusCodes.SIGN_IN_FAILED -> {
+}
+
+private fun mapSignInFailed(
+    isNonGmsDevice: Boolean,
+    apiException: ApiException
+): OmhAuthException {
+    return if (isNonGmsDevice) {
+        OmhAuthException.ApiException(OmhAuthStatusCodes.GMS_UNAVAILABLE, apiException)
+    } else {
         OmhAuthException.UnrecoverableLoginException(apiException)
-    }
-    else -> {
-        mapToRecoverableLoginException(apiException)
     }
 }
 
