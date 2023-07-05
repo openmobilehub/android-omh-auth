@@ -25,7 +25,7 @@ public class AuthSampleLoginScreen extends BaseScreen {
      */
 
     // logged out elements
-    @AndroidFindBy(id="com.omh.android.auth.sample:id/action_bar")
+    @AndroidFindBy(id="com.omh.android.auth.sample:id/toolbar")
     private WebElement topActionBar;
 
     @AndroidFindBy(className="android.widget.TextView")

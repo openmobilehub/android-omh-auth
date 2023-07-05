@@ -3,3 +3,227 @@
 Date and Time: 06-12-2023 15:02:48
 ERROR MESSAGE LOG
 org.openqa.selenium.NoSuchElementException: Can't locate an element by this strategy: By.chained({AppiumBy.id: com.omh.android.auth.sample:id/tvName})
+
+Date and Time: 06-15-2023 11:29:07
+ERROR MESSAGE LOG
+org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Possible causes are invalid address of the remote server or browser start-up failure. 
+Host info: host: 'CSASJOMM3701', ip: '100.64.0.1'
+
+Date and Time: 06-15-2023 11:29:07
+ERROR MESSAGE LOG
+java.lang.NullPointerException
+
+Date and Time: 06-15-2023 11:29:07
+ERROR MESSAGE LOG
+org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Possible causes are invalid address of the remote server or browser start-up failure. 
+Host info: host: 'CSASJOMM3701', ip: '100.64.0.1'
+
+Date and Time: 06-15-2023 11:29:07
+ERROR MESSAGE LOG
+java.lang.NullPointerException
+
+Date and Time: 06-15-2023 11:29:07
+ERROR MESSAGE LOG
+org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Possible causes are invalid address of the remote server or browser start-up failure. 
+Host info: host: 'CSASJOMM3701', ip: '100.64.0.1'
+
+Date and Time: 06-15-2023 11:29:07
+ERROR MESSAGE LOG
+java.lang.NullPointerException
+
+Date and Time: 06-15-2023 11:29:07
+ERROR MESSAGE LOG
+org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Possible causes are invalid address of the remote server or browser start-up failure. 
+Host info: host: 'CSASJOMM3701', ip: '100.64.0.1'
+
+Date and Time: 06-15-2023 11:29:07
+ERROR MESSAGE LOG
+java.lang.NullPointerException
+
+Date and Time: 06-15-2023 11:29:07
+ERROR MESSAGE LOG
+org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Possible causes are invalid address of the remote server or browser start-up failure. 
+Host info: host: 'CSASJOMM3701', ip: '100.64.0.1'
+
+Date and Time: 06-15-2023 11:29:07
+ERROR MESSAGE LOG
+java.lang.NullPointerException
+
+Date and Time: 06-15-2023 11:29:07
+ERROR MESSAGE LOG
+org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Possible causes are invalid address of the remote server or browser start-up failure. 
+Host info: host: 'CSASJOMM3701', ip: '100.64.0.1'
+
+Date and Time: 06-15-2023 11:29:07
+ERROR MESSAGE LOG
+java.lang.NullPointerException
+
+Date and Time: 06-15-2023 11:29:07
+ERROR MESSAGE LOG
+org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Possible causes are invalid address of the remote server or browser start-up failure. 
+Host info: host: 'CSASJOMM3701', ip: '100.64.0.1'
+
+Date and Time: 06-15-2023 11:29:07
+ERROR MESSAGE LOG
+java.lang.NullPointerException
+
+Date and Time: 07-04-2023 12:04:12
+ERROR MESSAGE LOG
+org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Response code 500. Message: An unknown server-side error occurred while processing the command. Original error: Cannot start the 'com.omh.android.auth.sample' application. Visit https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/android/activity-startup.md for troubleshooting. Original error: Cannot start the 'com.omh.android.auth.sample' application. Visit https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/android/activity-startup.md for troubleshooting. Original error: Activity name '.com.omh.android.auth.sample.login.LoginActivity' used to start the app doesn't exist or cannot be launched! Make sure it exists and is a launchable activity 
+Host info: host: 'CSASJOMM3701', ip: '100.64.0.1'
+Build info: version: '4.9.1', revision: 'eb2032df7f'
+System info: os.name: 'Mac OS X', os.arch: 'x86_64', os.version: '13.4.1', java.version: '11.0.19'
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [null, newSession {capabilities=[{appium:noReset=true, appium:newCommandTimeout=0, appium:appActivity=com.omh.android.auth.sample.login.LoginActivity, appium:deviceName=HWQYD22514501984, platformName=ANDROID, appium:automationName=UIAutomator2, appium:platformVersion=11, appium:appPackage=com.omh.android.auth.sample}], desiredCapabilities=Capabilities {appium:appActivity: com.omh.android.auth.sample..., appium:appPackage: com.omh.android.auth.sample, appium:automationName: UIAutomator2, appium:deviceName: HWQYD22514501984, appium:newCommandTimeout: 0, appium:noReset: true, appium:platformVersion: 11, platformName: ANDROID}}]
+Capabilities {appium:appActivity: com.omh.android.auth.sample..., appium:appPackage: com.omh.android.auth.sample, appium:automationName: UIAutomator2, appium:deviceName: HWQYD22514501984, appium:newCommandTimeout: 0, appium:noReset: true, appium:platformVersion: 11, platformName: ANDROID}
+
+Date and Time: 07-04-2023 12:04:12
+ERROR MESSAGE LOG
+java.lang.NullPointerException
+
+Date and Time: 07-04-2023 12:04:18
+ERROR MESSAGE LOG
+org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Response code 500. Message: An unknown server-side error occurred while processing the command. Original error: Cannot start the 'com.omh.android.auth.sample' application. Visit https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/android/activity-startup.md for troubleshooting. Original error: Cannot start the 'com.omh.android.auth.sample' application. Visit https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/android/activity-startup.md for troubleshooting. Original error: Activity name '.com.omh.android.auth.sample.login.LoginActivity' used to start the app doesn't exist or cannot be launched! Make sure it exists and is a launchable activity 
+Host info: host: 'CSASJOMM3701', ip: '100.64.0.1'
+Build info: version: '4.9.1', revision: 'eb2032df7f'
+System info: os.name: 'Mac OS X', os.arch: 'x86_64', os.version: '13.4.1', java.version: '11.0.19'
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [null, newSession {capabilities=[{appium:noReset=true, appium:newCommandTimeout=0, appium:appActivity=com.omh.android.auth.sample.login.LoginActivity, appium:deviceName=HWQYD22514501984, platformName=ANDROID, appium:automationName=UIAutomator2, appium:platformVersion=11, appium:appPackage=com.omh.android.auth.sample}], desiredCapabilities=Capabilities {appium:appActivity: com.omh.android.auth.sample..., appium:appPackage: com.omh.android.auth.sample, appium:automationName: UIAutomator2, appium:deviceName: HWQYD22514501984, appium:newCommandTimeout: 0, appium:noReset: true, appium:platformVersion: 11, platformName: ANDROID}}]
+Capabilities {appium:appActivity: com.omh.android.auth.sample..., appium:appPackage: com.omh.android.auth.sample, appium:automationName: UIAutomator2, appium:deviceName: HWQYD22514501984, appium:newCommandTimeout: 0, appium:noReset: true, appium:platformVersion: 11, platformName: ANDROID}
+
+Date and Time: 07-04-2023 12:04:18
+ERROR MESSAGE LOG
+java.lang.NullPointerException
+
+Date and Time: 07-04-2023 12:04:24
+ERROR MESSAGE LOG
+org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Response code 500. Message: An unknown server-side error occurred while processing the command. Original error: Cannot start the 'com.omh.android.auth.sample' application. Visit https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/android/activity-startup.md for troubleshooting. Original error: Cannot start the 'com.omh.android.auth.sample' application. Visit https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/android/activity-startup.md for troubleshooting. Original error: Activity name '.com.omh.android.auth.sample.login.LoginActivity' used to start the app doesn't exist or cannot be launched! Make sure it exists and is a launchable activity 
+Host info: host: 'CSASJOMM3701', ip: '100.64.0.1'
+Build info: version: '4.9.1', revision: 'eb2032df7f'
+System info: os.name: 'Mac OS X', os.arch: 'x86_64', os.version: '13.4.1', java.version: '11.0.19'
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [null, newSession {capabilities=[{appium:noReset=true, appium:newCommandTimeout=0, appium:appActivity=com.omh.android.auth.sample.login.LoginActivity, appium:deviceName=HWQYD22514501984, platformName=ANDROID, appium:automationName=UIAutomator2, appium:platformVersion=11, appium:appPackage=com.omh.android.auth.sample}], desiredCapabilities=Capabilities {appium:appActivity: com.omh.android.auth.sample..., appium:appPackage: com.omh.android.auth.sample, appium:automationName: UIAutomator2, appium:deviceName: HWQYD22514501984, appium:newCommandTimeout: 0, appium:noReset: true, appium:platformVersion: 11, platformName: ANDROID}}]
+Capabilities {appium:appActivity: com.omh.android.auth.sample..., appium:appPackage: com.omh.android.auth.sample, appium:automationName: UIAutomator2, appium:deviceName: HWQYD22514501984, appium:newCommandTimeout: 0, appium:noReset: true, appium:platformVersion: 11, platformName: ANDROID}
+
+Date and Time: 07-04-2023 12:04:24
+ERROR MESSAGE LOG
+java.lang.NullPointerException
+
+Date and Time: 07-04-2023 12:04:30
+ERROR MESSAGE LOG
+org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Response code 500. Message: An unknown server-side error occurred while processing the command. Original error: Cannot start the 'com.omh.android.auth.sample' application. Visit https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/android/activity-startup.md for troubleshooting. Original error: Cannot start the 'com.omh.android.auth.sample' application. Visit https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/android/activity-startup.md for troubleshooting. Original error: Activity name '.com.omh.android.auth.sample.login.LoginActivity' used to start the app doesn't exist or cannot be launched! Make sure it exists and is a launchable activity 
+Host info: host: 'CSASJOMM3701', ip: '100.64.0.1'
+Build info: version: '4.9.1', revision: 'eb2032df7f'
+System info: os.name: 'Mac OS X', os.arch: 'x86_64', os.version: '13.4.1', java.version: '11.0.19'
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [null, newSession {capabilities=[{appium:noReset=true, appium:newCommandTimeout=0, appium:appActivity=com.omh.android.auth.sample.login.LoginActivity, appium:deviceName=HWQYD22514501984, platformName=ANDROID, appium:automationName=UIAutomator2, appium:platformVersion=11, appium:appPackage=com.omh.android.auth.sample}], desiredCapabilities=Capabilities {appium:appActivity: com.omh.android.auth.sample..., appium:appPackage: com.omh.android.auth.sample, appium:automationName: UIAutomator2, appium:deviceName: HWQYD22514501984, appium:newCommandTimeout: 0, appium:noReset: true, appium:platformVersion: 11, platformName: ANDROID}}]
+Capabilities {appium:appActivity: com.omh.android.auth.sample..., appium:appPackage: com.omh.android.auth.sample, appium:automationName: UIAutomator2, appium:deviceName: HWQYD22514501984, appium:newCommandTimeout: 0, appium:noReset: true, appium:platformVersion: 11, platformName: ANDROID}
+
+Date and Time: 07-04-2023 12:04:30
+ERROR MESSAGE LOG
+java.lang.NullPointerException
+
+Date and Time: 07-04-2023 12:04:37
+ERROR MESSAGE LOG
+org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Response code 500. Message: An unknown server-side error occurred while processing the command. Original error: Cannot start the 'com.omh.android.auth.sample' application. Visit https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/android/activity-startup.md for troubleshooting. Original error: Cannot start the 'com.omh.android.auth.sample' application. Visit https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/android/activity-startup.md for troubleshooting. Original error: Activity name '.com.omh.android.auth.sample.login.LoginActivity' used to start the app doesn't exist or cannot be launched! Make sure it exists and is a launchable activity 
+Host info: host: 'CSASJOMM3701', ip: '100.64.0.1'
+Build info: version: '4.9.1', revision: 'eb2032df7f'
+System info: os.name: 'Mac OS X', os.arch: 'x86_64', os.version: '13.4.1', java.version: '11.0.19'
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [null, newSession {capabilities=[{appium:noReset=true, appium:newCommandTimeout=0, appium:appActivity=com.omh.android.auth.sample.login.LoginActivity, appium:deviceName=HWQYD22514501984, platformName=ANDROID, appium:automationName=UIAutomator2, appium:platformVersion=11, appium:appPackage=com.omh.android.auth.sample}], desiredCapabilities=Capabilities {appium:appActivity: com.omh.android.auth.sample..., appium:appPackage: com.omh.android.auth.sample, appium:automationName: UIAutomator2, appium:deviceName: HWQYD22514501984, appium:newCommandTimeout: 0, appium:noReset: true, appium:platformVersion: 11, platformName: ANDROID}}]
+Capabilities {appium:appActivity: com.omh.android.auth.sample..., appium:appPackage: com.omh.android.auth.sample, appium:automationName: UIAutomator2, appium:deviceName: HWQYD22514501984, appium:newCommandTimeout: 0, appium:noReset: true, appium:platformVersion: 11, platformName: ANDROID}
+
+Date and Time: 07-04-2023 12:04:37
+ERROR MESSAGE LOG
+java.lang.NullPointerException
+
+Date and Time: 07-04-2023 12:04:43
+ERROR MESSAGE LOG
+org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Response code 500. Message: An unknown server-side error occurred while processing the command. Original error: Cannot start the 'com.omh.android.auth.sample' application. Visit https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/android/activity-startup.md for troubleshooting. Original error: Cannot start the 'com.omh.android.auth.sample' application. Visit https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/android/activity-startup.md for troubleshooting. Original error: Activity name '.com.omh.android.auth.sample.login.LoginActivity' used to start the app doesn't exist or cannot be launched! Make sure it exists and is a launchable activity 
+Host info: host: 'CSASJOMM3701', ip: '100.64.0.1'
+Build info: version: '4.9.1', revision: 'eb2032df7f'
+System info: os.name: 'Mac OS X', os.arch: 'x86_64', os.version: '13.4.1', java.version: '11.0.19'
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [null, newSession {capabilities=[{appium:noReset=true, appium:newCommandTimeout=0, appium:appActivity=com.omh.android.auth.sample.login.LoginActivity, appium:deviceName=HWQYD22514501984, platformName=ANDROID, appium:automationName=UIAutomator2, appium:platformVersion=11, appium:appPackage=com.omh.android.auth.sample}], desiredCapabilities=Capabilities {appium:appActivity: com.omh.android.auth.sample..., appium:appPackage: com.omh.android.auth.sample, appium:automationName: UIAutomator2, appium:deviceName: HWQYD22514501984, appium:newCommandTimeout: 0, appium:noReset: true, appium:platformVersion: 11, platformName: ANDROID}}]
+Capabilities {appium:appActivity: com.omh.android.auth.sample..., appium:appPackage: com.omh.android.auth.sample, appium:automationName: UIAutomator2, appium:deviceName: HWQYD22514501984, appium:newCommandTimeout: 0, appium:noReset: true, appium:platformVersion: 11, platformName: ANDROID}
+
+Date and Time: 07-04-2023 12:04:43
+ERROR MESSAGE LOG
+java.lang.NullPointerException
+
+Date and Time: 07-04-2023 12:04:49
+ERROR MESSAGE LOG
+org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Response code 500. Message: An unknown server-side error occurred while processing the command. Original error: Cannot start the 'com.omh.android.auth.sample' application. Visit https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/android/activity-startup.md for troubleshooting. Original error: Cannot start the 'com.omh.android.auth.sample' application. Visit https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/android/activity-startup.md for troubleshooting. Original error: Activity name '.com.omh.android.auth.sample.login.LoginActivity' used to start the app doesn't exist or cannot be launched! Make sure it exists and is a launchable activity 
+Host info: host: 'CSASJOMM3701', ip: '100.64.0.1'
+Build info: version: '4.9.1', revision: 'eb2032df7f'
+System info: os.name: 'Mac OS X', os.arch: 'x86_64', os.version: '13.4.1', java.version: '11.0.19'
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [null, newSession {capabilities=[{appium:noReset=true, appium:newCommandTimeout=0, appium:appActivity=com.omh.android.auth.sample.login.LoginActivity, appium:deviceName=HWQYD22514501984, platformName=ANDROID, appium:automationName=UIAutomator2, appium:platformVersion=11, appium:appPackage=com.omh.android.auth.sample}], desiredCapabilities=Capabilities {appium:appActivity: com.omh.android.auth.sample..., appium:appPackage: com.omh.android.auth.sample, appium:automationName: UIAutomator2, appium:deviceName: HWQYD22514501984, appium:newCommandTimeout: 0, appium:noReset: true, appium:platformVersion: 11, platformName: ANDROID}}]
+Capabilities {appium:appActivity: com.omh.android.auth.sample..., appium:appPackage: com.omh.android.auth.sample, appium:automationName: UIAutomator2, appium:deviceName: HWQYD22514501984, appium:newCommandTimeout: 0, appium:noReset: true, appium:platformVersion: 11, platformName: ANDROID}
+
+Date and Time: 07-04-2023 12:04:49
+ERROR MESSAGE LOG
+java.lang.NullPointerException
+
+Date and Time: 07-05-2023 10:24:16
+ERROR MESSAGE LOG
+org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Possible causes are invalid address of the remote server or browser start-up failure. 
+Host info: host: 'CSASJOMM3701', ip: '100.64.0.1'
+
+Date and Time: 07-05-2023 10:24:16
+ERROR MESSAGE LOG
+java.lang.NullPointerException
+
+Date and Time: 07-05-2023 10:24:16
+ERROR MESSAGE LOG
+org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Possible causes are invalid address of the remote server or browser start-up failure. 
+Host info: host: 'CSASJOMM3701', ip: '100.64.0.1'
+
+Date and Time: 07-05-2023 10:24:16
+ERROR MESSAGE LOG
+java.lang.NullPointerException
+
+Date and Time: 07-05-2023 10:24:16
+ERROR MESSAGE LOG
+org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Possible causes are invalid address of the remote server or browser start-up failure. 
+Host info: host: 'CSASJOMM3701', ip: '100.64.0.1'
+
+Date and Time: 07-05-2023 10:24:16
+ERROR MESSAGE LOG
+java.lang.NullPointerException
+
+Date and Time: 07-05-2023 10:24:16
+ERROR MESSAGE LOG
+org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Possible causes are invalid address of the remote server or browser start-up failure. 
+Host info: host: 'CSASJOMM3701', ip: '100.64.0.1'
+
+Date and Time: 07-05-2023 10:24:16
+ERROR MESSAGE LOG
+java.lang.NullPointerException
+
+Date and Time: 07-05-2023 10:24:16
+ERROR MESSAGE LOG
+org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Possible causes are invalid address of the remote server or browser start-up failure. 
+Host info: host: 'CSASJOMM3701', ip: '100.64.0.1'
+
+Date and Time: 07-05-2023 10:24:16
+ERROR MESSAGE LOG
+java.lang.NullPointerException
+
+Date and Time: 07-05-2023 10:24:16
+ERROR MESSAGE LOG
+org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Possible causes are invalid address of the remote server or browser start-up failure. 
+Host info: host: 'CSASJOMM3701', ip: '100.64.0.1'
+
+Date and Time: 07-05-2023 10:24:16
+ERROR MESSAGE LOG
+java.lang.NullPointerException
+
+Date and Time: 07-05-2023 10:24:16
+ERROR MESSAGE LOG
+org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Possible causes are invalid address of the remote server or browser start-up failure. 
+Host info: host: 'CSASJOMM3701', ip: '100.64.0.1'
+
+Date and Time: 07-05-2023 10:24:16
+ERROR MESSAGE LOG
+java.lang.NullPointerException

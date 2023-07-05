@@ -1,6 +1,6 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 
-<suite name="Appium Android Automation Framework" parallel="methods" thread-count="1">
+<suite name="Appium Android Automation Auth Sample App" parallel="methods" thread-count="1">
 
     <listeners>
         <listener class-name="general.MobileDriverManager">
@@ -9,13 +9,13 @@
             <parameter name="tmDynamic" value="10"/>
 
             <!--  Mobile Main Config Parameters  -->
-            <parameter name="deviceType" value="GMS"/> <!-- GMS / nonGMS -->
+            <parameter name="deviceType" value="nonGMS"/> <!-- GMS / nonGMS -->
             <parameter name="platformName" value="Android"/>
             <parameter name="platformVersion" value="13,11"/>  <!-- non-GMS Android 11 / GMS Android 12 -->
             <parameter name="deviceName" value="R3CTC0D3BFE,HWQYD22514501984"/> <!-- non-GMS HWQYD22514501984  GMS R3CTC0D3BFE Emulator emulator-5554 -->
             <parameter name="automationName" value="UiAutomator2"/>
             <parameter name="appPackage" value="com.omh.android.auth.sample"/>
-            <parameter name="appActivity" value="com.omh.android.auth.sample.login.LoginActivity"/>
+            <parameter name="appActivity" value="com.omh.android.auth.sample.base.MainActivity"/>
             <parameter name="noReset" value="true"/> <!-- True to prevent prompt for asking permissions again -->
             <parameter name="appiumServer" value="http://127.0.0.1:4723/wd/hub"/>
         </listener>
