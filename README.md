@@ -244,41 +244,29 @@ profile.
 
 The snippet below shows how to check if there's a signed in user already in your application. If no
 one has logged in yet, then it will return a null value. A successful fetch will return an object of
-the class `OmhUserProfile`. In the `LoginActivity.kt`, add the following code to the `onCreate` function:
+the class `OmhUserProfile`. In the `MainActivity.kt`, add the following code to the `selectStartDestination()` function:
 
 ```kotlin
-if (omhAuthClient.getUser() != null) {
-    navigateToLoggedIn()
-}
+omhAuthClient.getUser() == null
 ```
 
 #### Login
 
 If no user is found, then we should request a login intent which will redirect the user to the
 provider's auth screen, be it the Google SignIn UI or a custom tab that redirects the user to
-Google's Auth page. This should be used to start an activity for result ( The snippet below uses the
-latest method of doing so, but it's the same as
-using `startActivityForResult(Intent intent, int code)`. In the `LoginActivity.kt`, add the following code as an instance variable:
+Google's Auth page. This should be used to start an activity for result. In the `LoginFragment.kt`,
+add the following code to the `handleLoginResult(result: ActivityResult)`:
 
 ```kotlin
-private val loginLauncher: ActivityResultLauncher<Intent> =
-    registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        try {
-            omhAuthClient.getAccountFromIntent(result.data)
-            navigateToLoggedIn()
-        } catch (exception: OmhAuthException) {
-            // There was an exception whilst logging in. In this case we'll show an error dialog.
-            exception.printStackTrace()
-            AlertDialog.Builder(this)
-                .setTitle("An error has occurred.")
-                .setMessage(exception.message)
-                .setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.dismiss() }
-                .create()
-                .show()
-        }
-    }
+try {
+     omhAuthClient.getAccountFromIntent(result.data)
+     navigateToLoggedIn()
+} catch (exception: OmhAuthException) {
+     handleException(exception)
+}
 ```
-In the `LoginActivity.kt`, add the following code to the `startLogin` function:
+
+In the `LoginFragment.kt`, add the following code to the `startLogin` function:
 
 ```kotlin
 // This will trigger the login flow.
@@ -296,7 +284,7 @@ interface to interact with async functionalities and subscribe to the success or
 cancel a running OMH task a cancellable token is provided after the `execute()` function is called.
 This can be stored in the `CancellableCollector` class similar to the `CompositeDisposable` in
 RxJava. The sign-out action will removes any and all relevant data to the user from the application
-storage. In the `LoggedInActivity.kt`, add the following code to the `logout` function:
+storage. In the `LoggedInFragment.kt`, add the following code to the `logout` function:
 
 ```kotlin
 val cancellable = omhAuthClient.signOut()
@@ -316,7 +304,7 @@ cancellableCollector.clear()
 
 The SDK also provides a way to revoke the access token provided to the application. This works
 similar to the sign-out functionality but on top of clearing all local data, this also makes a
-request to the auth provider to revoke the token from the server. In the `LoggedInActivity.kt`,
+request to the auth provider to revoke the token from the server. In the `LoggedInFragment.kt`,
 add the following code to the `revokeToken` function:
 
 ```kotlin
