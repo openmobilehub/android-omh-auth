@@ -72,15 +72,9 @@ To access Google APIs, generate a unique client_id for your app in the Google AP
 5. In the "Application Type" option, select "Android".
 6. Set your application package name (Use "com.omh.android.auth.sample" if you are following the
    starter-code)
-7. Add your debug or release SHA-1 fingerprint:
-    1. Create a new keystore and sign your APK/Bundle by following the instructions in the official
-       Android
-       documentation: [Generate a Keystore](https://developer.android.com/studio/publish/app-signing#generate-key)
-       .
-    2. Obtain the certificate fingerprint (SHA-1) from your keystore using the guidelines in the
-       official Google Developers
-       documentation: [Using keytool on the certificate](https://developers.google.com/android/guides/client-auth#using_keytool_on_the_certificate)
-       .
+7. Update the debug/release SHA-1 certificate fingerprint for Android's Client ID.
+
+   Note: The debug build is automatically signed with the debug keystore. Obtain the certificate fingerprint from it by following the guidelines in the official Google Developers documentation: ["Using keytool on the certificate"](https://developers.google.com/android/guides/client-auth#using_keytool_on_the_certificate).
 9. In the [OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent) add the
    test users that you will be using for QA and development. Without this step you won't be able to
    access the application while it's in testing mode.
