@@ -329,6 +329,10 @@ our [Wiki](https://github.com/openmobilehub/omh-auth/wiki).
 Additionally for more information about the OMH Auth
 functions, [Docs](https://openmobilehub.github.io/omh-auth).
 
+# Provider Implementations / Plugins
+
+OMH Auth SDK is open-source, promoting community collaboration and plugin support from other auth providers to enhance capabilities and expand supported auth services. More details can be found at [the wiki](https://github.com/openmobilehub/omh-auth/wiki/Creating-a-custom-implementation).
+
 # Contributing
 
 Please contribute! We will gladly review any pull requests. Make sure to read
