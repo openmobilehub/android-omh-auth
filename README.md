@@ -2,7 +2,9 @@
 ![GitHub contributors](https://img.shields.io/github/contributors/openmobilehub/omh-auth)
 [![API](https://img.shields.io/badge/API-23%2B-green.svg?style=flat)](https://developer.android.com/studio/releases/platforms#6.0)
 
-# OMH Auth Client Library Overview
+# OMH Auth Client Library
+
+## Overview
 
 OMH Auth is an Android client library that makes it easy to integrate auth providers on both Google
 Mobile Services (GMS) and non-GMS devices. It eliminates the need for separate codebases for
