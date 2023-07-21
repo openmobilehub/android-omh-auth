@@ -6,14 +6,9 @@
 
 ## Overview
 
-OMH Auth is an Android client library that makes it easy to integrate auth providers on both Google
-Mobile Services (GMS) and non-GMS devices. It eliminates the need for separate codebases for
-different Android builds.
+The OMH Auth Client Library simplifies authentication integration for Android developers across devices, supporting both Google Mobile Services (GMS) and non-GMS configurations. With a unified interface, it enables easy incorporation of Google Sign-in and other third-party authentication providers without maintaining separate codebases.
 
-With the OMH Auth Client Library, you can easily add Google Sign in and other third-party
-authentication providers to your applications, regardless of whether the device has GMS or not. The
-library takes care of the technical details, providing a unified interface and components for a
-consistent auth experience.
+This README serves as a valuable learning resource, providing step-by-step instructions for setting up an Android Studio project and effectively implementing the OMH Auth Client Library. Whether you are new to Android development or an experienced programmer, this guide equips you with the knowledge to seamlessly integrate authentication features into your applications. For a broader understanding of OMH's philosophy and comprehensive capabilities, visit the official website at https://www.openmobilehub.com.
 
 ## A single codebase, running seamlessly on any device
 
