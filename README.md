@@ -19,7 +19,8 @@ implementations.
 
 | Non-GMS</br>Pixel 6 | GMS</br>Pixel 6 |
 | ----------------------- | ------------ |
-| <img src="https://github.com/openmobilehub/omh-maps/assets/32938335/633fd287-e1f6-440f-9f0e-5a274f0c8227"> | <img src="https://github.com/openmobilehub/omh-auth/assets/32938335/7d345ac3-b7b9-49b4-8044-6c115df992ad"> |
+| <img src="https://github.com/openmobilehub/omh-auth/assets/1755383/6cd96f8d-c5dd-469f-b73b-f1a793597bcb"> | <img src="https://github.com/openmobilehub/omh-auth/assets/1755383/dcf3df18-ce91-45e7-8455-2eb64a814137"> |
+
 
 </div>
 
