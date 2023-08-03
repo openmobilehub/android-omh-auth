@@ -14,24 +14,24 @@ omhConfig {
     bundle("singleBuild") {
         auth {
             gmsService {
-                dependency = "com.openmobilehub.android:auth-api-gms:1.0"
+                dependency = "com.openmobilehub.android:auth-api-gms:1.0.0-beta"
             }
             nonGmsService {
-                dependency = "com.openmobilehub.android:auth-api-non-gms:1.0"
+                dependency = "com.openmobilehub.android:auth-api-non-gms:1.0.0-beta"
             }
         }
     }
     bundle("gms") {
         auth {
             gmsService {
-                dependency = "com.openmobilehub.android:auth-api-gms:1.0"
+                dependency = "com.openmobilehub.android:auth-api-gms:1.0.0-beta"
             }
         }
     }
     bundle("nongms") {
         auth {
             nonGmsService {
-                dependency = "com.openmobilehub.android:auth-api-non-gms:1.0"
+                dependency = "com.openmobilehub.android:auth-api-non-gms:1.0.0-beta"
             }
         }
     }
