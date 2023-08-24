@@ -127,24 +127,24 @@ the file.
       bundle("singleBuild") {
          auth {
             gmsService {
-               dependency = "com.openmobilehub.android:auth-api-gms:1.0.0-beta"
+               dependency = "com.openmobilehub.android:auth-api-gms:1.0.1-beta"
             }
             nonGmsService {
-               dependency = "com.openmobilehub.android:auth-api-non-gms:1.0.0-beta"
+               dependency = "com.openmobilehub.android:auth-api-non-gms:1.0.1-beta"
             }
          }
       }
       bundle("gms") {
          auth {
             gmsService {
-               dependency = "com.openmobilehub.android:auth-api-gms:1.0.0-beta"
+               dependency = "com.openmobilehub.android:auth-api-gms:1.0.1-beta"
             }
          }
       }
       bundle("nongms") {
          auth {
             nonGmsService {
-               dependency = "com.openmobilehub.android:auth-api-non-gms:1.0.0-beta"
+               dependency = "com.openmobilehub.android:auth-api-non-gms:1.0.1-beta"
             }
          }
       }
@@ -170,8 +170,8 @@ In this step, you will define the OMH Core Plugin bundles to generate multiple b
     - Define the `Service`. In this example is auth.
     - Define the `ServiceDetails`. In this example are `gmsService` and `nonGmsService`.
     - Define the dependency and the path. In this example
-      are `com.openmobilehub.android:auth-api-gms:1.0.0-beta"`
-      and `com.openmobilehub.android:auth-api-non-gms:1.0.0-beta`.
+      are `com.openmobilehub.android:auth-api-gms:1.0.1-beta"`
+      and `com.openmobilehub.android:auth-api-non-gms:1.0.1-beta`.
 
 **Note:** It's important to observe how a single build encompasses both GMS (Google MobileServices)
 and Non-GMS configurations.
@@ -181,7 +181,7 @@ and Non-GMS configurations.
     - Define the `Service`. In this example is auth.
     - Define the `ServiceDetails` . In this example is `gmsService`.
     - Define the dependency and the path. In this example
-      is `com.openmobilehub.android:auth-api-gms:1.0.0-beta"`.
+      is `com.openmobilehub.android:auth-api-gms:1.0.1-beta"`.
 
 **Note:** gms build covers only GMS (Google Mobile Services).
 
@@ -190,7 +190,7 @@ and Non-GMS configurations.
     - Define the `Service`. In this example is auth.
     - Define the `ServiceDetails` . In this example is `nonGmsService`.
     - Define the dependency and the path. In this example
-      is `com.openmobilehub.android:auth-api-non-gms:1.0.0-beta`.
+      is `com.openmobilehub.android:auth-api-non-gms:1.0.1-beta`.
 
 **Note:** nongms build covers only Non-GMS configurations.
 
