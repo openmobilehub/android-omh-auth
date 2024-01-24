@@ -9,7 +9,7 @@ android {
 }
 
 dependencies {
-    api("com.openmobilehub.android.auth:core:1.0.1-beta")
+    api("com.openmobilehub.android.auth:core:2.0.0-beta")
 
     // KTX
     implementation(Libs.coreKtx)
