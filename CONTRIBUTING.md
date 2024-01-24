@@ -33,14 +33,16 @@ To achieve that, this plugin has been preconfigured with conditional configurati
 ![gradle-auth-plugin-google-gms](https://github.com/openmobilehub/omh-maps/assets/124717244/e5a370d9-1429-4234-a884-b39a23c6dadb)
 ![gradle-auth-plugin-google-non-gms](https://github.com/openmobilehub/omh-maps/assets/124717244/2cc52110-8faa-47e3-9298-a6cec846a348)
 
-**Note**: to publish all modules in `packages/`, you can simply run the task `publishToMavenLocal` in the root project.
+**Note**: to publish all modules in `packages/`, you can simply run the task `publishToMavenLocal` in the root project. Please also remember to publish the `core` module first.
 
 2. With the CLI:
 
-- to publish all modules: `./gradlew publishToMavenLocal`
-- to publish a selected module: `./gradlew :packages:{module}:publishToMavenLocal`
+- first publish `./gradlew :packages:core:publishToMavenLocal`
+- then:
+  - to publish all other modules: `./gradlew publishToMavenLocal`
+  - to publish a selected module: `./gradlew :packages:{module}:publishToMavenLocal`
 
-**Note**: to publish all modules in `packages/`, you can simply run the task `publishToMavenLocal` in the root project directory.
+**Note**: to publish all modules in `packages/`, you can simply run the task `publishToMavenLocal` in the root project directory. Please also remember to publish the `core` module first.
 
 #### Step 2: Verify plugin is published
 
