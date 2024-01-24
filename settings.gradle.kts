@@ -16,7 +16,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "OMH Auth"
-include(":auth-api")
-include(":auth-sample")
-include(":auth-api-non-gms")
-include(":auth-api-gms")
+include(":packages:core")
+include(":apps:auth-sample")
+include(":packages:plugin-google-non-gms")
+include(":packages:plugin-google-gms")

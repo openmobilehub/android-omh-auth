@@ -22,11 +22,6 @@ object BuildPlugins {
 }
 
 object Libs {
-    // OMH
-    val authApi by lazy { "com.openmobilehub.android:auth-api:${Versions.authApi}" }
-    val authGms by lazy { "com.openmobilehub.android:auth-api-gms:${Versions.authGms}" }
-    val authNgms by lazy { "com.openmobilehub.android:auth-api-non-gms:${Versions.authNgms}" }
-
     val reflection by lazy { "org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}" }
 
     // KTX

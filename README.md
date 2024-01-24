@@ -68,7 +68,7 @@ To access Google APIs, generate a unique client_id for your app in the Google AP
 3. [Go to the Credentials page](https://console.cloud.google.com/apis/credentials).
 4. On the Credentials page, click on "Create credentials" and choose "OAuth Client ID".
 5. In the "Application Type" option, select "Android".
-6. Set your application package name (Use "com.omh.android.auth.sample" if you are following the
+6. Set your application package name (Use "com.openmobilehub.android.auth.sample" if you are following the
    starter-code)
 7. Update the debug/release SHA-1 certificate fingerprint for Android's Client ID.
 

@@ -41,13 +41,13 @@ public class AuthSampleLoginScreen extends BaseScreen {
      */
 
     // logged out elements
-    @AndroidFindBy(id="com.omh.android.auth.sample:id/toolbar")
+    @AndroidFindBy(id="com.openmobilehub.android.auth.sample:id/toolbar")
     private WebElement topActionBar;
 
     @AndroidFindBy(className="android.widget.TextView")
     private WebElement topActionBarTxt;
 
-    @AndroidFindBy(id="com.omh.android.auth.sample:id/btn_login")
+    @AndroidFindBy(id="com.openmobilehub.android.auth.sample:id/btn_login")
     private WebElement loginBtn;
 
     // account picker popup
@@ -55,32 +55,32 @@ public class AuthSampleLoginScreen extends BaseScreen {
     private WebElement pickAccount;
 
     // logged in elements
-    @AndroidFindBy(id="com.omh.android.auth.sample:id/tvName")
+    @AndroidFindBy(id="com.openmobilehub.android.auth.sample:id/tvName")
     private WebElement tvName;
 
-    @AndroidFindBy(id="com.omh.android.auth.sample:id/tvEmail")
+    @AndroidFindBy(id="com.openmobilehub.android.auth.sample:id/tvEmail")
     private WebElement tvEmail;
 
-    @AndroidFindBy(id="com.omh.android.auth.sample:id/btn_logout")
+    @AndroidFindBy(id="com.openmobilehub.android.auth.sample:id/btn_logout")
     private WebElement loggedOutBtn;
 
-    @AndroidFindBy(id="com.omh.android.auth.sample:id/tvToken")
+    @AndroidFindBy(id="com.openmobilehub.android.auth.sample:id/tvToken")
     private WebElement tokenInfo;
 
-    @AndroidFindBy(id="com.omh.android.auth.sample:id/btn_refresh")
+    @AndroidFindBy(id="com.openmobilehub.android.auth.sample:id/btn_refresh")
     private WebElement refreshBtn;
 
     // Messages UI
     @AndroidFindBy(id="android:id/button1")
     private WebElement okBtn;
 
-    @AndroidFindBy(id="com.omh.android.auth.sample:id/alertTitle")
+    @AndroidFindBy(id="com.openmobilehub.android.auth.sample:id/alertTitle")
     private WebElement alertTitle;
 
     @AndroidFindBy(id="android:id/message")
     private WebElement alertMsg;
 
-    @AndroidFindBy(id="com.omh.android.auth.sample:id/btn_revoke")
+    @AndroidFindBy(id="com.openmobilehub.android.auth.sample:id/btn_revoke")
     private WebElement revokeTokenBtn;
 
     /*
