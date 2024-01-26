@@ -4,7 +4,7 @@ import java.util.Properties
 
 var properties = Properties()
 properties.load(project.rootProject.file("local.properties").inputStream())
-var isLocalDevelopment = (rootProject.ext.has("isLocalDevelopment") && rootProject.ext.get("isLocalDevelopment") == "true") || (properties.hasProperty("isLocalDevelopment") && properties.getProperty("isLocalDevelopment") == "true")
+var useMavenLocal = (rootProject.ext.has("useMavenLocal") && rootProject.ext.get("useMavenLocal") == "true") || (properties.hasProperty("useMavenLocal") && properties.getProperty("useMavenLocal") == "true")
 
 plugins {
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
@@ -12,7 +12,7 @@ plugins {
 }
 
 subprojects {
-    if(isLocalDevelopment) {
+    if(useMavenLocal) {
         repositories {
             mavenLocal()
             gradlePluginPortal()
