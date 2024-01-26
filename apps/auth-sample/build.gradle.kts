@@ -2,6 +2,8 @@
 
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
+val useLocalProjects = project.rootProject.extra["useLocalProjects"] as Boolean
+
 plugins {
     `android-application`
     id("kotlin-kapt")
@@ -17,14 +19,16 @@ var googleGmsPath = "com.openmobilehub.android.auth.plugin.google.gms.OmhAuthFac
 var googleNongmsPath = "com.openmobilehub.android.auth.plugin.google.nongms.presentation.OmhAuthFactoryImpl"
 
 omhConfig {
+    enableLocalProjects = useLocalProjects
+
     bundle("singleBuild") {
         auth {
             gmsService {
-                dependency = googleGmsDependency
+                if(!useLocalProjects) dependency = googleGmsDependency
                 path = googleGmsPath
             }
             nonGmsService {
-                dependency = googleNongmsDependency
+                if(!useLocalProjects) dependency = googleNongmsDependency
                 path = googleNongmsPath
             }
         }
@@ -32,7 +36,7 @@ omhConfig {
     bundle("gms") {
         auth {
             gmsService {
-                dependency = googleGmsDependency
+                if(!useLocalProjects) dependency = googleGmsDependency
                 path = googleGmsPath
             }
         }
@@ -40,7 +44,7 @@ omhConfig {
     bundle("nongms") {
         auth {
             nonGmsService {
-                dependency = googleNongmsDependency
+                if(!useLocalProjects) dependency = googleNongmsDependency
                 path = googleNongmsPath
             }
         }
@@ -121,6 +125,13 @@ dependencies {
     testImplementation(Libs.junit)
     androidTestImplementation(Libs.androidJunit)
     androidTestImplementation(Libs.esspreso)
+
+    // Use local implementation instead of dependencies
+    if(useLocalProjects) {
+        implementation(project(":packages:core"))
+        implementation(project(":packages:plugin-google-gms"))
+        implementation(project(":packages:plugin-google-non-gms"))
+    }
 }
 
 fun getValueFromEnvOrProperties(name: String): Any? {
