@@ -15,16 +15,8 @@
  */
 
 import org.gradle.plugins.signing.SigningPlugin
-import org.jetbrains.kotlin.konan.properties.hasProperty
-import java.util.Properties
 
-var properties = Properties()
-properties.load(project.rootProject.file("local.properties").inputStream())
-var useMavenLocal = (rootProject.ext.has("useMavenLocal") && rootProject.ext.get("useMavenLocal") == "true") || (properties.hasProperty("useMavenLocal") && properties.getProperty("useMavenLocal") == "true")
-
-if(useMavenLocal) {
-    println(" == OMH Auth project running in local development mode, using maven local  == ")
-}
+val useMavenLocal = project.rootProject.extra["useMavenLocal"] as Boolean
 
 plugins {
     id("com.android.library")
