@@ -28,6 +28,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.openmobilehub.android.auth.core.OmhAuthClient
+import com.openmobilehub.android.auth.plugin.facebook.OmhAuthClientImpl
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.sample.R
 import com.openmobilehub.android.auth.sample.databinding.FragmentLoginBinding
@@ -46,6 +47,7 @@ class LoginFragment : Fragment() {
 
     @Inject
     lateinit var omhAuthClient: OmhAuthClient
+    var omhAuthFacebookClient: OmhAuthClientImpl = OmhAuthClientImpl()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,11 +65,17 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.btnLogin?.setOnClickListener { startLogin() }
+        binding?.btnGoogleLogin?.setOnClickListener { startGoogleLogin() }
+        binding?.btnFacebookLogin?.setOnClickListener { startFacebookLogin() }
     }
 
-    private fun startLogin() {
+    private fun startGoogleLogin() {
         val loginIntent = omhAuthClient.getLoginIntent()
+        loginLauncher.launch(loginIntent)
+    }
+
+    private fun startFacebookLogin() {
+        val loginIntent = omhAuthFacebookClient.getLoginIntent(this.requireActivity())
         loginLauncher.launch(loginIntent)
     }
 
@@ -77,6 +85,7 @@ class LoginFragment : Fragment() {
 
     private fun handleLoginResult(result: ActivityResult) {
         try {
+            omhAuthFacebookClient.getUser()
             omhAuthClient.getAccountFromIntent(result.data)
             navigateToLoggedIn()
         } catch (exception: OmhAuthException) {

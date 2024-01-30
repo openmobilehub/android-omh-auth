@@ -120,6 +120,8 @@ dependencies {
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.44")
+    implementation(project(":packages:plugin-facebook"))
+    implementation(Libs.facebookSdk)
     kapt("com.google.dagger:hilt-compiler:2.44")
 
     testImplementation(Libs.junit)

@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/login_fragment"
-        android:label="@string/login"
+        android:label="@string/google_login"
         android:name="com.openmobilehub.android.auth.sample.login.LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
