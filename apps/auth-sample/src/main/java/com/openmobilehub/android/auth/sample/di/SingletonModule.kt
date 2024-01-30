@@ -19,6 +19,7 @@ package com.openmobilehub.android.auth.sample.di
 import android.content.Context
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.OmhAuthProvider
+import com.openmobilehub.android.auth.plugin.facebook.FacebookAuthClient
 import com.openmobilehub.android.auth.sample.BuildConfig
 import dagger.Module
 import dagger.Provides
@@ -39,6 +40,17 @@ object SingletonModule {
             scopes = listOf("openid", "email", "profile"),
             clientId = BuildConfig.CLIENT_ID,
             context = context
+        )
+    }
+
+    @Provides
+    fun providesOmhFacebookAuthClient(@ApplicationContext context: Context): FacebookAuthClient {
+        return FacebookAuthClient(
+            scopes = arrayListOf("public_profile"),
+            context = context,
+            applicationName = "OMH",
+            applicationId = BuildConfig.FACEBOOK_APP_ID,
+            clientToken = BuildConfig.FACEBOOK_CLIENT_TOKEN
         )
     }
 }

@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.openmobilehub.android.auth.plugin.google.gms"
+    namespace = "com.openmobilehub.android.auth.plugin.facebook"
 }
 
 val useLocalProjects = project.rootProject.extra["useLocalProjects"] as Boolean
@@ -22,9 +22,8 @@ dependencies {
     implementation(Libs.coroutinesCore)
     implementation(Libs.coroutinesAndroid)
 
-    // Google Sign In
-    implementation(Libs.googleSignIn)
-    implementation(Libs.googleApiClientAndroid)
+    // Facebook SDK
+    implementation(Libs.facebookSdk)
 
     // Test dependencies
     testImplementation(Libs.junit)

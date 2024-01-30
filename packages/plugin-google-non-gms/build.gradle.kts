@@ -2,8 +2,6 @@ plugins {
     `android-base-lib`
 }
 
-setProperty("version", properties["authGoogleNongmsVersion"])
-
 android {
     namespace = "com.openmobilehub.android.auth.plugin.google.nongms"
 

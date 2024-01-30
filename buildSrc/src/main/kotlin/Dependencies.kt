@@ -58,6 +58,9 @@ object Libs {
     val googleSignIn by lazy { "com.google.android.gms:play-services-auth:${Versions.googleSignIn}" }
     val googlePlayBase by lazy { "com.google.android.gms:play-services-base:${Versions.googlePlayBase}" }
 
+    // Facebook SDK
+    val facebookSdk by lazy { "com.facebook.android:facebook-android-sdk:${Versions.facebookSdk}" }
+
     // Testing
     val junit by lazy { "junit:junit:${Versions.junit}" }
     val androidJunit by lazy { "androidx.test.ext:junit:${Versions.androidJunit}" }

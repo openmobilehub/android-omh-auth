@@ -46,6 +46,9 @@ object Versions {
     const val googleSignIn = "20.4.1"
     const val googlePlayBase = "18.2.0"
 
+    // Facebook SDK
+    const val facebookSdk = "16.0.0"
+
     // Testing
     const val junit = "4.13.2"
     const val androidJunit = "1.1.5"

@@ -17,7 +17,10 @@
 package com.openmobilehub.android.auth.sample.login
 
 import android.content.Intent
+import android.os.Build
+import android.os.Build.VERSION
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,8 +30,16 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.models.OmhAuthException
+import com.openmobilehub.android.auth.plugin.facebook.FacebookAuthClient
+import com.openmobilehub.android.auth.plugin.facebook.FacebookLoginActivity
 import com.openmobilehub.android.auth.sample.R
 import com.openmobilehub.android.auth.sample.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,11 +52,17 @@ class LoginFragment : Fragment() {
         /* contract = */ ActivityResultContracts.StartActivityForResult(),
         /* callback = */ ::handleLoginResult
     )
+    private val fbLoginLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+        ::handleFbLoginResult
+    )
 
     private var binding: FragmentLoginBinding? = null
 
     @Inject
     lateinit var omhAuthClient: OmhAuthClient
+    @Inject
+    lateinit var omhFacebookAuthClient: FacebookAuthClient
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,12 +80,18 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.btnLogin?.setOnClickListener { startLogin() }
+        binding?.btnLogin?.setOnClickListener { startGoogleLogin() }
+        binding?.btnFbLogin?.setOnClickListener { startFbLogin() }
     }
 
-    private fun startLogin() {
+    private fun startGoogleLogin() {
         val loginIntent = omhAuthClient.getLoginIntent()
         loginLauncher.launch(loginIntent)
+    }
+
+    private fun startFbLogin() {
+        val loginIntent = omhFacebookAuthClient.getLoginIntent()
+        fbLoginLauncher.launch(loginIntent)
     }
 
     private fun navigateToLoggedIn() {
@@ -82,6 +105,19 @@ class LoginFragment : Fragment() {
         } catch (exception: OmhAuthException) {
             handleException(exception)
         }
+    }
+
+    private fun handleFbLoginResult(result: ActivityResult) {
+        val token = AccessToken.getCurrentAccessToken()
+
+        val accessToken = if (VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            result.data?.extras?.getParcelable("accessToken", AccessToken::class.java)
+        } else {
+            result.data?.extras?.getParcelable<AccessToken>("accessToken")
+        }
+
+        Log.d("XDXD", "isLoggedIn ${accessToken?.token != null}");
+        Log.d("XDXD", accessToken?.token ?: "null");
     }
 
     private fun handleException(exception: OmhAuthException) {
