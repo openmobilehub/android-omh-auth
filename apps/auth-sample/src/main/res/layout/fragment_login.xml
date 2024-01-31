@@ -23,24 +23,25 @@
     tools:context=".login.LoginFragment">
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_google_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_login"
-        android:text="@string/login"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/google_login"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/btn_facebook_login"
+        />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_fb_login"
+        android:id="@+id/btn_facebook_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/fb_login"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/facebook_login"
+        app:layout_constraintTop_toTopOf="@id/btn_google_login"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.571" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+    />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

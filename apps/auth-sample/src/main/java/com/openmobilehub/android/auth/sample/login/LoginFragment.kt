@@ -31,15 +31,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.facebook.AccessToken
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.login.LoginManager
-import com.facebook.login.LoginResult
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.plugin.facebook.FacebookAuthClient
-import com.openmobilehub.android.auth.plugin.facebook.FacebookLoginActivity
 import com.openmobilehub.android.auth.sample.R
 import com.openmobilehub.android.auth.sample.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,9 +46,9 @@ class LoginFragment : Fragment() {
         /* contract = */ ActivityResultContracts.StartActivityForResult(),
         /* callback = */ ::handleLoginResult
     )
-    private val fbLoginLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
+    private val facebookLoginLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult(),
-        ::handleFbLoginResult
+        ::handleFacebookLoginResult
     )
 
     private var binding: FragmentLoginBinding? = null
@@ -80,8 +74,8 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.btnLogin?.setOnClickListener { startGoogleLogin() }
-        binding?.btnFbLogin?.setOnClickListener { startFbLogin() }
+        binding?.btnGoogleLogin?.setOnClickListener { startGoogleLogin() }
+        binding?.btnFacebookLogin?.setOnClickListener { startFacebookLogin() }
     }
 
     private fun startGoogleLogin() {
@@ -89,9 +83,9 @@ class LoginFragment : Fragment() {
         loginLauncher.launch(loginIntent)
     }
 
-    private fun startFbLogin() {
+    private fun startFacebookLogin() {
         val loginIntent = omhFacebookAuthClient.getLoginIntent()
-        fbLoginLauncher.launch(loginIntent)
+        facebookLoginLauncher.launch(loginIntent)
     }
 
     private fun navigateToLoggedIn() {
@@ -107,7 +101,7 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun handleFbLoginResult(result: ActivityResult) {
+    private fun handleFacebookLoginResult(result: ActivityResult) {
         val token = AccessToken.getCurrentAccessToken()
 
         val accessToken = if (VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">OMH Auth demo</string>
-    <string name="login">Google Login</string>
-    <string name="fb_login">Facebook Login</string>
+    <string name="login">Login</string>
+    <string name="google_login">Google Login</string>
+    <string name="facebook_login">Facebook Login</string>
     <string name="revoke_token">Revoke token</string>
     <string name="logout">Logout</string>
     <string name="refresh">Refresh</string>

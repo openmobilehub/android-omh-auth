@@ -2,8 +2,6 @@ package com.openmobilehub.android.auth.plugin.facebook
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
-import com.facebook.CallbackManager
 import com.facebook.FacebookSdk
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.async.OmhTask
