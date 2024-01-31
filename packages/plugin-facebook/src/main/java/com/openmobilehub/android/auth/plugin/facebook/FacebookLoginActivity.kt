@@ -23,7 +23,7 @@ class FacebookLoginActivity : Activity() {
                     setResult(Activity.RESULT_OK,
                         Intent()
                             .putExtra("accessToken", result.accessToken)
-                            .putExtra("authenticationToken", result.accessToken.token)
+                            .putExtra("authenticationToken", result.authenticationToken)
                     )
                     finish()
                 }
@@ -34,7 +34,7 @@ class FacebookLoginActivity : Activity() {
                 }
 
                 override fun onError(error: FacebookException) {
-                    setResult(Activity.RESULT_CANCELED, Intent().putExtra("error", error))
+                    setResult(Activity.RESULT_CANCELED, Intent().putExtra("error", error.cause))
                     finish()
                 }
             })

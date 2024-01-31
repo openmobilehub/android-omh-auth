@@ -94,7 +94,7 @@ class LoginFragment : Fragment() {
 
     private fun handleLoginResult(result: ActivityResult) {
         try {
-            omhAuthClient.getAccountFromIntent(result.data)
+            omhAuthClient.handleLoginIntentResponse(result.data)
             navigateToLoggedIn()
         } catch (exception: OmhAuthException) {
             handleException(exception)
@@ -102,16 +102,11 @@ class LoginFragment : Fragment() {
     }
 
     private fun handleFacebookLoginResult(result: ActivityResult) {
-        val token = AccessToken.getCurrentAccessToken()
-
-        val accessToken = if (VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            result.data?.extras?.getParcelable("accessToken", AccessToken::class.java)
-        } else {
-            result.data?.extras?.getParcelable<AccessToken>("accessToken")
+        try {
+            omhFacebookAuthClient.handleLoginIntentResponse(result.data)
+        } catch (exception: OmhAuthException) {
+            handleException(exception)
         }
-
-        Log.d("XDXD", "isLoggedIn ${accessToken?.token != null}");
-        Log.d("XDXD", accessToken?.token ?: "null");
     }
 
     private fun handleException(exception: OmhAuthException) {

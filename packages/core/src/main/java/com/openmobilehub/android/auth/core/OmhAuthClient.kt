@@ -31,6 +31,9 @@ interface OmhAuthClient {
 
     fun getLoginIntent(): Intent
 
+    @Throws(OmhAuthException::class)
+    fun handleLoginIntentResponse(data: Intent?)
+
     fun getUser(): OmhUserProfile?
 
     /**
@@ -53,9 +56,6 @@ interface OmhAuthClient {
      */
 
     fun signOut(): OmhTask<Unit>
-
-    @Throws(OmhAuthException::class)
-    fun getAccountFromIntent(data: Intent?): OmhUserProfile
 
     fun revokeToken(): OmhTask<Unit>
 }

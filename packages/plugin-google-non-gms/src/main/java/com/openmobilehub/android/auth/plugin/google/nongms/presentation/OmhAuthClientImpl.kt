@@ -86,14 +86,17 @@ internal class OmhAuthClientImpl(
         return OmhNonGmsTask(authUseCase::logout)
     }
 
-    override fun getAccountFromIntent(data: Intent?): OmhUserProfile {
+    override fun handleLoginIntentResponse(data: Intent?) {
         if (data?.hasExtra(Constants.CAUSE_KEY) == true) {
             val exception = data.getSerializableExtra(Constants.CAUSE_KEY) as OmhAuthException
             throw exception
         }
-        return getUser() ?: throw OmhAuthException.UnrecoverableLoginException(
-            cause = Throwable(message = "No user profile stored")
-        )
+
+        if (getUser() == null) {
+            throw OmhAuthException.UnrecoverableLoginException(
+                cause = Throwable(message = "No user profile stored")
+            )
+        }
     }
 
     override fun revokeToken(): OmhTask<Unit> {
