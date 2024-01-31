@@ -25,6 +25,9 @@ dependencies {
     // Facebook SDK
     implementation(Libs.facebookSdk)
 
+    // Encrypted Shared Prefs
+    implementation(Libs.androidSecurity)
+
     // Test dependencies
     testImplementation(Libs.junit)
     androidTestImplementation(Libs.androidJunit)
