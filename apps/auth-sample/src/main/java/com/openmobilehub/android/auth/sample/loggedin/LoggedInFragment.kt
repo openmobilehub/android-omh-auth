@@ -16,6 +16,9 @@
 
 package com.openmobilehub.android.auth.sample.loggedin
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,11 +36,14 @@ import com.openmobilehub.android.auth.core.async.CancellableCollector
 import com.openmobilehub.android.auth.sample.R
 import com.openmobilehub.android.auth.sample.databinding.FragmentLoggedInBinding
 import com.openmobilehub.android.auth.sample.di.AuthClientProvider
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.net.URI
+import java.net.URL
 
 @AndroidEntryPoint
 class LoggedInFragment : Fragment() {
@@ -69,15 +75,12 @@ class LoggedInFragment : Fragment() {
             btnLogout.setOnClickListener { logout() }
             btnRefresh.setOnClickListener { refreshToken() }
             btnRevoke.setOnClickListener { revokeToken() }
+            tvEmail.text = getString(R.string.email_placeholder, profile?.email)
+            tvName.text = getString(R.string.name_placeholder, profile?.name)
+            tvSurname.text = getString(R.string.surname_placeholder, profile?.surname)
         }
 
-        if (profile != null) {
-            binding?.run {
-                tvEmail.text = getString(R.string.email_placeholder, profile.email)
-                tvName.text = getString(R.string.name_placeholder, profile.name)
-                tvSurname.text = getString(R.string.surname_placeholder, profile.surname)
-            }
-        }
+        Picasso.get().load(profile?.profileImage).into(binding?.tvAvatar);
     }
 
     private fun revokeToken() {

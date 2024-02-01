@@ -46,7 +46,7 @@ object SingletonModule {
     @Provides
     fun providesFacebookAuthClient(@ApplicationContext context: Context): FacebookAuthClient {
         return FacebookAuthClient(
-            scopes = arrayListOf("public_profile"),
+            scopes = arrayListOf("public_profile", "email"),
             context = context,
         )
     }

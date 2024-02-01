@@ -17,15 +17,19 @@
 package com.openmobilehub.android.auth.sample.base
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.facebook.AccessToken
+import com.facebook.Profile
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.plugin.facebook.FacebookAuthClient
 import com.openmobilehub.android.auth.sample.R
 import com.openmobilehub.android.auth.sample.databinding.ActivityMainBinding
+import com.openmobilehub.android.auth.sample.di.AuthClientProvider
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -38,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Inject
-    lateinit var authClient: OmhAuthClient
+    lateinit var authClientProvider: AuthClientProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,10 +74,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun selectStartDestination(): Int {
-        return if (authClient.getUser() == null) {
+        return try {
+            if (authClientProvider.getClient().getUser() == null) {
+                R.id.login_fragment
+            } else {
+                R.id.logged_in_fragment
+            }
+        } catch (e: Exception) {
             R.id.login_fragment
-        } else {
-            R.id.logged_in_fragment
         }
     }
 }
