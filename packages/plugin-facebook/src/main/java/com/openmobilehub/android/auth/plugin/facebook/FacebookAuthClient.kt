@@ -16,18 +16,8 @@ import com.openmobilehub.android.auth.core.models.OmhUserProfile
 class FacebookAuthClient(
     val scopes: ArrayList<String>,
     val context: Context,
-    val applicationName: String,
-    val applicationId: String,
-    val clientToken: String
 ) :
     OmhAuthClient {
-    init {
-        FacebookSdk.setApplicationName(applicationName)
-        FacebookSdk.setApplicationId(applicationId)
-        FacebookSdk.setClientToken(clientToken)
-        FacebookSdk.sdkInitialize(context)
-    }
-
     override fun getLoginIntent(): Intent {
         return Intent(
             context, FacebookLoginActivity::class.java

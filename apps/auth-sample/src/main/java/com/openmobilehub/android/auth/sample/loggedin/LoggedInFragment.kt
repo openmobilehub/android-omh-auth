@@ -17,6 +17,7 @@
 package com.openmobilehub.android.auth.sample.loggedin
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,7 @@ import com.openmobilehub.android.auth.core.OmhCredentials
 import com.openmobilehub.android.auth.core.async.CancellableCollector
 import com.openmobilehub.android.auth.sample.R
 import com.openmobilehub.android.auth.sample.databinding.FragmentLoggedInBinding
+import com.openmobilehub.android.auth.sample.di.AuthClientProvider
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -41,7 +43,7 @@ import kotlinx.coroutines.withContext
 class LoggedInFragment : Fragment() {
 
     @Inject
-    lateinit var omhAuthClient: OmhAuthClient
+    lateinit var authClientProvider: AuthClientProvider
 
     private var binding: FragmentLoggedInBinding? = null
 
@@ -62,7 +64,7 @@ class LoggedInFragment : Fragment() {
     }
 
     private fun setupUI() {
-        val profile = requireNotNull(omhAuthClient.getUser())
+        val profile = requireNotNull(authClientProvider.getClient().getUser())
         binding?.run {
             btnLogout.setOnClickListener { logout() }
             btnRefresh.setOnClickListener { refreshToken() }
@@ -74,7 +76,7 @@ class LoggedInFragment : Fragment() {
     }
 
     private fun revokeToken() {
-        val cancellable = omhAuthClient.revokeToken()
+        val cancellable = authClientProvider.getClient().revokeToken()
             .addOnFailure(::showErrorDialog)
             .addOnSuccess { navigateToLogin() }
             .execute()
@@ -82,7 +84,7 @@ class LoggedInFragment : Fragment() {
     }
 
     private fun getToken() = lifecycleScope.launch(Dispatchers.IO) {
-        val token = when (val credentials = omhAuthClient.getCredentials()) {
+        val token = when (val credentials = authClientProvider.getClient().getCredentials()) {
             is OmhCredentials -> credentials.accessToken
             is GoogleAccountCredential -> {
                 requestGoogleToken(credentials)
@@ -108,7 +110,7 @@ class LoggedInFragment : Fragment() {
     }
 
     private fun logout() {
-        val cancellable = omhAuthClient.signOut()
+        val cancellable = authClientProvider.getClient().signOut()
             .addOnSuccess { navigateToLogin() }
             .addOnFailure(::showErrorDialog)
             .execute()
@@ -127,7 +129,7 @@ class LoggedInFragment : Fragment() {
     }
 
     private fun refreshToken() = lifecycleScope.launch(Dispatchers.IO) {
-        val newToken = when (val credentials = omhAuthClient.getCredentials()) {
+        val newToken = when (val credentials = authClientProvider.getClient().getCredentials()) {
             is OmhCredentials -> credentials.blockingRefreshToken()
             is GoogleAccountCredential -> requestGoogleToken(credentials)
             else -> error("Unsupported credential type")

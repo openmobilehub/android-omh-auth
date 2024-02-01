@@ -23,7 +23,7 @@ dependencies {
     implementation(Libs.coroutinesAndroid)
 
     // Facebook SDK
-    implementation(Libs.facebookSdk)
+    api(Libs.facebookSdk)
 
     // Encrypted Shared Prefs
     implementation(Libs.androidSecurity)

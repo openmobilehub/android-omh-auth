@@ -1,7 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import org.gradle.initialization.Environment.Properties
+import java.util.Properties
 
 val useLocalProjects = project.rootProject.extra["useLocalProjects"] as Boolean
 
@@ -64,11 +64,9 @@ android {
         val facebookAppId = properties["FACEBOOK_APP_ID"] as String
         val facebookClientToken = properties["FACEBOOK_CLIENT_TOKEN"] as String
 
-        buildConfigField("String", "FACEBOOK_APP_ID", "\"${facebookAppId}\"")
-        buildConfigField("String", "FACEBOOK_CLIENT_TOKEN", "\"${facebookClientToken}\"")
-
-        manifestPlaceholders["FACEBOOK_APP_ID"] = facebookAppId
-        manifestPlaceholders["FACEBOOK_CLIENT_TOKEN"] = facebookClientToken
+        resValue("string", "facebook_app_id", facebookAppId)
+        resValue("string", "facebook_client_token", facebookClientToken)
+        resValue("string", "fb_login_protocol_scheme", "fb${facebookAppId}")
     }
 
     signingConfigs {
@@ -119,9 +117,6 @@ android {
 }
 dependencies {
     implementation(Libs.googleApiClientAndroid)
-
-    // Facebook SDK
-    implementation(Libs.facebookSdk)
 
     implementation(Libs.coreKtx)
     implementation(Libs.lifecycleKtx)

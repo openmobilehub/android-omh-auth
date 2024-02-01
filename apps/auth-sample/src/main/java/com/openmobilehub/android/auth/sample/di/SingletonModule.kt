@@ -31,7 +31,7 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object SingletonModule {
     @Provides
-    fun providesOmhAuthClient(@ApplicationContext context: Context): OmhAuthClient {
+    fun providesGoogleAuthClient(@ApplicationContext context: Context): OmhAuthClient {
         val omhAuthProvider = OmhAuthProvider.Builder()
             .addNonGmsPath(BuildConfig.AUTH_NON_GMS_PATH)
             .addGmsPath(BuildConfig.AUTH_GMS_PATH)
@@ -44,13 +44,10 @@ object SingletonModule {
     }
 
     @Provides
-    fun providesOmhFacebookAuthClient(@ApplicationContext context: Context): FacebookAuthClient {
+    fun providesFacebookAuthClient(@ApplicationContext context: Context): FacebookAuthClient {
         return FacebookAuthClient(
             scopes = arrayListOf("public_profile"),
             context = context,
-            applicationName = "OMH",
-            applicationId = BuildConfig.FACEBOOK_APP_ID,
-            clientToken = BuildConfig.FACEBOOK_CLIENT_TOKEN
         )
     }
 }
