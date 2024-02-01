@@ -1,7 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import java.util.Properties
 
 val useLocalProjects = project.rootProject.extra["useLocalProjects"] as Boolean
 
@@ -17,7 +16,8 @@ var googleGmsDependency = "com.openmobilehub.android.auth:plugin-google-gms:2.0.
 var googleNongmsDependency = "com.openmobilehub.android.auth:plugin-google-non-gms:2.0.0-beta"
 
 var googleGmsPath = "com.openmobilehub.android.auth.plugin.google.gms.OmhAuthFactoryImpl"
-var googleNongmsPath = "com.openmobilehub.android.auth.plugin.google.nongms.presentation.OmhAuthFactoryImpl"
+var googleNongmsPath =
+    "com.openmobilehub.android.auth.plugin.google.nongms.presentation.OmhAuthFactoryImpl"
 
 omhConfig {
     enableLocalProjects = useLocalProjects
@@ -25,11 +25,11 @@ omhConfig {
     bundle("singleBuild") {
         auth {
             gmsService {
-                if(!useLocalProjects) dependency = googleGmsDependency
+                if (!useLocalProjects) dependency = googleGmsDependency
                 path = googleGmsPath
             }
             nonGmsService {
-                if(!useLocalProjects) dependency = googleNongmsDependency
+                if (!useLocalProjects) dependency = googleNongmsDependency
                 path = googleNongmsPath
             }
         }
@@ -37,7 +37,7 @@ omhConfig {
     bundle("gms") {
         auth {
             gmsService {
-                if(!useLocalProjects) dependency = googleGmsDependency
+                if (!useLocalProjects) dependency = googleGmsDependency
                 path = googleGmsPath
             }
         }
@@ -45,7 +45,7 @@ omhConfig {
     bundle("nongms") {
         auth {
             nonGmsService {
-                if(!useLocalProjects) dependency = googleNongmsDependency
+                if (!useLocalProjects) dependency = googleNongmsDependency
                 path = googleNongmsPath
             }
         }
@@ -74,10 +74,13 @@ android {
         // The if statement is necessary to avoid errors when the packages are built on CI.
         // The alternative would be to pass all the environment variables for signing apk to the packages workflows.
         create("release") {
-            val storeFileName = getValueFromEnvOrProperties("SAMPLE_APP_KEYSTORE_FILE_NAME") as? String
-            val storePassword = getValueFromEnvOrProperties("SAMPLE_APP_KEYSTORE_STORE_PASSWORD") as? String
+            val storeFileName =
+                getValueFromEnvOrProperties("SAMPLE_APP_KEYSTORE_FILE_NAME") as? String
+            val storePassword =
+                getValueFromEnvOrProperties("SAMPLE_APP_KEYSTORE_STORE_PASSWORD") as? String
             val keyAlias = getValueFromEnvOrProperties("SAMPLE_APP_KEYSTORE_KEY_ALIAS") as? String
-            val keyPassword = getValueFromEnvOrProperties("SAMPLE_APP_KEYSTORE_KEY_PASSWORD") as? String
+            val keyPassword =
+                getValueFromEnvOrProperties("SAMPLE_APP_KEYSTORE_KEY_PASSWORD") as? String
 
             if (storeFileName != null && storePassword != null && keyAlias != null && keyPassword != null) {
                 this.storeFile = file(storeFileName)
@@ -107,7 +110,7 @@ android {
     viewBinding {
         enable = true
     }
-
+    
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -138,7 +141,7 @@ dependencies {
     androidTestImplementation(Libs.esspreso)
 
     // Use local implementation instead of dependencies
-    if(useLocalProjects) {
+    if (useLocalProjects) {
         implementation(project(":packages:core"))
         implementation(project(":packages:plugin-google-gms"))
         implementation(project(":packages:plugin-google-non-gms"))

@@ -16,9 +16,6 @@
 
 package com.openmobilehub.android.auth.sample.loggedin
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,7 +27,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.UserRecoverableAuthException
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
-import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.OmhCredentials
 import com.openmobilehub.android.auth.core.async.CancellableCollector
 import com.openmobilehub.android.auth.sample.R
@@ -38,12 +34,10 @@ import com.openmobilehub.android.auth.sample.databinding.FragmentLoggedInBinding
 import com.openmobilehub.android.auth.sample.di.AuthClientProvider
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.net.URI
-import java.net.URL
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoggedInFragment : Fragment() {
@@ -80,7 +74,7 @@ class LoggedInFragment : Fragment() {
             tvSurname.text = getString(R.string.surname_placeholder, profile?.surname)
         }
 
-        Picasso.get().load(profile?.profileImage).into(binding?.tvAvatar);
+        Picasso.get().load(profile?.profileImage).into(binding?.tvAvatar)
     }
 
     private fun revokeToken() {

@@ -20,7 +20,8 @@ class FacebookLoginActivity : Activity() {
         LoginManager.getInstance()
             .registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
                 override fun onSuccess(result: LoginResult) {
-                    setResult(Activity.RESULT_OK,
+                    setResult(
+                        RESULT_OK,
                         Intent()
                             .putExtra("accessToken", result.accessToken)
                             .putExtra("authenticationToken", result.authenticationToken)
@@ -29,12 +30,12 @@ class FacebookLoginActivity : Activity() {
                 }
 
                 override fun onCancel() {
-                    setResult(Activity.RESULT_CANCELED)
+                    setResult(RESULT_CANCELED)
                     finish()
                 }
 
                 override fun onError(error: FacebookException) {
-                    setResult(Activity.RESULT_CANCELED, Intent().putExtra("error", error.cause))
+                    setResult(RESULT_CANCELED, Intent().putExtra("error", error.cause))
                     finish()
                 }
             })

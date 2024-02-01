@@ -18,7 +18,6 @@ package com.openmobilehub.android.auth.sample.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +32,6 @@ import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.plugin.facebook.FacebookAuthClient
 import com.openmobilehub.android.auth.sample.R
 import com.openmobilehub.android.auth.sample.databinding.FragmentLoginBinding
-import com.openmobilehub.android.auth.sample.di.AuthClientProvider
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -53,6 +51,7 @@ class LoginFragment : Fragment() {
 
     @Inject
     lateinit var googleAuthClient: OmhAuthClient
+
     @Inject
     lateinit var facebookAuthClient: FacebookAuthClient
 
