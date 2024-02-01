@@ -64,14 +64,19 @@ class LoggedInFragment : Fragment() {
     }
 
     private fun setupUI() {
-        val profile = requireNotNull(authClientProvider.getClient().getUser())
+        val profile = authClientProvider.getClient().getUser()
         binding?.run {
             btnLogout.setOnClickListener { logout() }
             btnRefresh.setOnClickListener { refreshToken() }
             btnRevoke.setOnClickListener { revokeToken() }
-            tvEmail.text = getString(R.string.email_placeholder, profile.email)
-            tvName.text = getString(R.string.name_placeholder, profile.name)
-            tvSurname.text = getString(R.string.surname_placeholder, profile.surname)
+        }
+
+        if (profile != null) {
+            binding?.run {
+                tvEmail.text = getString(R.string.email_placeholder, profile.email)
+                tvName.text = getString(R.string.name_placeholder, profile.name)
+                tvSurname.text = getString(R.string.surname_placeholder, profile.surname)
+            }
         }
     }
 
@@ -84,18 +89,22 @@ class LoggedInFragment : Fragment() {
     }
 
     private fun getToken() = lifecycleScope.launch(Dispatchers.IO) {
-        val token = when (val credentials = authClientProvider.getClient().getCredentials()) {
-            is OmhCredentials -> credentials.accessToken
-            is GoogleAccountCredential -> {
-                requestGoogleToken(credentials)
+        try {
+            val token = when (val credentials = authClientProvider.getClient().getCredentials()) {
+                is OmhCredentials -> credentials.accessToken
+                is GoogleAccountCredential -> {
+                    requestGoogleToken(credentials)
+                }
+
+                null -> return@launch
+                else -> error("Unsupported credential type")
             }
 
-            null -> return@launch
-            else -> error("Unsupported credential type")
-        }
-
-        withContext(Dispatchers.Main) {
-            binding?.tvToken?.text = getString(R.string.token_placeholder, token)
+            withContext(Dispatchers.Main) {
+                binding?.tvToken?.text = getString(R.string.token_placeholder, token)
+            }
+        } catch (e: NotImplementedError) {
+            Log.e("LoggedInFragment", "Not implemented", e)
         }
     }
 
