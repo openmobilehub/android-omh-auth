@@ -1,14 +1,15 @@
 <resources>
     <string name="app_name">OMH Auth demo</string>
     <string name="login">Login</string>
+    <string name="home">Home</string>
     <string name="google_login">Google Login</string>
     <string name="facebook_login">Facebook Login</string>
-    <string name="revoke_token">Revoke token</string>
-    <string name="logout">Logout</string>
-    <string name="refresh">Refresh</string>
     <string name="name_placeholder"><b>Name:</b> %s</string>
     <string name="surname_placeholder"><b>Surname:</b> %s</string>
     <string name="email_placeholder"><b>Email:</b> %s</string>
     <string name="token_placeholder"><b>Token:</b> %s</string>
-    <string name="home">Home</string>
+    <string name="get_user">Get user</string>
+    <string name="refresh">Refresh</string>
+    <string name="revoke_token">Revoke token</string>
+    <string name="logout">Logout</string>
 </resources>

@@ -21,6 +21,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -66,15 +67,30 @@ class LoggedInFragment : Fragment() {
     private fun setupUI() {
         val profile = authClientProvider.getClient().getUser()
         binding?.run {
-            btnLogout.setOnClickListener { logout() }
-            btnRefresh.setOnClickListener { refreshToken() }
-            btnRevoke.setOnClickListener { revokeToken() }
-            tvEmail.text = getString(R.string.email_placeholder, profile?.email)
+            Picasso.get().load(profile?.profileImage).into(binding?.tvAvatar)
             tvName.text = getString(R.string.name_placeholder, profile?.name)
             tvSurname.text = getString(R.string.surname_placeholder, profile?.surname)
+            tvEmail.text = getString(R.string.email_placeholder, profile?.email)
+
+
+            btnGetUser.setOnClickListener { getUser() }
+            btnRefresh.setOnClickListener { refreshToken() }
+            btnRevoke.setOnClickListener { revokeToken() }
+            btnLogout.setOnClickListener { logout() }
+        }
+    }
+
+    private fun getUser() {
+        val profile = authClientProvider.getClient().getUser()
+
+        binding?.run {
+            Picasso.get().load(profile?.profileImage).into(binding?.tvAvatar)
+            tvName.text = getString(R.string.name_placeholder, profile?.name)
+            tvSurname.text = getString(R.string.surname_placeholder, profile?.surname)
+            tvEmail.text = getString(R.string.email_placeholder, profile?.email)
         }
 
-        Picasso.get().load(profile?.profileImage).into(binding?.tvAvatar)
+        Toast.makeText(this.requireActivity(), "Fetched User Data", Toast.LENGTH_SHORT).show()
     }
 
     private fun revokeToken() {
