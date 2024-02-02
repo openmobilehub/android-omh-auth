@@ -18,17 +18,19 @@ package com.openmobilehub.android.auth.plugin.google.nongms.presentation
 
 import android.content.Context
 import android.content.Intent
-import com.openmobilehub.android.auth.plugin.google.nongms.data.user.UserRepositoryImpl
-import com.openmobilehub.android.auth.plugin.google.nongms.domain.user.ProfileUseCase
-import com.openmobilehub.android.auth.plugin.google.nongms.presentation.redirect.RedirectActivity
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.async.OmhTask
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.core.models.OmhUserProfile
 import com.openmobilehub.android.auth.plugin.google.nongms.data.login.AuthRepositoryImpl
+import com.openmobilehub.android.auth.plugin.google.nongms.data.user.UserRepositoryImpl
 import com.openmobilehub.android.auth.plugin.google.nongms.domain.auth.AuthUseCase
 import com.openmobilehub.android.auth.plugin.google.nongms.domain.models.ApiResult
+import com.openmobilehub.android.auth.plugin.google.nongms.domain.user.ProfileUseCase
+import com.openmobilehub.android.auth.plugin.google.nongms.presentation.redirect.RedirectActivity
 import com.openmobilehub.android.auth.plugin.google.nongms.utils.Constants
+import com.openmobilehub.android.auth.plugin.google.nongms.utils.ThreadUtils
+import kotlinx.coroutines.runBlocking
 
 /**
  * Non GMS implementation of the OmhAuthClient abstraction. Required a clientId and defined scopes as
@@ -52,7 +54,7 @@ internal class OmhAuthClientImpl(
             .putExtra(RedirectActivity.SCOPES, scopes)
     }
 
-    override fun getUser(): OmhUserProfile? {
+    override suspend fun getUser(): OmhUserProfile? {
         val userRepository = UserRepositoryImpl.getUserRepository(applicationContext)
         val profileUseCase = ProfileUseCase.createUserProfileUseCase(userRepository)
         return profileUseCase.getProfileData()
@@ -92,10 +94,13 @@ internal class OmhAuthClientImpl(
             throw exception
         }
 
-        if (getUser() == null) {
-            throw OmhAuthException.UnrecoverableLoginException(
-                cause = Throwable(message = "No user profile stored")
-            )
+        ThreadUtils.checkForMainThread()
+        runBlocking {
+            if (getUser() == null) {
+                throw OmhAuthException.UnrecoverableLoginException(
+                    cause = Throwable(message = "No user profile stored")
+                )
+            }
         }
     }
 

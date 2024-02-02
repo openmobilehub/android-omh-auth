@@ -39,7 +39,7 @@ internal class OmhAuthClientImpl(
         return googleSignInClient.signInIntent
     }
 
-    override fun getUser(): OmhUserProfile? {
+    override suspend fun getUser(): OmhUserProfile? {
         val googleUser = GoogleSignIn.getLastSignedInAccount(googleSignInClient.applicationContext)
         return googleUser?.toOmhProfile()
     }

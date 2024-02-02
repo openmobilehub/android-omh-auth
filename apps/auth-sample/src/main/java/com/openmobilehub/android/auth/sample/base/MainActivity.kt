@@ -17,20 +17,19 @@
 package com.openmobilehub.android.auth.sample.base
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import com.facebook.AccessToken
-import com.facebook.Profile
-import com.openmobilehub.android.auth.core.OmhAuthClient
-import com.openmobilehub.android.auth.plugin.facebook.FacebookAuthClient
 import com.openmobilehub.android.auth.sample.R
 import com.openmobilehub.android.auth.sample.databinding.ActivityMainBinding
 import com.openmobilehub.android.auth.sample.di.AuthClientProvider
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -60,10 +59,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupGraph() {
-        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-        val startDestId = selectStartDestination()
-        navGraph.setStartDestination(startDestId)
-        navController.graph = navGraph
+        lifecycleScope.launch(Dispatchers.IO) {
+            withContext(Dispatchers.Main) {
+                val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
+                val startDestId = selectStartDestination()
+                navGraph.setStartDestination(startDestId)
+                navController.graph = navGraph
+            }
+        }
     }
 
     private fun setupToolbar() {
@@ -73,13 +76,13 @@ class MainActivity : AppCompatActivity() {
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 
-    private fun selectStartDestination(): Int {
+    private suspend fun selectStartDestination(): Int {
         return try {
             if (authClientProvider.getClient().getUser() == null) {
-                R.id.login_fragment
-            } else {
-                R.id.logged_in_fragment
+                return R.id.login_fragment
             }
+
+            return R.id.logged_in_fragment
         } catch (e: Exception) {
             R.id.login_fragment
         }

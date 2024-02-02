@@ -65,40 +65,42 @@ class LoggedInFragment : Fragment() {
     }
 
     private fun setupUI() {
-        val profile = authClientProvider.getClient().getUser()
         binding?.run {
-            Picasso.get().load(profile?.profileImage).into(binding?.tvAvatar)
-            tvName.text = getString(R.string.name_placeholder, profile?.name)
-            tvSurname.text = getString(R.string.surname_placeholder, profile?.surname)
-            tvEmail.text = getString(R.string.email_placeholder, profile?.email)
-
-
             btnGetUser.setOnClickListener { getUser() }
             btnRefresh.setOnClickListener { refreshToken() }
             btnRevoke.setOnClickListener { revokeToken() }
             btnLogout.setOnClickListener { logout() }
         }
+
+        getUser()
     }
 
     private fun getUser() {
-        val profile = authClientProvider.getClient().getUser()
+        lifecycleScope.launch(Dispatchers.IO) {
+            val profile = authClientProvider.getClient().getUser()
 
-        binding?.run {
-            Picasso.get().load(profile?.profileImage).into(binding?.tvAvatar)
-            tvName.text = getString(R.string.name_placeholder, profile?.name)
-            tvSurname.text = getString(R.string.surname_placeholder, profile?.surname)
-            tvEmail.text = getString(R.string.email_placeholder, profile?.email)
+            withContext(Dispatchers.Main) {
+                binding?.run {
+                    Picasso.get().load(profile?.profileImage).into(binding?.tvAvatar)
+                    tvName.text = getString(R.string.name_placeholder, profile?.name)
+                    tvSurname.text = getString(R.string.surname_placeholder, profile?.surname)
+                    tvEmail.text = getString(R.string.email_placeholder, profile?.email)
+                }
+
+                Toast.makeText(activity, "Fetched User Data", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
-
-        Toast.makeText(this.requireActivity(), "Fetched User Data", Toast.LENGTH_SHORT).show()
     }
 
     private fun revokeToken() {
-        val cancellable = authClientProvider.getClient().revokeToken()
-            .addOnFailure(::showErrorDialog)
-            .addOnSuccess { navigateToLogin() }
-            .execute()
-        cancellableCollector.addCancellable(cancellable)
+        lifecycleScope.launch(Dispatchers.IO) {
+            val cancellable = authClientProvider.getClient().revokeToken()
+                .addOnFailure(::showErrorDialog)
+                .addOnSuccess { navigateToLogin() }
+                .execute()
+            cancellableCollector.addCancellable(cancellable)
+        }
     }
 
     private fun getToken() = lifecycleScope.launch(Dispatchers.IO) {
@@ -132,11 +134,13 @@ class LoggedInFragment : Fragment() {
     }
 
     private fun logout() {
-        val cancellable = authClientProvider.getClient().signOut()
-            .addOnSuccess { navigateToLogin() }
-            .addOnFailure(::showErrorDialog)
-            .execute()
-        cancellableCollector.addCancellable(cancellable)
+        lifecycleScope.launch(Dispatchers.Main) {
+            val cancellable = authClientProvider.getClient().signOut()
+                .addOnSuccess { navigateToLogin() }
+                .addOnFailure(::showErrorDialog)
+                .execute()
+            cancellableCollector.addCancellable(cancellable)
+        }
     }
 
     private fun showErrorDialog(exception: Throwable) {
