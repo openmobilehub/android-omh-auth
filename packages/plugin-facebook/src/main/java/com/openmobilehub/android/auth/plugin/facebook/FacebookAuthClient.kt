@@ -50,17 +50,14 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) : 
     }
 
     override fun signOut(): OmhTask<Unit> {
-        LoginManager.getInstance().logOut()
-        return SimpleTask
+        val task = FacebookTask()
+
+        task.addOnExecute { LoginManager.getInstance().logOut() }
+
+        return task
     }
 
     override fun revokeToken(): OmhTask<Unit> {
         TODO()
-    }
-
-    companion object SimpleTask : OmhTask<Unit>() {
-        override fun execute(): OmhCancellable? {
-            return null
-        }
     }
 }
