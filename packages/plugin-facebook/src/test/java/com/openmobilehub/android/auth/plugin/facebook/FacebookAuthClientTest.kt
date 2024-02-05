@@ -2,11 +2,15 @@ package com.openmobilehub.android.auth.plugin.facebook
 
 import android.content.Context
 import android.content.Intent
+import com.facebook.AccessToken
+import com.facebook.AuthenticationToken
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 import io.mockk.EqMatcher
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkConstructor
+import io.mockk.mockkObject
+import io.mockk.mockkStatic
 import org.junit.Assert
 import org.junit.Test
 
@@ -40,7 +44,7 @@ class FacebookAuthClientTest {
     }
 
     @Test
-    fun shouldThrowErrorOnNoIntent() {
+    fun shouldThrowErrorOnNoLoginIntent() {
         val intentMock = null
 
         val authClient = FacebookAuthClient(scopes = scopes, context = contextMock)
@@ -51,7 +55,7 @@ class FacebookAuthClientTest {
     }
 
     @Test
-    fun shouldThrowErrorOnNoAccessToken() {
+    fun shouldThrowLoginErrorOnNoAccessToken() {
         val intentMock = mockk<Intent>()
 
         every { intentMock.hasExtra("accessToken") } returns false
@@ -79,5 +83,26 @@ class FacebookAuthClientTest {
         }
 
         Assert.assertEquals(error.cause, intentError)
+    }
+
+    @Test
+    fun shouldGetCredentials() {
+        val mockAccessToken = mockk<AccessToken>()
+        val mockAuthToken = mockk<AuthenticationToken>()
+
+        mockkStatic(AccessToken::class)
+        mockkObject(AccessToken.Companion)
+        mockkStatic(AuthenticationToken::class)
+        mockkObject(AuthenticationToken.Companion)
+
+        every { AccessToken.getCurrentAccessToken() } returns mockAccessToken
+        every { AuthenticationToken.getCurrentAuthenticationToken() } returns mockAuthToken
+
+        val authClient = FacebookAuthClient(scopes = scopes, context = contextMock)
+
+        val credentials = authClient.getCredentials()
+
+        Assert.assertEquals(credentials.accessToken, mockAccessToken)
+        Assert.assertEquals(credentials.authenticationToken, mockAuthToken)
     }
 }

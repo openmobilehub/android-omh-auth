@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.facebook.AccessToken
+import com.facebook.AuthenticationToken
 import com.facebook.GraphRequest
 import com.facebook.login.LoginManager
 import com.openmobilehub.android.auth.core.OmhAuthClient
@@ -40,8 +41,11 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) : 
     }
 
 
-    override fun getCredentials(): Any? {
-        TODO()
+    override fun getCredentials(): FacebookCredentials {
+        val authToken = AuthenticationToken.getCurrentAuthenticationToken()
+        val accessToken = AccessToken.getCurrentAccessToken()
+
+        return FacebookCredentials(authToken, accessToken)
     }
 
     override fun signOut(): OmhTask<Unit> {
