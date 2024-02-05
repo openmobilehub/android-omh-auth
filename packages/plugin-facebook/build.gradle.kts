@@ -17,10 +17,11 @@ dependencies {
 
     // Facebook SDK
     api(Libs.facebookSdk)
-    
+
     // Test dependencies
     testImplementation(Libs.junit)
     androidTestImplementation(Libs.androidJunit)
     testImplementation(Libs.mockk)
     testImplementation(Libs.coroutineTesting)
+    testImplementation("org.robolectric:robolectric:4.11.1")
 }

@@ -4,13 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
 import com.facebook.login.LoginManager
-import com.facebook.login.LoginResult
 
 class FacebookLoginActivity : Activity() {
     private val callbackManager = CallbackManager.Factory.create()
+    private val facebookLoginCallback = FacebookLoginCallback(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,27 +16,7 @@ class FacebookLoginActivity : Activity() {
         val scopes = intent.getStringArrayListExtra("scopes")
 
         LoginManager.getInstance()
-            .registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-                override fun onSuccess(result: LoginResult) {
-                    setResult(
-                        RESULT_OK,
-                        Intent()
-                            .putExtra("accessToken", result.accessToken)
-                            .putExtra("authenticationToken", result.authenticationToken)
-                    )
-                    finish()
-                }
-
-                override fun onCancel() {
-                    setResult(RESULT_CANCELED)
-                    finish()
-                }
-
-                override fun onError(error: FacebookException) {
-                    setResult(RESULT_CANCELED, Intent().putExtra("error", error.cause))
-                    finish()
-                }
-            })
+            .registerCallback(callbackManager, facebookLoginCallback.getLoginCallback())
 
         LoginManager.getInstance().logIn(this, scopes)
     }
