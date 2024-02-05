@@ -23,8 +23,6 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) : 
     }
 
     override fun handleLoginIntentResponse(data: Intent?) {
-        println("accessToken ${data?.hasExtra(("accessToken"))}")
-
         if (data == null || !data.hasExtra(("accessToken"))) {
             throw OmhAuthException.LoginCanceledException()
         }
