@@ -18,7 +18,6 @@ package com.openmobilehub.android.auth.sample.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -27,9 +26,6 @@ import com.openmobilehub.android.auth.sample.R
 import com.openmobilehub.android.auth.sample.databinding.ActivityMainBinding
 import com.openmobilehub.android.auth.sample.di.AuthClientProvider
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -59,14 +55,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupGraph() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            withContext(Dispatchers.Main) {
-                val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-                val startDestId = selectStartDestination()
-                navGraph.setStartDestination(startDestId)
-                navController.graph = navGraph
-            }
-        }
+        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
+
+        authClientProvider.getClient().getUser().addOnSuccess {
+            navGraph.setStartDestination(R.id.logged_in_fragment)
+            navController.graph = navGraph
+        }.addOnFailure {
+            navGraph.setStartDestination(R.id.login_fragment)
+            navController.graph = navGraph
+        }.execute()
     }
 
     private fun setupToolbar() {
@@ -74,17 +71,5 @@ class MainActivity : AppCompatActivity() {
             setOf(R.id.logged_in_fragment, R.id.login_fragment)
         )
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
-    }
-
-    private suspend fun selectStartDestination(): Int {
-        return try {
-            if (authClientProvider.getClient().getUser() == null) {
-                return R.id.login_fragment
-            }
-
-            return R.id.logged_in_fragment
-        } catch (e: Exception) {
-            R.id.login_fragment
-        }
     }
 }

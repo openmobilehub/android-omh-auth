@@ -29,8 +29,6 @@ import com.openmobilehub.android.auth.plugin.google.nongms.domain.models.ApiResu
 import com.openmobilehub.android.auth.plugin.google.nongms.domain.user.ProfileUseCase
 import com.openmobilehub.android.auth.plugin.google.nongms.presentation.redirect.RedirectActivity
 import com.openmobilehub.android.auth.plugin.google.nongms.utils.Constants
-import com.openmobilehub.android.auth.plugin.google.nongms.utils.ThreadUtils
-import kotlinx.coroutines.runBlocking
 
 /**
  * Non GMS implementation of the OmhAuthClient abstraction. Required a clientId and defined scopes as
@@ -54,10 +52,21 @@ internal class OmhAuthClientImpl(
             .putExtra(RedirectActivity.SCOPES, scopes)
     }
 
-    override suspend fun getUser(): OmhUserProfile? {
+    override fun getUser(): OmhTask<OmhUserProfile> {
         val userRepository = UserRepositoryImpl.getUserRepository(applicationContext)
         val profileUseCase = ProfileUseCase.createUserProfileUseCase(userRepository)
-        return profileUseCase.getProfileData()
+
+        return OmhNonGmsTask {
+            val profileData = profileUseCase.getProfileData()
+
+            if (profileData == null) {
+                throw OmhAuthException.UnrecoverableLoginException(
+                    cause = Throwable(message = "No user profile stored")
+                )
+            }
+
+            return@OmhNonGmsTask profileData
+        }
     }
 
     internal class Builder(
@@ -94,14 +103,9 @@ internal class OmhAuthClientImpl(
             throw exception
         }
 
-        ThreadUtils.checkForMainThread()
-        runBlocking {
-            if (getUser() == null) {
-                throw OmhAuthException.UnrecoverableLoginException(
-                    cause = Throwable(message = "No user profile stored")
-                )
-            }
-        }
+        getUser()
+            .addOnFailure { e -> throw e }
+            .execute()
     }
 
     override fun revokeToken(): OmhTask<Unit> {

@@ -9,16 +9,14 @@ class AuthClientProvider @Inject constructor(
     val googleAuthClient: OmhAuthClient,
     val facebookAuthClient: FacebookAuthClient
 ) {
-    suspend fun getClient(): OmhAuthClient {
-        if (googleAuthClient.getUser() != null) {
-            return googleAuthClient
-        }
+    fun getClient(): OmhAuthClient {
+        // TODO: Include other providers and make it async
 
         val fbAccessToken = AccessToken.getCurrentAccessToken()
         if (fbAccessToken != null && !fbAccessToken.isExpired) {
             return facebookAuthClient
         }
 
-        throw Exception("No user logged in")
+        return googleAuthClient
     }
 }

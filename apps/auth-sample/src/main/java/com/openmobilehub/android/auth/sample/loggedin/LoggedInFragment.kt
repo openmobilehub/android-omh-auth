@@ -76,21 +76,20 @@ class LoggedInFragment : Fragment() {
     }
 
     private fun getUser() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val profile = authClientProvider.getClient().getUser()
-
-            withContext(Dispatchers.Main) {
+        authClientProvider.getClient().getUser()
+            .addOnSuccess { profile ->
                 binding?.run {
-                    Picasso.get().load(profile?.profileImage).into(binding?.tvAvatar)
-                    tvName.text = getString(R.string.name_placeholder, profile?.name)
-                    tvSurname.text = getString(R.string.surname_placeholder, profile?.surname)
-                    tvEmail.text = getString(R.string.email_placeholder, profile?.email)
+                    Picasso.get().load(profile.profileImage).into(binding?.tvAvatar)
+                    tvName.text = getString(R.string.name_placeholder, profile.name)
+                    tvSurname.text = getString(R.string.surname_placeholder, profile.surname)
+                    tvEmail.text = getString(R.string.email_placeholder, profile.email)
                 }
 
                 Toast.makeText(activity, "Fetched User Data", Toast.LENGTH_SHORT)
                     .show()
             }
-        }
+            .addOnFailure(::showErrorDialog)
+            .execute()
     }
 
     private fun revokeToken() {

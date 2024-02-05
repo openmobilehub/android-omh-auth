@@ -35,21 +35,38 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) : 
         }
     }
 
-    override suspend fun getUser(): OmhUserProfile = suspendCoroutine { continuation ->
-        val request: GraphRequest = GraphRequest.newMeRequest(
+    override fun getUser(): OmhTask<OmhUserProfile> {
+        return FacebookOmhTask(::fetchUser)
+    }
+
+
+    override fun getCredentials(): Any? {
+        TODO()
+    }
+
+    override fun signOut(): OmhTask<Unit> {
+        return FacebookOmhTask(LoginManager.getInstance()::logOut)
+    }
+
+    override fun revokeToken(): OmhTask<Unit> {
+        TODO()
+    }
+
+    private suspend fun fetchUser(): OmhUserProfile = suspendCoroutine { continuation ->
+        val request = GraphRequest.newMeRequest(
             AccessToken.getCurrentAccessToken(),
         ) { jsonObject, _ ->
             if (jsonObject == null) {
                 continuation.resumeWithException(Exception("Failed to get user data"))
             } else {
-                continuation.resume(
-                    OmhUserProfile(
-                        jsonObject.getString("first_name"),
-                        jsonObject.getString("last_name"),
-                        jsonObject.optString("email", ""),
-                        jsonObject.getJSONObject("picture").getJSONObject("data").getString("url")
-                    )
+                val userProfile = OmhUserProfile(
+                    jsonObject.getString("first_name"),
+                    jsonObject.getString("last_name"),
+                    jsonObject.optString("email", ""),
+                    jsonObject.getJSONObject("picture").getJSONObject("data").getString("url")
                 )
+
+                continuation.resume(userProfile)
             }
         }
 
@@ -60,21 +77,5 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) : 
         request.parameters = params
 
         request.executeAsync()
-    }
-
-    override fun getCredentials(): Any? {
-        TODO()
-    }
-
-    override fun signOut(): OmhTask<Unit> {
-        val task = FacebookTask()
-
-        task.addOnExecute { LoginManager.getInstance().logOut() }
-
-        return task
-    }
-
-    override fun revokeToken(): OmhTask<Unit> {
-        TODO()
     }
 }

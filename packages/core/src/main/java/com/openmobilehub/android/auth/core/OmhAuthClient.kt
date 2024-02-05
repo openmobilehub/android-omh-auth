@@ -34,7 +34,7 @@ interface OmhAuthClient {
     @Throws(OmhAuthException::class)
     fun handleLoginIntentResponse(data: Intent?)
 
-    suspend fun getUser(): OmhUserProfile?
+    fun getUser(): OmhTask<OmhUserProfile>
 
     /**
      * This method is designed for internal OMH libraries first and foremost. In case you need to

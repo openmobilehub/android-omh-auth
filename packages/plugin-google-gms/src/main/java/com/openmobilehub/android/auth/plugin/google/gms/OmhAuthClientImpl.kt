@@ -39,9 +39,17 @@ internal class OmhAuthClientImpl(
         return googleSignInClient.signInIntent
     }
 
-    override suspend fun getUser(): OmhUserProfile? {
-        val googleUser = GoogleSignIn.getLastSignedInAccount(googleSignInClient.applicationContext)
-        return googleUser?.toOmhProfile()
+    override fun getUser(): OmhTask<OmhUserProfile> {
+        val task = OmhGmsTask<OmhUserProfile>(null)
+
+        task.addSuspendedTask {
+            val googleUser =
+                GoogleSignIn.getLastSignedInAccount(googleSignInClient.applicationContext)
+
+            return@addSuspendedTask googleUser!!.toOmhProfile()
+        }
+
+        return task
     }
 
     private fun GoogleSignInAccount.toOmhProfile(): OmhUserProfile {
