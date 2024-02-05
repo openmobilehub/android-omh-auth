@@ -54,4 +54,5 @@ object Versions {
     const val androidJunit = "1.1.5"
     const val espresso = "3.5.1"
     const val mockk = "1.13.4"
+    const val robolectric = "4.11.1"
 }

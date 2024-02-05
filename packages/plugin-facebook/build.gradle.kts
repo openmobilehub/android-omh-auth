@@ -23,5 +23,5 @@ dependencies {
     androidTestImplementation(Libs.androidJunit)
     testImplementation(Libs.mockk)
     testImplementation(Libs.coroutineTesting)
-    testImplementation("org.robolectric:robolectric:4.11.1")
+    testImplementation(Libs.robolectric)
 }
