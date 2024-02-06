@@ -1,14 +1,15 @@
 package com.openmobilehub.android.auth.plugin.facebook
 
+import FacebookCredentials
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.facebook.AccessToken
-import com.facebook.AuthenticationToken
 import com.facebook.GraphRequest
 import com.facebook.Profile
 import com.facebook.login.LoginManager
 import com.openmobilehub.android.auth.core.OmhAuthClient
+import com.openmobilehub.android.auth.core.OmhCredentials
 import com.openmobilehub.android.auth.core.async.OmhTask
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.core.models.OmhAuthStatusCodes
@@ -42,11 +43,8 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) : 
     }
 
 
-    override fun getCredentials(): FacebookCredentials {
-        val authToken = AuthenticationToken.getCurrentAuthenticationToken()
-        val accessToken = AccessToken.getCurrentAccessToken()
-
-        return FacebookCredentials(authToken, accessToken)
+    override fun getCredentials(): OmhCredentials {
+        return FacebookCredentials()
     }
 
     override fun signOut(): OmhTask<Unit> {

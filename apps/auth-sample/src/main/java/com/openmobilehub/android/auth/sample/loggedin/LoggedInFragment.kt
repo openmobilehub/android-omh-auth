@@ -30,7 +30,6 @@ import com.google.android.gms.auth.UserRecoverableAuthException
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.openmobilehub.android.auth.core.OmhCredentials
 import com.openmobilehub.android.auth.core.async.CancellableCollector
-import com.openmobilehub.android.auth.plugin.facebook.FacebookCredentials
 import com.openmobilehub.android.auth.sample.R
 import com.openmobilehub.android.auth.sample.databinding.FragmentLoggedInBinding
 import com.openmobilehub.android.auth.sample.di.AuthClientProvider
@@ -110,7 +109,6 @@ class LoggedInFragment : Fragment() {
         try {
             val token = when (val credentials = authClientProvider.getClient().getCredentials()) {
                 is OmhCredentials -> credentials.accessToken
-                is FacebookCredentials -> credentials.accessToken?.token
                 is GoogleAccountCredential -> {
                     requestGoogleToken(credentials)
                 }
@@ -159,14 +157,21 @@ class LoggedInFragment : Fragment() {
     }
 
     private fun refreshToken() = lifecycleScope.launch(Dispatchers.IO) {
-        val newToken = when (val credentials = authClientProvider.getClient().getCredentials()) {
-            is OmhCredentials -> credentials.blockingRefreshToken()
-            is GoogleAccountCredential -> requestGoogleToken(credentials)
-            else -> error("Unsupported credential type")
-        } ?: return@launch
+        try {
+            val newToken =
+                when (val credentials = authClientProvider.getClient().getCredentials()) {
+                    is OmhCredentials -> credentials.blockingRefreshToken()
+                    is GoogleAccountCredential -> requestGoogleToken(credentials)
+                    else -> error("Unsupported credential type")
+                } ?: return@launch
 
-        withContext(Dispatchers.Main) {
-            binding?.tvToken?.text = getString(R.string.token_placeholder, newToken)
+            withContext(Dispatchers.Main) {
+                binding?.tvToken?.text = getString(R.string.token_placeholder, newToken)
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                showErrorDialog(e)
+            }
         }
     }
 
