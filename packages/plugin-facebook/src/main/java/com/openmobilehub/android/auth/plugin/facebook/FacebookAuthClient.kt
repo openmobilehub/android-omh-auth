@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.facebook.AccessToken
 import com.facebook.AuthenticationToken
 import com.facebook.GraphRequest
+import com.facebook.Profile
 import com.facebook.login.LoginManager
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.async.OmhTask
@@ -37,7 +38,7 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) : 
     }
 
     override fun getUser(): OmhTask<OmhUserProfile> {
-        return FacebookOmhTask(::fetchUser)
+        return FacebookOmhTask(::getUserRequest)
     }
 
 
@@ -53,10 +54,27 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) : 
     }
 
     override fun revokeToken(): OmhTask<Unit> {
-        TODO()
+        return FacebookOmhTask(::revokeTokenRequest)
     }
 
-    private suspend fun fetchUser(): OmhUserProfile = suspendCoroutine { continuation ->
+    private suspend fun revokeTokenRequest() = suspendCoroutine { continuation ->
+        val request = GraphRequest(
+            AccessToken.getCurrentAccessToken(),
+            "/%s/permissions".format(Profile.getCurrentProfile()?.id),
+            null,
+            com.facebook.HttpMethod.DELETE,
+            { response ->
+                if (response.error != null) {
+                    continuation.resumeWithException(response.error!!.exception!!)
+                } else {
+                    continuation.resume(Unit)
+                }
+            })
+
+        request.executeAsync()
+    }
+
+    private suspend fun getUserRequest(): OmhUserProfile = suspendCoroutine { continuation ->
         val request = GraphRequest.newMeRequest(
             AccessToken.getCurrentAccessToken(),
         ) { jsonObject, _ ->

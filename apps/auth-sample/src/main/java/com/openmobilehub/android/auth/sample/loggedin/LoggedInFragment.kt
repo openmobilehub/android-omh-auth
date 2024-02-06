@@ -30,6 +30,7 @@ import com.google.android.gms.auth.UserRecoverableAuthException
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.openmobilehub.android.auth.core.OmhCredentials
 import com.openmobilehub.android.auth.core.async.CancellableCollector
+import com.openmobilehub.android.auth.plugin.facebook.FacebookCredentials
 import com.openmobilehub.android.auth.sample.R
 import com.openmobilehub.android.auth.sample.databinding.FragmentLoggedInBinding
 import com.openmobilehub.android.auth.sample.di.AuthClientProvider
@@ -96,7 +97,10 @@ class LoggedInFragment : Fragment() {
         lifecycleScope.launch(Dispatchers.IO) {
             val cancellable = authClientProvider.getClient().revokeToken()
                 .addOnFailure(::showErrorDialog)
-                .addOnSuccess { navigateToLogin() }
+                .addOnSuccess {
+                    Toast.makeText(activity, "Auth Token Revoked", Toast.LENGTH_SHORT)
+                        .show()
+                }
                 .execute()
             cancellableCollector.addCancellable(cancellable)
         }
@@ -106,6 +110,7 @@ class LoggedInFragment : Fragment() {
         try {
             val token = when (val credentials = authClientProvider.getClient().getCredentials()) {
                 is OmhCredentials -> credentials.accessToken
+                is FacebookCredentials -> credentials.accessToken?.token
                 is GoogleAccountCredential -> {
                     requestGoogleToken(credentials)
                 }
