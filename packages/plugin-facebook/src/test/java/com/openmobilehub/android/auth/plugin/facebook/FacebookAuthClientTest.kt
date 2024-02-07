@@ -2,27 +2,61 @@ package com.openmobilehub.android.auth.plugin.facebook
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import com.facebook.AccessToken
 import com.facebook.AuthenticationToken
+import com.facebook.GraphRequest
 import com.openmobilehub.android.auth.core.models.OmhAuthException
+import com.openmobilehub.android.auth.core.models.OmhUserProfile
 import io.mockk.EqMatcher
+import io.mockk.MockKAnnotations
+import io.mockk.clearAllMocks
 import io.mockk.every
+import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import io.mockk.mockkConstructor
 import io.mockk.mockkObject
-import io.mockk.mockkStatic
+import io.mockk.unmockkObject
+import io.mockk.verify
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import org.json.JSONObject
+import org.junit.After
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
 
 
+@ExperimentalCoroutinesApi
 class FacebookAuthClientTest {
-    val contextMock = mockk<Context>()
-    val scopes = arrayListOf("email", "public_profile")
+    private val contextMock = mockk<Context>()
+    private val scopes = arrayListOf("email", "public_profile")
+    private val authClient = FacebookAuthClient(scopes = scopes, context = contextMock)
+
+    @MockK
+    lateinit var mockAccessToken: AccessToken
+
+    @Before
+    fun setUp() {
+        MockKAnnotations.init(this)
+
+        mockkObject(AccessToken.Companion)
+        mockkObject(AuthenticationToken.Companion)
+
+        every { AccessToken.getCurrentAccessToken() } returns mockAccessToken
+    }
+
+    @After
+    fun tearDown() {
+        clearAllMocks()
+
+        unmockkObject(AccessToken.Companion)
+        unmockkObject(AuthenticationToken.Companion)
+    }
 
     @Test
     fun shouldGetLoginIntent() {
         val intentMock = mockk<Intent>()
-        val authClient = FacebookAuthClient(scopes = scopes, context = contextMock)
 
         mockkConstructor(Intent::class)
         every {
@@ -47,8 +81,6 @@ class FacebookAuthClientTest {
     fun shouldThrowErrorOnNoLoginIntent() {
         val intentMock = null
 
-        val authClient = FacebookAuthClient(scopes = scopes, context = contextMock)
-
         Assert.assertThrows(OmhAuthException.LoginCanceledException::class.java) {
             authClient.handleLoginIntentResponse(intentMock)
         }
@@ -59,8 +91,6 @@ class FacebookAuthClientTest {
         val intentMock = mockk<Intent>()
 
         every { intentMock.hasExtra("accessToken") } returns false
-
-        val authClient = FacebookAuthClient(scopes = scopes, context = contextMock)
 
         Assert.assertThrows(OmhAuthException.LoginCanceledException::class.java) {
             authClient.handleLoginIntentResponse(intentMock)
@@ -76,8 +106,6 @@ class FacebookAuthClientTest {
         every { intentMock.hasExtra("error") } returns true
         every { intentMock.getSerializableExtra("error") } returns intentError
 
-        val authClient = FacebookAuthClient(scopes = scopes, context = contextMock)
-
         val error = Assert.assertThrows(OmhAuthException.RecoverableLoginException::class.java) {
             authClient.handleLoginIntentResponse(intentMock)
         }
@@ -87,22 +115,63 @@ class FacebookAuthClientTest {
 
     @Test
     fun shouldGetCredentials() {
-        val mockAccessToken = mockk<AccessToken>()
-        val mockAuthToken = mockk<AuthenticationToken>()
-
-        mockkStatic(AccessToken::class)
-        mockkObject(AccessToken.Companion)
-        mockkStatic(AuthenticationToken::class)
-        mockkObject(AuthenticationToken.Companion)
-
-        every { AccessToken.getCurrentAccessToken() } returns mockAccessToken
-        every { AuthenticationToken.getCurrentAuthenticationToken() } returns mockAuthToken
-
-        val authClient = FacebookAuthClient(scopes = scopes, context = contextMock)
-
+        val testAccessToken = "TestAccessToken"
         val credentials = authClient.getCredentials()
 
-        Assert.assertEquals(credentials.accessToken, mockAccessToken)
-        Assert.assertEquals(credentials.authenticationToken, mockAuthToken)
+        every { mockAccessToken.token } returns testAccessToken
+
+        Assert.assertEquals(credentials.accessToken, testAccessToken)
+    }
+
+    @Test
+    fun shouldFetchUserSuccessfully() = runTest {
+        val mockGraphRequest = mockk<GraphRequest>(relaxed = true)
+
+        val jsonFacebookUser = JSONObject().apply {
+            put("first_name", "John")
+            put("last_name", "Doe")
+            put("email", "john.doe@example.com")
+            put("picture", JSONObject().apply {
+                put("data", JSONObject().apply {
+                    put("url", "https://example.com/picture.jpg")
+                })
+            })
+        }
+
+        val expectedOmhUser = OmhUserProfile(
+            name = "John",
+            surname = "Doe",
+            email = "john.doe@example.com",
+            profileImage = "https://example.com/picture.jpg"
+        )
+
+        mockkObject(GraphRequest.Companion)
+        mockkConstructor(Bundle::class)
+
+        every {
+            Bundle().apply {
+                putString("fields", "first_name,last_name,email,picture")
+            }
+        } returns mockk(relaxed = true)
+
+        every { GraphRequest.newMeRequest(mockAccessToken, any()) } answers {
+            val callback = arg<GraphRequest.GraphJSONObjectCallback>(1)
+            callback.onCompleted(jsonFacebookUser, null)
+            mockGraphRequest
+        }
+
+        val user = authClient.getUserRequest()
+
+        verify {
+            constructedWith<Bundle>().apply {
+                putString("fields", "first_name,last_name,email,picture")
+            }
+            mockGraphRequest.executeAsync()
+
+            Assert.assertEquals(user.email, expectedOmhUser.email)
+            Assert.assertEquals(user.name, expectedOmhUser.name)
+            Assert.assertEquals(user.surname, expectedOmhUser.surname)
+            Assert.assertEquals(user.profileImage, expectedOmhUser.profileImage)
+        }
     }
 }

@@ -8,6 +8,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 class FacebookOmhTask<T>(private val task: suspend () -> T) : OmhTask<T>() {
     private val coroutineContext = Dispatchers.Main + SupervisorJob()

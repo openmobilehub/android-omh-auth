@@ -21,8 +21,8 @@ dependencies {
 
     // Test dependencies
     testImplementation(Libs.junit)
-    androidTestImplementation(Libs.androidJunit)
     testImplementation(Libs.mockk)
     testImplementation(Libs.coroutineTesting)
     testImplementation(Libs.robolectric)
+    testImplementation(Libs.testJson)
 }

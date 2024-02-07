@@ -67,5 +67,6 @@ object Libs {
     val esspreso by lazy { "androidx.test.espresso:espresso-core:${Versions.espresso}" }
     val mockk by lazy { "io.mockk:mockk:${Versions.mockk}" }
     val robolectric by lazy { "org.robolectric:robolectric:${Versions.robolectric}" }
+    val testJson by lazy { "org.json:json:${Versions.testJson}" }
     val coroutineTesting by lazy { "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}" }
 }

@@ -42,7 +42,6 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) : 
         return FacebookOmhTask(::getUserRequest)
     }
 
-
     override fun getCredentials(): OmhCredentials {
         return FacebookCredentials()
     }
@@ -72,7 +71,7 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) : 
         request.executeAsync()
     }
 
-    private suspend fun getUserRequest(): OmhUserProfile = suspendCoroutine { continuation ->
+    internal suspend fun getUserRequest(): OmhUserProfile = suspendCoroutine { continuation ->
         val request = GraphRequest.newMeRequest(
             AccessToken.getCurrentAccessToken(),
         ) { jsonObject, _ ->
