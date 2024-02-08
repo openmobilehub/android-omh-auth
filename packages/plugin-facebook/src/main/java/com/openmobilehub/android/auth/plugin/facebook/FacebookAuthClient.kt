@@ -53,18 +53,18 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) : 
     }
 
     internal suspend fun revokeTokenRequest() = suspendCoroutine { continuation ->
-        val request = GraphRequest(
-            AccessToken.getCurrentAccessToken(),
-            "/%s/permissions".format(Profile.getCurrentProfile()?.id),
-            null,
-            com.facebook.HttpMethod.DELETE,
-            { response ->
+        val request = GraphRequest().apply {
+            accessToken = AccessToken.getCurrentAccessToken()
+            graphPath = "/%s/permissions".format(Profile.getCurrentProfile()?.id)
+            httpMethod = com.facebook.HttpMethod.DELETE
+            callback = GraphRequest.Callback { response ->
                 if (response.error != null) {
                     continuation.resumeWithException(response.error!!.exception!!)
                 } else {
                     continuation.resume(Unit)
                 }
-            })
+            }
+        }
 
         request.executeAsync()
     }

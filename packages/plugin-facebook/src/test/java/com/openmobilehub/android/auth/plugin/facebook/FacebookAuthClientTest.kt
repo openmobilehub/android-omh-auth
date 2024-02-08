@@ -5,19 +5,21 @@ import android.content.Intent
 import android.os.Bundle
 import com.facebook.AccessToken
 import com.facebook.AuthenticationToken
+import com.facebook.FacebookException
 import com.facebook.GraphRequest
+import com.facebook.GraphResponse
 import com.facebook.Profile
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.core.models.OmhUserProfile
 import io.mockk.EqMatcher
 import io.mockk.MockKAnnotations
-import io.mockk.MockKGateway
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import io.mockk.mockkConstructor
 import io.mockk.mockkObject
+import io.mockk.slot
 import io.mockk.unmockkObject
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -174,6 +176,84 @@ class FacebookAuthClientTest {
             Assert.assertEquals(user.name, expectedOmhUser.name)
             Assert.assertEquals(user.surname, expectedOmhUser.surname)
             Assert.assertEquals(user.profileImage, expectedOmhUser.profileImage)
+        }
+    }
+
+    @Test
+    fun shouldRevokeTokenSuccessfully() = runTest {
+        val testProfileId = "12345"
+        val graphResponseMock = mockk<GraphResponse>()
+        val callbackSlot = slot<GraphRequest.Callback>()
+
+        mockkConstructor(GraphRequest::class)
+        mockkObject(Profile.Companion)
+        every { Profile.getCurrentProfile()?.id } returns testProfileId
+
+        every { graphResponseMock.error } returns null
+
+        every {
+            anyConstructed<GraphRequest>().apply {
+                accessToken = mockAccessToken
+                graphPath = "/%s/permissions".format(testProfileId)
+                httpMethod = com.facebook.HttpMethod.DELETE
+                callback = capture(callbackSlot)
+            }.executeAsync()
+        } answers {
+            callbackSlot.captured.onCompleted(graphResponseMock)
+            mockk()
+        }
+
+        authClient.revokeTokenRequest()
+
+        verify {
+            anyConstructed<GraphRequest>().apply {
+                accessToken = mockAccessToken
+                graphPath = "/%s/permissions".format(testProfileId)
+                httpMethod = com.facebook.HttpMethod.DELETE
+                callback = any()
+            }.executeAsync()
+        }
+    }
+
+
+    @Test
+    fun shouldRevokeTokenFailure() = runTest {
+        val testProfileId = "12345"
+        val graphResponseMock = mockk<GraphResponse>()
+        val facebookException = mockk<FacebookException>()
+        val callbackSlot = slot<GraphRequest.Callback>()
+
+        mockkConstructor(GraphRequest::class)
+        mockkObject(Profile.Companion)
+        every { Profile.getCurrentProfile()?.id } returns testProfileId
+
+        every { graphResponseMock.error?.exception } returns facebookException
+
+        every {
+            anyConstructed<GraphRequest>().apply {
+                accessToken = mockAccessToken
+                graphPath = "/%s/permissions".format(testProfileId)
+                httpMethod = com.facebook.HttpMethod.DELETE
+                callback = capture(callbackSlot)
+            }.executeAsync()
+        } answers {
+            callbackSlot.captured.onCompleted(graphResponseMock)
+            mockk()
+        }
+
+        try {
+            authClient.revokeTokenRequest()
+        } catch (e: Exception) {
+            Assert.assertEquals(e, facebookException)
+        }
+
+        verify {
+            anyConstructed<GraphRequest>().apply {
+                accessToken = mockAccessToken
+                graphPath = "/%s/permissions".format(testProfileId)
+                httpMethod = com.facebook.HttpMethod.DELETE
+                callback = any()
+            }.executeAsync()
         }
     }
 }
