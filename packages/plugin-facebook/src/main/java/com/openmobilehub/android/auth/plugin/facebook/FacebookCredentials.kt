@@ -6,7 +6,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-internal class FacebookCredentials : OmhCredentials {
+class FacebookCredentials : OmhCredentials {
     override fun blockingRefreshToken(): String {
         ThreadUtils.checkForMainThread()
         return runBlocking {

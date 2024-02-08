@@ -9,8 +9,6 @@ import com.facebook.GraphRequest
 import com.facebook.Profile
 import com.facebook.login.LoginManager
 import com.openmobilehub.android.auth.core.OmhAuthClient
-import com.openmobilehub.android.auth.core.OmhCredentials
-import com.openmobilehub.android.auth.core.async.OmhTask
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.core.models.OmhAuthStatusCodes
 import com.openmobilehub.android.auth.core.models.OmhUserProfile
@@ -38,23 +36,23 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) : 
         }
     }
 
-    override fun getUser(): OmhTask<OmhUserProfile> {
+    override fun getUser(): FacebookOmhTask<OmhUserProfile> {
         return FacebookOmhTask(::getUserRequest)
     }
 
-    override fun getCredentials(): OmhCredentials {
+    override fun getCredentials(): FacebookCredentials {
         return FacebookCredentials()
     }
 
-    override fun signOut(): OmhTask<Unit> {
+    override fun signOut(): FacebookOmhTask<Unit> {
         return FacebookOmhTask(LoginManager.getInstance()::logOut)
     }
 
-    override fun revokeToken(): OmhTask<Unit> {
+    override fun revokeToken(): FacebookOmhTask<Unit> {
         return FacebookOmhTask(::revokeTokenRequest)
     }
 
-    private suspend fun revokeTokenRequest() = suspendCoroutine { continuation ->
+    internal suspend fun revokeTokenRequest() = suspendCoroutine { continuation ->
         val request = GraphRequest(
             AccessToken.getCurrentAccessToken(),
             "/%s/permissions".format(Profile.getCurrentProfile()?.id),

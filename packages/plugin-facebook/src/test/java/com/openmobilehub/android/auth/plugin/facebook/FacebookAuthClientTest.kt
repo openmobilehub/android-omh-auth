@@ -6,10 +6,12 @@ import android.os.Bundle
 import com.facebook.AccessToken
 import com.facebook.AuthenticationToken
 import com.facebook.GraphRequest
+import com.facebook.Profile
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.core.models.OmhUserProfile
 import io.mockk.EqMatcher
 import io.mockk.MockKAnnotations
+import io.mockk.MockKGateway
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
