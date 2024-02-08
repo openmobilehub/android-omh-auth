@@ -1,6 +1,5 @@
 plugins {
     `android-base-lib`
-    jacoco
 }
 
 android {
