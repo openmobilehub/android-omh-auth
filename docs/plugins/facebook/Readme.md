@@ -2,15 +2,14 @@
 
 ## Set up your Facebook application
 
-To access Facebook APIs, generate a unique `app_id` and `client_token` for your app in the Meta for Developers. Add the `app_id` and `client_token` to your app's code and complete the required Meta for Developers setup steps:
+To access Facebook APIs, generate a unique **App ID** and **App Secret** for your app in the Meta for Developers. Add the **App ID** and **App Secret** to your app's code and complete the required Meta for Developers setup steps:
 
-1.  [Go to the Meta for Developer](https://developers.facebook.com/apps).
+1.  [Go to the Meta for Developers](https://developers.facebook.com/apps).
 2.  Click on "Create App" to start creating a new Facebook application.
 3.  Go to the App Settings -> Basic.
 4.  Set your application **Package Names** (Use "com.openmobilehub.android.auth.sample" if you are following the starter-code)
 5.  Set your application **Class Name** (Use "com.openmobilehub.android.auth.sample.base.MainActivity" if you are following the starter-code)
-6.  Provide the Development and Release Key Hashes for Your App
-    To ensure the authenticity of the interactions between your app and Facebook, you need to supply us with the Android key hash for your development environment. If your app has already been published, you should add your release key hash too.
+6.  Provide the Development and Release Key Hashes for Your App To ensure the authenticity of the interactions between your app and Facebook, you need to supply us with the Android key hash for your development environment. If your app has already been published, you should add your release key hash too.
 
     ### Generating a Development Key Hash
 
@@ -49,6 +48,10 @@ To access Facebook APIs, generate a unique `app_id` and `client_token` for your 
 
     This will generate a 28-character string that you should copy and paste into the field below. Also, see the Android documentation for signing your apps.
 
+    ### Adding the generated key hashes
+
+    Once you generated the debug and release key hashes, add them under **Key Hashes** section and save your changes.
+
 ## Edit your resources and manifest
 
 1. Open the **/app/manifest/AndroidManifest.xml** file.
@@ -70,6 +73,7 @@ To access Facebook APIs, generate a unique `app_id` and `client_token` for your 
        android:configChanges=
            "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
        android:label="OMH" />
+
    <activity
        android:name="com.facebook.CustomTabActivity"
        android:exported="true">
@@ -100,32 +104,33 @@ To access Facebook APIs, generate a unique `app_id` and `client_token` for your 
 
 You should not check your App ID or App Secret into your version control system, so it is recommended storing it in the `local.properties` file, which is located in the root directory of your project. For more information about the `local.properties` file, see [Gradle properties](https://developer.android.com/studio/build#properties-files) [files](https://developer.android.com/studio/build#properties-files).
 
-1. Open the `local.properties` in your project level directory, and then add the following code.
+Open the `local.properties` in your project level directory, and do the following:
 
-- Replace `YOUR_FACEBOOK_APP_ID` with your App ID: `FACEBOOK_APP_ID=YOUR_FACEBOOK_APP_ID`.
-- Replace `YOUR_FACEBOOK_CLIENT_TOKEN` with your App Secret: `FACEBOOK_CLIENT_TOKEN=YOUR_FACEBOOK_CLIENT_TOKEN`.
-
-2. Save the fileand [sync your project with Gradle](https://developer.android.com/studio/build#sync-files).
+- Replace `YOUR_FACEBOOK_APP_ID` with your **App ID**: `FACEBOOK_APP_ID=YOUR_FACEBOOK_APP_ID`.
+- Replace `YOUR_FACEBOOK_CLIENT_TOKEN` with your **App Secret**: `FACEBOOK_CLIENT_TOKEN=YOUR_FACEBOOK_CLIENT_TOKEN`.
 
 ## Gradle configuration
 
-To incorporate Facebook plugin into your project, you have to directly include the Facebook plugin as a dependency.
-
-<!-- TODO -->
-
-In the `SingletonModule.kt` file in the `:auth-starter-sample` module add the following code to provide the OMH Auth Client.
+To incorporate Facebook plugin into your project, you have to directly include the Facebook plugin as a dependency. In the `build.gradle.kts`, add the following implementation statement to the `dependencies{}` section:
 
 ```kotlin
-val omhAuthProvider = OmhAuthProvider.Builder()
-    .addNonGmsPath(BuildConfig.AUTH_NON_GMS_PATH)
-    .addGmsPath(BuildConfig.AUTH_GMS_PATH)
-    .build()
-
-return omhAuthProvider.provideAuthClient(
-    scopes = listOf("openid", "email", "profile"),
-    clientId = BuildConfig.GOOGLE_CLIENT_ID,
-    context = context
-)
+implementation 'com.openmobilehub.android.auth:plugin-facebook:2.0.0-beta'
 ```
 
-_Note_: we'd recommend to store the client as a singleton with your preferred dependency injection library as this will be your only gateway to the OMH Auth SDK and it doesn't change in runtime at all.
+Save the file and [sync your project with Gradle](https://developer.android.com/studio/build#sync-files).
+
+## Provide the Facebook Omh Auth Client
+
+In the `SingletonModule.kt` file in the `:auth-starter-sample` module add the following code to provide the Facebook OMH Auth Client.
+
+```kotlin
+@Provides
+fun providesFacebookAuthClient(@ApplicationContext context: Context): FacebookAuthClient {
+    return FacebookAuthClient(
+        scopes = arrayListOf("public_profile", "email"),
+        context = context,
+    )
+}
+```
+
+> We'd recommend to store the client as a singleton with your preferred dependency injection library as this will be your only gateway to the OMH Auth SDK and it doesn't change in runtime at all.
