@@ -22,7 +22,7 @@ jobs:
 
       - name: Update local properties for secrets
         run: |
-          echo CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> ./local.properties &&
+          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> ./local.properties &&
           echo FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID }} >> ./local.properties &&
           echo FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN }} >> ./local.properties
 
@@ -56,7 +56,7 @@ jobs:
 
       - name: Update local properties for secrets
         run: |
-          echo CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> ./local.properties &&
+          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> ./local.properties &&
           echo FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID }} >> ./local.properties &&
           echo FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN }} >> ./local.properties
 

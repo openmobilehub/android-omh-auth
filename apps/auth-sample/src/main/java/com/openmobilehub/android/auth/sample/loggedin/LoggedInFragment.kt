@@ -75,8 +75,10 @@ class LoggedInFragment : Fragment() {
         getUser()
     }
 
-    private fun getUser() {
-        authClientProvider.getClient().getUser()
+    private fun getUser() = lifecycleScope.launch(Dispatchers.IO) {
+        val authClient = authClientProvider.getClient()
+
+        authClient.getUser()
             .addOnSuccess { profile ->
                 binding?.run {
                     Picasso.get().load(profile.profileImage).into(binding?.tvAvatar)
@@ -92,22 +94,24 @@ class LoggedInFragment : Fragment() {
             .execute()
     }
 
-    private fun revokeToken() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val cancellable = authClientProvider.getClient().revokeToken()
-                .addOnFailure(::showErrorDialog)
-                .addOnSuccess {
-                    Toast.makeText(activity, "Auth Token Revoked", Toast.LENGTH_SHORT)
-                        .show()
-                }
-                .execute()
-            cancellableCollector.addCancellable(cancellable)
-        }
+    private fun revokeToken() = lifecycleScope.launch(Dispatchers.IO) {
+        val authClient = authClientProvider.getClient()
+
+        val cancellable = authClient.revokeToken()
+            .addOnFailure(::showErrorDialog)
+            .addOnSuccess {
+                Toast.makeText(activity, "Auth Token Revoked", Toast.LENGTH_SHORT)
+                    .show()
+            }
+            .execute()
+        cancellableCollector.addCancellable(cancellable)
     }
 
     private fun getToken() = lifecycleScope.launch(Dispatchers.IO) {
+        val authClient = authClientProvider.getClient()
+
         try {
-            val token = when (val credentials = authClientProvider.getClient().getCredentials()) {
+            val token = when (val credentials = authClient.getCredentials()) {
                 is OmhCredentials -> credentials.accessToken
                 is GoogleAccountCredential -> {
                     requestGoogleToken(credentials)
@@ -136,8 +140,10 @@ class LoggedInFragment : Fragment() {
     }
 
     private fun logout() {
-        lifecycleScope.launch(Dispatchers.Main) {
-            val cancellable = authClientProvider.getClient().signOut()
+        lifecycleScope.launch(Dispatchers.IO) {
+            val authClient = authClientProvider.getClient()
+
+            val cancellable = authClient.signOut()
                 .addOnSuccess { navigateToLogin() }
                 .addOnFailure(::showErrorDialog)
                 .execute()
@@ -157,9 +163,11 @@ class LoggedInFragment : Fragment() {
     }
 
     private fun refreshToken() = lifecycleScope.launch(Dispatchers.IO) {
+        val authClient = authClientProvider.getClient()
+
         try {
             val newToken =
-                when (val credentials = authClientProvider.getClient().getCredentials()) {
+                when (val credentials = authClient.getCredentials()) {
                     is OmhCredentials -> credentials.blockingRefreshToken()
                     is GoogleAccountCredential -> requestGoogleToken(credentials)
                     else -> error("Unsupported credential type")

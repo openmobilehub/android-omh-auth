@@ -1,22 +1,31 @@
 package com.openmobilehub.android.auth.sample.di
 
-import com.facebook.AccessToken
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.plugin.facebook.FacebookAuthClient
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class AuthClientProvider @Inject constructor(
-    val googleAuthClient: OmhAuthClient,
-    val facebookAuthClient: FacebookAuthClient
+    private val googleAuthClient: OmhAuthClient,
+    private val facebookAuthClient: FacebookAuthClient
 ) {
-    fun getClient(): OmhAuthClient {
-        // TODO: Include other providers and make it async
-
-        val fbAccessToken = AccessToken.getCurrentAccessToken()
-        if (fbAccessToken != null && !fbAccessToken.isExpired) {
-            return facebookAuthClient
-        }
-
-        return googleAuthClient
+    suspend fun getClient() = suspendCoroutine { continuation ->
+        googleAuthClient.getUser()
+            .addOnSuccess {
+                continuation.resume(googleAuthClient)
+            }
+            .addOnFailure {
+                facebookAuthClient.getUser()
+                    .addOnSuccess {
+                        continuation.resume(facebookAuthClient)
+                    }
+                    .addOnFailure {
+                        continuation.resumeWithException(Exception("No user logged in"))
+                    }
+                    .execute()
+            }
+            .execute()
     }
 }

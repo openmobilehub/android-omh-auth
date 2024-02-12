@@ -38,7 +38,7 @@ object SingletonModule {
             .build()
         return omhAuthProvider.provideAuthClient(
             scopes = listOf("openid", "email", "profile"),
-            clientId = BuildConfig.CLIENT_ID,
+            clientId = BuildConfig.GOOGLE_CLIENT_ID,
             context = context
         )
     }
