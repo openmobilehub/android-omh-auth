@@ -65,8 +65,10 @@ class MainActivity : AppCompatActivity() {
             try {
                 authClientProvider.getClient()
 
-                navGraph.setStartDestination(R.id.logged_in_fragment)
-                navController.graph = navGraph
+                withContext(Dispatchers.Main) {
+                    navGraph.setStartDestination(R.id.logged_in_fragment)
+                    navController.graph = navGraph
+                }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     navGraph.setStartDestination(R.id.login_fragment)
