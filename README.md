@@ -47,8 +47,8 @@ You can always check what the final result should be in the module `sample-app` 
 
 There are different setup requirements based on the provider you will be including into your app. Please find the specific setup instruction for the providers below:
 
-- [Google GMS and non-GMS](/docs/plugins/google/Readme.md)
-- [Facebook](/docs/plugins/facebook/Readme.md)
+- [Google GMS and non-GMS](/packages/plugin-google-gms/Readme.md)
+- [Facebook](/packages/plugin-facebook/Readme.md)
 
 ### Adding Auth to your app.
 
@@ -61,14 +61,18 @@ The snippet below shows how to check if there's a signed in user already in your
 ```kotlin
 val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
 
-omhAuthClient.getUser()
+lifecycleScope.launch(Dispatchers.IO) {
+  omhAuthClient.getUser()
   .addOnSuccess {
     navGraph.setStartDestination(R.id.logged_in_fragment)
     navController.graph = navGraph
-  }.addOnFailure {
+  }
+  .addOnFailure {
     navGraph.setStartDestination(R.id.login_fragment)
     navController.graph = navGraph
-  }.execute()
+  }
+  .execute()
+}
 ```
 
 #### Login
@@ -134,18 +138,18 @@ This repository includes a [auth-sample](/apps/auth-sample) that demonstrates th
 
 ## Documentation
 
-[Full documentation](https://github.com/openmobilehub/omh-auth/wiki)
+[Full documentation](/docs/advanced/README.md)
 
 [Reference API](https://openmobilehub.github.io/omh-auth)
 
 ## Provider Implementations / Plugins
 
-OMH Auth SDK is open-source, promoting community collaboration and plugin support from other auth providers to enhance capabilities and expand supported auth services. You can find more details in the "[creating a custom implementation](https://github.com/openmobilehub/omh-auth/wiki/Creating-a-custom-implementation)" section.
+OMH Auth SDK is open-source, promoting community collaboration and plugin support from other auth providers to enhance capabilities and expand supported auth services. You can find more details in the "[creating a custom implementation](/docs/advanced/Creating-a-custom-implementation.md)" section.
 
 ## Contributing
 
 Please contribute! We will gladly review any pull requests. Make sure to read
-the [CONTRIBUTING](https://github.com/openmobilehub/omh-auth/blob/main/CONTRIBUTING.md) page first though.
+the [CONTRIBUTING](/CONTRIBUTING.md) page first though.
 
 ## License
 
