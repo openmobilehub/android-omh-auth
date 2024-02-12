@@ -107,7 +107,7 @@ class LoggedInFragment : Fragment() {
                         tvEmail.text = getString(R.string.email_placeholder, profile.email)
                     }
 
-                    Toast.makeText(activity, "Fetched User Data", Toast.LENGTH_SHORT)
+                    Toast.makeText(activity, "User Data Fetched", Toast.LENGTH_SHORT)
                         .show()
                 }
                 .addOnFailure { throw it }
@@ -135,6 +135,9 @@ class LoggedInFragment : Fragment() {
 
             withContext(Dispatchers.Main) {
                 binding?.tvToken?.text = getString(R.string.token_placeholder, token)
+
+                Toast.makeText(activity, "Auth Token Refreshed", Toast.LENGTH_SHORT)
+                    .show()
             }
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
@@ -168,7 +171,12 @@ class LoggedInFragment : Fragment() {
             val authClient = authClientProvider.getClient()
 
             val cancellable = authClient.signOut()
-                .addOnSuccess { navigateToLogin() }
+                .addOnSuccess {
+                    navigateToLogin()
+
+                    Toast.makeText(activity, "Logged Out", Toast.LENGTH_SHORT)
+                        .show()
+                }
                 .addOnFailure { throw it }
                 .execute()
 
