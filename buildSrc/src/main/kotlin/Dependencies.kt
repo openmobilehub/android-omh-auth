@@ -58,10 +58,15 @@ object Libs {
     val googleSignIn by lazy { "com.google.android.gms:play-services-auth:${Versions.googleSignIn}" }
     val googlePlayBase by lazy { "com.google.android.gms:play-services-base:${Versions.googlePlayBase}" }
 
+    // Facebook SDK
+    val facebookSdk by lazy { "com.facebook.android:facebook-android-sdk:${Versions.facebookSdk}" }
+
     // Testing
     val junit by lazy { "junit:junit:${Versions.junit}" }
     val androidJunit by lazy { "androidx.test.ext:junit:${Versions.androidJunit}" }
     val esspreso by lazy { "androidx.test.espresso:espresso-core:${Versions.espresso}" }
     val mockk by lazy { "io.mockk:mockk:${Versions.mockk}" }
+    val robolectric by lazy { "org.robolectric:robolectric:${Versions.robolectric}" }
+    val testJson by lazy { "org.json:json:${Versions.testJson}" }
     val coroutineTesting by lazy { "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}" }
 }

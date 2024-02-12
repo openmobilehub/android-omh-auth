@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2023 Open Mobile Hub
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,13 +22,22 @@
     tools:context=".login.LoginFragment">
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_google_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_login"
-        android:text="@string/login"
+        android:text="@string/google_login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_facebook_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/facebook_login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_google_login" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

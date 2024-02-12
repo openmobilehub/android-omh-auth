@@ -19,12 +19,57 @@ package com.openmobilehub.android.auth.plugin.google.gms
 import com.google.android.gms.tasks.Task
 import com.openmobilehub.android.auth.core.async.OmhCancellable
 import com.openmobilehub.android.auth.core.async.OmhTask
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class OmhGmsTask<T>(private val task: Task<T>) : OmhTask<T>() {
+class OmhGmsTask<T>(private val task: Task<T>?) : OmhTask<T>() {
+    private var suspendedTask: (suspend () -> T)? = null
+    private val coroutineContext = Dispatchers.Main + SupervisorJob()
+    private val customScope: CoroutineScope = CoroutineScope(context = coroutineContext)
+
+    fun addSuspendedTask(callback: suspend () -> T) {
+        suspendedTask = callback
+    }
+
+    @SuppressWarnings("TooGenericExceptionCaught")
+    private suspend fun executeScopedTask() {
+        try {
+            executeSuccess()
+        } catch (e: Exception) {
+            executeFailure(e)
+        }
+    }
+
+    private suspend fun executeSuccess() {
+        val result = suspendedTask!!.invoke()
+
+        withContext(Dispatchers.Main) {
+            onSuccess?.invoke(result)
+        }
+    }
+
+    private suspend fun executeFailure(e: Exception) = withContext(Dispatchers.Main) {
+        withContext(Dispatchers.Main) {
+            onFailure?.invoke(e)
+        }
+    }
 
     override fun execute(): OmhCancellable? {
-        task.addOnSuccessListener { result -> onSuccess?.invoke(result) }
-            .addOnFailureListener { e -> onFailure?.invoke(e) }
-        return null // No way to cancel the task
+        if (task != null) {
+            task.addOnSuccessListener { result -> onSuccess?.invoke(result) }
+                .addOnFailureListener { e -> onFailure?.invoke(e) }
+
+            return null
+        }
+
+        customScope.launch {
+            executeScopedTask()
+        }
+
+        return OmhCancellable { coroutineContext.cancelChildren() }
     }
 }

@@ -18,16 +18,16 @@ package com.openmobilehub.android.auth.plugin.google.nongms.presentation
 
 import android.content.Context
 import android.content.Intent
-import com.openmobilehub.android.auth.plugin.google.nongms.data.user.UserRepositoryImpl
-import com.openmobilehub.android.auth.plugin.google.nongms.domain.user.ProfileUseCase
-import com.openmobilehub.android.auth.plugin.google.nongms.presentation.redirect.RedirectActivity
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.async.OmhTask
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.core.models.OmhUserProfile
 import com.openmobilehub.android.auth.plugin.google.nongms.data.login.AuthRepositoryImpl
+import com.openmobilehub.android.auth.plugin.google.nongms.data.user.UserRepositoryImpl
 import com.openmobilehub.android.auth.plugin.google.nongms.domain.auth.AuthUseCase
 import com.openmobilehub.android.auth.plugin.google.nongms.domain.models.ApiResult
+import com.openmobilehub.android.auth.plugin.google.nongms.domain.user.ProfileUseCase
+import com.openmobilehub.android.auth.plugin.google.nongms.presentation.redirect.RedirectActivity
 import com.openmobilehub.android.auth.plugin.google.nongms.utils.Constants
 
 /**
@@ -52,10 +52,21 @@ internal class OmhAuthClientImpl(
             .putExtra(RedirectActivity.SCOPES, scopes)
     }
 
-    override fun getUser(): OmhUserProfile? {
+    override fun getUser(): OmhTask<OmhUserProfile> {
         val userRepository = UserRepositoryImpl.getUserRepository(applicationContext)
         val profileUseCase = ProfileUseCase.createUserProfileUseCase(userRepository)
-        return profileUseCase.getProfileData()
+
+        return OmhNonGmsTask {
+            val profileData = profileUseCase.getProfileData()
+
+            if (profileData == null) {
+                throw OmhAuthException.UnrecoverableLoginException(
+                    cause = Throwable(message = "No user profile stored")
+                )
+            }
+
+            return@OmhNonGmsTask profileData
+        }
     }
 
     internal class Builder(
@@ -86,14 +97,15 @@ internal class OmhAuthClientImpl(
         return OmhNonGmsTask(authUseCase::logout)
     }
 
-    override fun getAccountFromIntent(data: Intent?): OmhUserProfile {
+    override fun handleLoginIntentResponse(data: Intent?) {
         if (data?.hasExtra(Constants.CAUSE_KEY) == true) {
             val exception = data.getSerializableExtra(Constants.CAUSE_KEY) as OmhAuthException
             throw exception
         }
-        return getUser() ?: throw OmhAuthException.UnrecoverableLoginException(
-            cause = Throwable(message = "No user profile stored")
-        )
+
+        getUser()
+            .addOnFailure { e -> throw e }
+            .execute()
     }
 
     override fun revokeToken(): OmhTask<Unit> {

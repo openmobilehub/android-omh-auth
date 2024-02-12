@@ -2,8 +2,6 @@ plugins {
     `android-base-lib`
 }
 
-setProperty("version", properties["authGoogleGmsVersion"])
-
 android {
     namespace = "com.openmobilehub.android.auth.plugin.google.gms"
 }

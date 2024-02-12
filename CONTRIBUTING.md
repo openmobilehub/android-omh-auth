@@ -28,9 +28,9 @@ For using the plugins for development locally, there are two approaches:
    - Via a CLI flag: `./gradlew -PuseMavenLocal=true ...`
 
 2. Using local modules in the project
-   This scenario utilizes the local modules (subprojects) residing inside `packages/` to be used in place of dependencies so that between modifying the code in a plugin and running it in the sample app there is no need to publish to Maven.
+   This scenario utilizes the local modules (sub-projects) residing inside `packages/` to be used in place of dependencies so that between modifying the code in a plugin and running it in the sample app there is no need to publish to Maven.
 
-   This project has been preconfigured with such conditional configuration that can be enabled as follows:
+   This project has been pre-configured with such conditional configuration that can be enabled as follows:
 
    - Via root project's `local.properties` (applies both to Android Studio and `gradlew`): add `useLocalProjects=true`
    - Via a CLI flag: `./gradlew -PuseLocalProjects=true ...`
@@ -83,11 +83,11 @@ This project has documentation in a few places:
 
 ### Introduction and usage
 
-A friendly [README.md](https://github.com/openmobilehub/android-omh-auth/blob/main/README.md) written for many audiences.
+A friendly [README.md](/README.md) written for many audiences.
 
 ### Examples and advanced usage
 
-You can find more information in the [wiki](https://github.com/openmobilehub/omh-auth/wiki).
+You can find more information in the [advanced docs](/docs/advanced/README.md).
 
 ## Releasing a new version
 

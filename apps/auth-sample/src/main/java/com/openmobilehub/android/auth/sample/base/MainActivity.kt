@@ -18,14 +18,18 @@ package com.openmobilehub.android.auth.sample.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.sample.R
 import com.openmobilehub.android.auth.sample.databinding.ActivityMainBinding
+import com.openmobilehub.android.auth.sample.di.AuthClientProvider
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -37,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Inject
-    lateinit var authClient: OmhAuthClient
+    lateinit var authClientProvider: AuthClientProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,9 +60,22 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupGraph() {
         val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-        val startDestId = selectStartDestination()
-        navGraph.setStartDestination(startDestId)
-        navController.graph = navGraph
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                authClientProvider.getClient()
+
+                withContext(Dispatchers.Main) {
+                    navGraph.setStartDestination(R.id.logged_in_fragment)
+                    navController.graph = navGraph
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    navGraph.setStartDestination(R.id.login_fragment)
+                    navController.graph = navGraph
+                }
+            }
+        }
     }
 
     private fun setupToolbar() {
@@ -66,13 +83,5 @@ class MainActivity : AppCompatActivity() {
             setOf(R.id.logged_in_fragment, R.id.login_fragment)
         )
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
-    }
-
-    private fun selectStartDestination(): Int {
-        return if (authClient.getUser() == null) {
-            R.id.login_fragment
-        } else {
-            R.id.logged_in_fragment
-        }
     }
 }

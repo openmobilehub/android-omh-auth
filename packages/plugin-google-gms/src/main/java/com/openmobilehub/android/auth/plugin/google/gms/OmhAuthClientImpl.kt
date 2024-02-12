@@ -39,9 +39,17 @@ internal class OmhAuthClientImpl(
         return googleSignInClient.signInIntent
     }
 
-    override fun getUser(): OmhUserProfile? {
-        val googleUser = GoogleSignIn.getLastSignedInAccount(googleSignInClient.applicationContext)
-        return googleUser?.toOmhProfile()
+    override fun getUser(): OmhTask<OmhUserProfile> {
+        val task = OmhGmsTask<OmhUserProfile>(null)
+
+        task.addSuspendedTask {
+            val googleUser =
+                GoogleSignIn.getLastSignedInAccount(googleSignInClient.applicationContext)
+
+            return@addSuspendedTask googleUser!!.toOmhProfile()
+        }
+
+        return task
     }
 
     private fun GoogleSignInAccount.toOmhProfile(): OmhUserProfile {
@@ -68,11 +76,10 @@ internal class OmhAuthClientImpl(
         return OmhGmsTask(task)
     }
 
-    override fun getAccountFromIntent(data: Intent?): OmhUserProfile {
+    override fun handleLoginIntentResponse(data: Intent?) {
         val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
         try {
-            val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
-            return account.toOmhProfile()
+            task.getResult(ApiException::class.java)
         } catch (apiException: ApiException) {
             val isRunningOnNonGms = !OmhAuthUtils.isGmsDevice(googleSignInClient.applicationContext)
             val omhException: OmhAuthException = toOmhLoginException(

@@ -30,15 +30,18 @@ jobs:
           distribution: adopt
           cache: gradle
 
-      - name: Restore Cache MavenLocal 
+      - name: Restore Cache MavenLocal
         if: ${{ inputs.input-cache-prefix != '' }}
         uses: actions/cache@v3
         with:
           path: ~/.m2/repository
           key: ${{ inputs.input-cache-prefix }}-${{ github.run_id }}
-      
+
       - name: Update local properties for secrets
-        run: echo CLIENT_ID=${{ secrets.GOOGLE_AUTH_API_KEY }} > ./local.properties
+        run: |
+          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> ./local.properties &&
+          echo FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID }} >> ./local.properties &&
+          echo FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN }} >> ./local.properties
 
       - name: Set useMavenLocal flag
         run: echo useMavenLocal=true >> local.properties
@@ -50,7 +53,7 @@ jobs:
           fileDir: ${{ env.SAMPLE_APP_PATH }}
           fileName: ${{ secrets.SAMPLE_APP_KEYSTORE_FILE_NAME }}
           encodedString: ${{ secrets.SAMPLE_APP_KEYSTORE_BASE_64 }}
-      
+
         # Builds the release version of the application
       - name: Assemble release app
         run: ./gradlew ${{ env.GRADLE_ASSEMBLE_TASK }}

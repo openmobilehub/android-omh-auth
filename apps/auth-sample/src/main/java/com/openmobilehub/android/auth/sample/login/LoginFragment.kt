@@ -29,6 +29,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.models.OmhAuthException
+import com.openmobilehub.android.auth.plugin.facebook.FacebookAuthClient
 import com.openmobilehub.android.auth.sample.R
 import com.openmobilehub.android.auth.sample.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,11 +42,18 @@ class LoginFragment : Fragment() {
         /* contract = */ ActivityResultContracts.StartActivityForResult(),
         /* callback = */ ::handleLoginResult
     )
+    private val facebookLoginLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+        ::handleFacebookLoginResult
+    )
 
     private var binding: FragmentLoginBinding? = null
 
     @Inject
-    lateinit var omhAuthClient: OmhAuthClient
+    lateinit var googleAuthClient: OmhAuthClient
+
+    @Inject
+    lateinit var facebookAuthClient: FacebookAuthClient
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,12 +71,18 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.btnLogin?.setOnClickListener { startLogin() }
+        binding?.btnGoogleLogin?.setOnClickListener { startGoogleLogin() }
+        binding?.btnFacebookLogin?.setOnClickListener { startFacebookLogin() }
     }
 
-    private fun startLogin() {
-        val loginIntent = omhAuthClient.getLoginIntent()
+    private fun startGoogleLogin() {
+        val loginIntent = googleAuthClient.getLoginIntent()
         loginLauncher.launch(loginIntent)
+    }
+
+    private fun startFacebookLogin() {
+        val loginIntent = facebookAuthClient.getLoginIntent()
+        facebookLoginLauncher.launch(loginIntent)
     }
 
     private fun navigateToLoggedIn() {
@@ -77,7 +91,16 @@ class LoginFragment : Fragment() {
 
     private fun handleLoginResult(result: ActivityResult) {
         try {
-            omhAuthClient.getAccountFromIntent(result.data)
+            googleAuthClient.handleLoginIntentResponse(result.data)
+            navigateToLoggedIn()
+        } catch (exception: OmhAuthException) {
+            handleException(exception)
+        }
+    }
+
+    private fun handleFacebookLoginResult(result: ActivityResult) {
+        try {
+            facebookAuthClient.handleLoginIntentResponse(result.data)
             navigateToLoggedIn()
         } catch (exception: OmhAuthException) {
             handleException(exception)

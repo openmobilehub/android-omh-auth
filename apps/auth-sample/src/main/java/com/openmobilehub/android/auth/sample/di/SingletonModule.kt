@@ -19,6 +19,7 @@ package com.openmobilehub.android.auth.sample.di
 import android.content.Context
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.OmhAuthProvider
+import com.openmobilehub.android.auth.plugin.facebook.FacebookAuthClient
 import com.openmobilehub.android.auth.sample.BuildConfig
 import dagger.Module
 import dagger.Provides
@@ -30,15 +31,23 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object SingletonModule {
     @Provides
-    fun providesOmhAuthClient(@ApplicationContext context: Context): OmhAuthClient {
+    fun providesGoogleAuthClient(@ApplicationContext context: Context): OmhAuthClient {
         val omhAuthProvider = OmhAuthProvider.Builder()
             .addNonGmsPath(BuildConfig.AUTH_NON_GMS_PATH)
             .addGmsPath(BuildConfig.AUTH_GMS_PATH)
             .build()
         return omhAuthProvider.provideAuthClient(
             scopes = listOf("openid", "email", "profile"),
-            clientId = BuildConfig.CLIENT_ID,
+            clientId = BuildConfig.GOOGLE_CLIENT_ID,
             context = context
+        )
+    }
+
+    @Provides
+    fun providesFacebookAuthClient(@ApplicationContext context: Context): FacebookAuthClient {
+        return FacebookAuthClient(
+            scopes = arrayListOf("public_profile", "email"),
+            context = context,
         )
     }
 }

@@ -2,8 +2,6 @@ plugins {
     `android-base-lib`
 }
 
-setProperty("version", properties["authCoreVersion"])
-
 android {
     namespace = "com.openmobilehub.android.auth.core"
 }

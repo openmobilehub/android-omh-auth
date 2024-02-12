@@ -21,11 +21,12 @@ on:
         description: 'Publish to MavenLocal command'
         type: string
         required: true
-      
+
 jobs:
   publish:
     name: Publish plugins to MavenLocal
     runs-on: ubuntu-latest
+
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -37,13 +38,16 @@ jobs:
           java-version: 11
 
       - name: Update local properties for secrets
-        run: echo CLIENT_ID=${{ secrets.GOOGLE_AUTH_API_KEY }} > ./local.properties
+        run: |
+          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> ./local.properties &&
+          echo FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID }} >> ./local.properties &&
+          echo FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN }} >> ./local.properties
 
       - name: Set useMavenLocal flag
         run: echo useMavenLocal=true >> local.properties
 
       - name: Restore MavenLocal Cache
-        if: ${{ inputs.input-cache-prefix != '' }} 
+        if: ${{ inputs.input-cache-prefix != '' }}
         uses: actions/cache@v3
         with:
           path: ~/.m2/repository

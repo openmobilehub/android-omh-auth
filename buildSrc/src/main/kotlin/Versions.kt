@@ -46,9 +46,14 @@ object Versions {
     const val googleSignIn = "20.4.1"
     const val googlePlayBase = "18.2.0"
 
+    // Facebook SDK
+    const val facebookSdk = "16.0.0"
+
     // Testing
     const val junit = "4.13.2"
     const val androidJunit = "1.1.5"
     const val espresso = "3.5.1"
     const val mockk = "1.13.4"
+    const val testJson = "20231013"
+    const val robolectric = "4.11.1"
 }
