@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.facebook.AccessToken
 import com.facebook.GraphRequest
+import com.facebook.HttpMethod
 import com.facebook.Profile
 import com.facebook.login.LoginManager
 import com.openmobilehub.android.auth.core.OmhAuthClient
@@ -56,7 +57,7 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) : 
         val request = GraphRequest().apply {
             accessToken = AccessToken.getCurrentAccessToken()
             graphPath = "/%s/permissions".format(Profile.getCurrentProfile()?.id)
-            httpMethod = com.facebook.HttpMethod.DELETE
+            httpMethod = HttpMethod.DELETE
             callback = GraphRequest.Callback { response ->
                 if (response.error != null) {
                     continuation.resumeWithException(response.error!!.exception!!)

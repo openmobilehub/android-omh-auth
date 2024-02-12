@@ -1,6 +1,7 @@
 import com.facebook.AccessToken
 import com.facebook.FacebookException
 import com.openmobilehub.android.auth.core.OmhCredentials
+import com.openmobilehub.android.auth.plugin.facebook.ThreadUtils
 import kotlinx.coroutines.runBlocking
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -17,19 +18,17 @@ class FacebookCredentials : OmhCredentials {
     override val accessToken: String?
         get() = AccessToken.getCurrentAccessToken()?.token
 
-    private suspend fun refreshAccessToken(): AccessToken? {
-        return suspendCoroutine { continuation ->
-            val callback = object : AccessToken.AccessTokenRefreshCallback {
-                override fun OnTokenRefreshed(accessToken: AccessToken?) {
-                    continuation.resume(accessToken)
-                }
-
-                override fun OnTokenRefreshFailed(exception: FacebookException?) {
-                    continuation.resumeWithException(exception!!)
-                }
+    private suspend fun refreshAccessToken() = suspendCoroutine { continuation ->
+        val callback = object : AccessToken.AccessTokenRefreshCallback {
+            override fun OnTokenRefreshed(accessToken: AccessToken?) {
+                continuation.resume(accessToken)
             }
 
-            AccessToken.refreshCurrentAccessTokenAsync(callback)
+            override fun OnTokenRefreshFailed(exception: FacebookException?) {
+                continuation.resumeWithException(exception!!)
+            }
         }
+
+        AccessToken.refreshCurrentAccessTokenAsync(callback)
     }
 }
