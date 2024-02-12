@@ -17,7 +17,6 @@
 package com.openmobilehub.android.auth.sample.loggedin
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +25,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.gms.auth.UserRecoverableAuthException
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.openmobilehub.android.auth.core.OmhCredentials
 import com.openmobilehub.android.auth.core.async.CancellableCollector
@@ -61,7 +59,6 @@ class LoggedInFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupUI()
-        getToken()
     }
 
     private fun setupUI() {
@@ -72,82 +69,114 @@ class LoggedInFragment : Fragment() {
             btnLogout.setOnClickListener { logout() }
         }
 
+        getToken()
         getUser()
     }
 
-    private fun getUser() = lifecycleScope.launch(Dispatchers.IO) {
-        val authClient = authClientProvider.getClient()
-
-        authClient.getUser()
-            .addOnSuccess { profile ->
-                binding?.run {
-                    Picasso.get().load(profile.profileImage).into(binding?.tvAvatar)
-                    tvName.text = getString(R.string.name_placeholder, profile.name)
-                    tvSurname.text = getString(R.string.surname_placeholder, profile.surname)
-                    tvEmail.text = getString(R.string.email_placeholder, profile.email)
-                }
-
-                Toast.makeText(activity, "Fetched User Data", Toast.LENGTH_SHORT)
-                    .show()
-            }
-            .addOnFailure(::showErrorDialog)
-            .execute()
-    }
-
-    private fun revokeToken() = lifecycleScope.launch(Dispatchers.IO) {
-        val authClient = authClientProvider.getClient()
-
-        val cancellable = authClient.revokeToken()
-            .addOnFailure(::showErrorDialog)
-            .addOnSuccess {
-                Toast.makeText(activity, "Auth Token Revoked", Toast.LENGTH_SHORT)
-                    .show()
-            }
-            .execute()
-        cancellableCollector.addCancellable(cancellable)
-    }
-
     private fun getToken() = lifecycleScope.launch(Dispatchers.IO) {
-        val authClient = authClientProvider.getClient()
-
         try {
+            val authClient = authClientProvider.getClient()
+
             val token = when (val credentials = authClient.getCredentials()) {
                 is OmhCredentials -> credentials.accessToken
-                is GoogleAccountCredential -> {
-                    requestGoogleToken(credentials)
-                }
-
+                is GoogleAccountCredential -> credentials.token
                 null -> return@launch
-                else -> error("Unsupported credential type")
+                else -> throw Exception("Unsupported credential type")
             }
 
             withContext(Dispatchers.Main) {
                 binding?.tvToken?.text = getString(R.string.token_placeholder, token)
             }
-        } catch (e: NotImplementedError) {
-            Log.e("LoggedInFragment", "Not implemented", e)
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                showErrorDialog(e)
+            }
         }
     }
 
-    private fun requestGoogleToken(credentials: GoogleAccountCredential): String? {
-        return try {
-            credentials.token
-        } catch (e: UserRecoverableAuthException) {
-            e.printStackTrace()
-            logout()
-            null
+    private fun getUser() = lifecycleScope.launch(Dispatchers.IO) {
+        try {
+            val authClient = authClientProvider.getClient()
+
+            val cancellable = authClient.getUser()
+                .addOnSuccess { profile ->
+                    binding?.run {
+                        Picasso.get().load(profile.profileImage).into(binding?.tvAvatar)
+                        tvName.text = getString(R.string.name_placeholder, profile.name)
+                        tvSurname.text = getString(R.string.surname_placeholder, profile.surname)
+                        tvEmail.text = getString(R.string.email_placeholder, profile.email)
+                    }
+
+                    Toast.makeText(activity, "Fetched User Data", Toast.LENGTH_SHORT)
+                        .show()
+                }
+                .addOnFailure { throw it }
+                .execute()
+
+            cancellableCollector.addCancellable(cancellable)
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                showErrorDialog(e)
+            }
         }
     }
 
-    private fun logout() {
-        lifecycleScope.launch(Dispatchers.IO) {
+    private fun refreshToken() = lifecycleScope.launch(Dispatchers.IO) {
+        try {
+            val authClient = authClientProvider.getClient()
+
+            val token =
+                when (val credentials = authClient.getCredentials()) {
+                    is OmhCredentials -> credentials.blockingRefreshToken()
+                    is GoogleAccountCredential -> credentials.token
+                    null -> return@launch
+                    else -> throw Exception("Unsupported credential type")
+                }
+
+            withContext(Dispatchers.Main) {
+                binding?.tvToken?.text = getString(R.string.token_placeholder, token)
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                showErrorDialog(e)
+            }
+        }
+    }
+
+    private fun revokeToken() = lifecycleScope.launch(Dispatchers.IO) {
+        try {
+            val authClient = authClientProvider.getClient()
+
+            val cancellable = authClient.revokeToken()
+                .addOnSuccess {
+                    Toast.makeText(activity, "Auth Token Revoked", Toast.LENGTH_SHORT)
+                        .show()
+                }
+                .addOnFailure { throw it }
+                .execute()
+
+            cancellableCollector.addCancellable(cancellable)
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                showErrorDialog(e)
+            }
+        }
+    }
+
+    private fun logout() = lifecycleScope.launch(Dispatchers.IO) {
+        try {
             val authClient = authClientProvider.getClient()
 
             val cancellable = authClient.signOut()
                 .addOnSuccess { navigateToLogin() }
-                .addOnFailure(::showErrorDialog)
+                .addOnFailure { throw it }
                 .execute()
+
             cancellableCollector.addCancellable(cancellable)
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                showErrorDialog(e)
+            }
         }
     }
 
@@ -162,26 +191,6 @@ class LoggedInFragment : Fragment() {
             .show()
     }
 
-    private fun refreshToken() = lifecycleScope.launch(Dispatchers.IO) {
-        val authClient = authClientProvider.getClient()
-
-        try {
-            val newToken =
-                when (val credentials = authClient.getCredentials()) {
-                    is OmhCredentials -> credentials.blockingRefreshToken()
-                    is GoogleAccountCredential -> requestGoogleToken(credentials)
-                    else -> error("Unsupported credential type")
-                } ?: return@launch
-
-            withContext(Dispatchers.Main) {
-                binding?.tvToken?.text = getString(R.string.token_placeholder, newToken)
-            }
-        } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                showErrorDialog(e)
-            }
-        }
-    }
 
     private fun navigateToLogin() {
         findNavController().navigate(R.id.action_logged_in_fragment_to_login_fragment)

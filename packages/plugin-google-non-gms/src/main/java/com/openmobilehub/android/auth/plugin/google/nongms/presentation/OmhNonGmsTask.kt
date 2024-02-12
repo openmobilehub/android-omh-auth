@@ -46,14 +46,17 @@ class OmhNonGmsTask<T>(private val task: suspend () -> T) : OmhTask<T>() {
         }
     }
 
-    private suspend fun executeFailure(e: Exception) = withContext(Dispatchers.Main) {
-        onFailure?.invoke(e)
-    }
-
     private suspend fun executeSuccess() {
-        val result = task()
+        val result = task.invoke()
+
         withContext(Dispatchers.Main) {
             onSuccess?.invoke(result)
+        }
+    }
+
+    private suspend fun executeFailure(e: Exception) = withContext(Dispatchers.Main) {
+        withContext(Dispatchers.Main) {
+            onFailure?.invoke(e)
         }
     }
 }

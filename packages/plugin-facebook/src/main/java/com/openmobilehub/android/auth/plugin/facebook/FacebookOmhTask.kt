@@ -31,7 +31,9 @@ class FacebookOmhTask<T>(private val task: suspend () -> T) : OmhTask<T>() {
     }
 
     private suspend fun executeFailure(e: Exception) = withContext(Dispatchers.Main) {
-        onFailure?.invoke(e)
+        withContext(Dispatchers.Main) {
+            onFailure?.invoke(e)
+        }
     }
 
     override fun execute(): OmhCancellable {

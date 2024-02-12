@@ -22,7 +22,8 @@ class AuthClientProvider @Inject constructor(
                         continuation.resume(facebookAuthClient)
                     }
                     .addOnFailure {
-                        continuation.resumeWithException(Exception("No user logged in"))
+                        // FIXME:This will only throw Facebook exceptions
+                        continuation.resumeWithException(it)
                     }
                     .execute()
             }

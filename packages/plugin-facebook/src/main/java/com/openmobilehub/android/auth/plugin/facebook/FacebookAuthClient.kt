@@ -53,29 +53,12 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) : 
         return FacebookOmhTask(::revokeTokenRequest)
     }
 
-    internal suspend fun revokeTokenRequest() = suspendCoroutine { continuation ->
-        val request = GraphRequest().apply {
-            accessToken = AccessToken.getCurrentAccessToken()
-            graphPath = "/%s/permissions".format(Profile.getCurrentProfile()?.id)
-            httpMethod = HttpMethod.DELETE
-            callback = GraphRequest.Callback { response ->
-                if (response.error != null) {
-                    continuation.resumeWithException(response.error!!.exception!!)
-                } else {
-                    continuation.resume(Unit)
-                }
-            }
-        }
-
-        request.executeAsync()
-    }
-
     internal suspend fun getUserRequest(): OmhUserProfile = suspendCoroutine { continuation ->
         val request = GraphRequest.newMeRequest(
             AccessToken.getCurrentAccessToken(),
-        ) { jsonObject, _ ->
+        ) { jsonObject, response ->
             if (jsonObject == null) {
-                continuation.resumeWithException(Exception("Failed to get user data"))
+                continuation.resumeWithException(response?.error?.exception!!)
             } else {
                 val userProfile = OmhUserProfile(
                     jsonObject.getString("first_name"),
@@ -93,6 +76,23 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) : 
         }
 
         request.parameters = params
+
+        request.executeAsync()
+    }
+
+    internal suspend fun revokeTokenRequest() = suspendCoroutine { continuation ->
+        val request = GraphRequest().apply {
+            accessToken = AccessToken.getCurrentAccessToken()
+            graphPath = "/%s/permissions".format(Profile.getCurrentProfile()?.id)
+            httpMethod = HttpMethod.DELETE
+            callback = GraphRequest.Callback { response ->
+                if (response.error != null) {
+                    continuation.resumeWithException(response.error!!.exception!!)
+                } else {
+                    continuation.resume(Unit)
+                }
+            }
+        }
 
         request.executeAsync()
     }
