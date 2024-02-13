@@ -50,7 +50,10 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) : 
     }
 
     override fun revokeToken(): FacebookOmhTask<Unit> {
-        return FacebookOmhTask(::revokeTokenRequest)
+        return FacebookOmhTask {
+            revokeTokenRequest()
+            LoginManager.getInstance().logOut()
+        }
     }
 
     internal suspend fun getUserRequest(): OmhUserProfile = suspendCoroutine { continuation ->
