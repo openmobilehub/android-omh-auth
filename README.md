@@ -144,7 +144,7 @@ This repository includes a [auth-sample](/apps/auth-sample) that demonstrates th
 
 ## Provider Implementations / Plugins
 
-OMH Auth SDK is open-source, promoting community collaboration and plugin support from other auth providers to enhance capabilities and expand supported auth services. You can find more details in the "[creating a custom implementation](/docs/advanced/Creating-a-custom-implementation.md)" section.
+OMH Auth SDK is open-source, promoting community collaboration and plugin support from other auth providers to enhance capabilities and expand supported auth services. You can find more details in the "[creating a custom implementation](/docs/advanced/Plugins.md)" section.
 
 ## Contributing
 

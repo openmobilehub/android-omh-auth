@@ -76,3 +76,5 @@ lint/tmp/
 
 # MacOs
 .DS_Store
+
+docs/generated/
