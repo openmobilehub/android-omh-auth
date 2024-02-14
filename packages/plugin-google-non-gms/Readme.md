@@ -144,14 +144,14 @@ and Non-GMS configurations.
    and `BuildConfig.AUTH_NON_GMS_PATH` variables.
 5. Now you can select a build variant. To change the build variant Android Studio uses, do one of
    the following:
-    - Select "Build" > "Select Build Variant..." in the menu.
-    - Select "View" > "Tool Windows" > "Build Variants" in the menu.
-    - Click the "Build Variants" tab on the tool window bar.
+   - Select "Build" > "Select Build Variant..." in the menu.
+   - Select "View" > "Tool Windows" > "Build Variants" in the menu.
+   - Click the "Build Variants" tab on the tool window bar.
 6. You can select any of the 3 variants for the `:auth-starter-sample`:
-    - "singleBuild" variant builds for GMS (Google Mobile Services) and Non-GMS devices without
-      changes to the code.(Recommended)
-    - "gms" variant builds for devices that has GMS (Google Mobile Services).
-    - "nongms" variant builds for devices that doesn't have GMS (Google Mobile Services).
+   - "singleBuild" variant builds for GMS (Google Mobile Services) and Non-GMS devices without
+     changes to the code.(Recommended)
+   - "gms" variant builds for devices that has GMS (Google Mobile Services).
+   - "nongms" variant builds for devices that doesn't have GMS (Google Mobile Services).
 
 ### Directly including the Google GMS and non-GMS dependencies
 
@@ -159,9 +159,9 @@ If you want to incorporate Google plugin into your project without using the And
 plugin, you have to directly include the Google GMS and non-GMS plugins as a dependency. In
 the `build.gradle.kts`, add the following implementation statement to the `dependencies{}` section:
 
-```kotlin
-implementation 'com.openmobilehub.android.auth:plugin-google-gms:2.0.0-beta'
-implementation 'com.openmobilehub.android.auth:plugin-google-non-gms:2.0.0-beta'
+```groovy
+implementation("com.openmobilehub.android.auth:plugin-google-gms:2.0.0-beta")
+implementation("com.openmobilehub.android.auth:plugin-google-non-gms:2.0.0-beta")
 ```
 
 Save the file

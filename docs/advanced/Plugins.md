@@ -1,7 +1,7 @@
 For creating a custom implementation of our Android OMH Auth interfaces you'll need to get our Android OMH Auth Core dependency:
 
 ```groovy
-implementation 'com.openmobilehub.android.auth:core:$version'
+implementation("com.openmobilehub.android.auth:core:$version")
 ```
 
 Once you've downloaded the dependencies, it's time to extend each interface. Below you can find a step by step guide on how to do it.

@@ -1,6 +1,5 @@
 package com.openmobilehub.android.auth.plugin.facebook
 
-import FacebookCredentials
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +9,8 @@ import com.facebook.HttpMethod
 import com.facebook.Profile
 import com.facebook.login.LoginManager
 import com.openmobilehub.android.auth.core.OmhAuthClient
+import com.openmobilehub.android.auth.core.OmhCredentials
+import com.openmobilehub.android.auth.core.async.OmhTask
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.core.models.OmhAuthStatusCodes
 import com.openmobilehub.android.auth.core.models.OmhUserProfile
@@ -17,7 +18,8 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) : OmhAuthClient {
+class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) :
+    OmhAuthClient {
     override fun getLoginIntent(): Intent {
         return Intent(
             context, FacebookLoginActivity::class.java
@@ -37,20 +39,23 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) : 
         }
     }
 
-    override fun getUser(): FacebookOmhTask<OmhUserProfile> {
+    override fun getUser(): OmhTask<OmhUserProfile> {
         return FacebookOmhTask(::getUserRequest)
     }
 
-    override fun getCredentials(): FacebookCredentials {
+    override fun getCredentials(): OmhCredentials {
         return FacebookCredentials()
     }
 
-    override fun signOut(): FacebookOmhTask<Unit> {
+    override fun signOut(): OmhTask<Unit> {
         return FacebookOmhTask(LoginManager.getInstance()::logOut)
     }
 
-    override fun revokeToken(): FacebookOmhTask<Unit> {
-        return FacebookOmhTask(::revokeTokenRequest)
+    override fun revokeToken(): OmhTask<Unit> {
+        return FacebookOmhTask {
+            revokeTokenRequest()
+            LoginManager.getInstance().logOut()
+        }
     }
 
     internal suspend fun getUserRequest(): OmhUserProfile = suspendCoroutine { continuation ->

@@ -6,7 +6,7 @@ import android.os.Bundle
 import com.facebook.CallbackManager
 import com.facebook.login.LoginManager
 
-class FacebookLoginActivity : Activity() {
+internal class FacebookLoginActivity : Activity() {
     private val callbackManager = CallbackManager.Factory.create()
     private val facebookLoginCallback = FacebookLoginCallback(this)
 

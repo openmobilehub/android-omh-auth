@@ -52,6 +52,8 @@ To access Facebook APIs, generate a unique **App ID** and **App Secret** for you
 
     Once you generated the debug and release key hashes, add them under **Key Hashes** section and save your changes.
 
+> To enable the email scope: in your [Meta for Developers](https://developers.facebook.com/apps) app, navigate to "Use cases" -> "Customize" -> "Permissions" and click **Add** for the **Email** permissions.
+
 ## Edit your resources and manifest
 
 1. Open the **/app/manifest/AndroidManifest.xml** file.
@@ -113,8 +115,8 @@ Open the `local.properties` in your project level directory, and do the followin
 
 To incorporate Facebook plugin into your project, you have to directly include the Facebook plugin as a dependency. In the `build.gradle.kts`, add the following implementation statement to the `dependencies{}` section:
 
-```kotlin
-implementation 'com.openmobilehub.android.auth:plugin-facebook:2.0.0-beta'
+```groovy
+implementation("com.openmobilehub.android.auth:plugin-facebook:2.0.0-beta")
 ```
 
 Save the file and [sync your project with Gradle](https://developer.android.com/studio/build#sync-files).

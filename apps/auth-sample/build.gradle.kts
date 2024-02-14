@@ -19,6 +19,10 @@ var googleGmsPath = "com.openmobilehub.android.auth.plugin.google.gms.OmhAuthFac
 var googleNongmsPath =
     "com.openmobilehub.android.auth.plugin.google.nongms.presentation.OmhAuthFactoryImpl"
 
+tasks.dokkaHtmlPartial {
+    enabled = false
+}
+
 omhConfig {
     enableLocalProjects = useLocalProjects
 
@@ -146,6 +150,8 @@ dependencies {
         implementation(project(":packages:plugin-google-gms"))
         implementation(project(":packages:plugin-google-non-gms"))
         implementation(project(":packages:plugin-facebook"))
+    } else {
+        implementation("com.openmobilehub.android.auth:plugin-facebook:2.0.0-beta")
     }
 }
 

@@ -48,3 +48,7 @@ android {
         }
     }
 }
+
+dependencies {
+    implementation("org.jetbrains.dokka:org.jetbrains.dokka.gradle.plugin:1.8.10")
+}
