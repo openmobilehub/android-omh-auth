@@ -19,6 +19,10 @@ var googleGmsPath = "com.openmobilehub.android.auth.plugin.google.gms.OmhAuthFac
 var googleNongmsPath =
     "com.openmobilehub.android.auth.plugin.google.nongms.presentation.OmhAuthFactoryImpl"
 
+tasks.dokkaHtmlPartial {
+    enabled = false
+}
+
 omhConfig {
     enableLocalProjects = useLocalProjects
 
