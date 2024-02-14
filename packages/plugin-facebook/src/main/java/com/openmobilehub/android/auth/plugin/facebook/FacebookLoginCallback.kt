@@ -6,7 +6,7 @@ import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginResult
 
-class FacebookLoginCallback(val activity: Activity) {
+internal class FacebookLoginCallback(val activity: Activity) {
     fun getLoginCallback(): FacebookCallback<LoginResult> {
         return object : FacebookCallback<LoginResult> {
             override fun onSuccess(result: LoginResult) {

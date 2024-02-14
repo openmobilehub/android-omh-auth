@@ -1,6 +1,5 @@
 package com.openmobilehub.android.auth.plugin.facebook
 
-import FacebookCredentials
 import com.facebook.AccessToken
 import com.facebook.FacebookException
 import io.mockk.every

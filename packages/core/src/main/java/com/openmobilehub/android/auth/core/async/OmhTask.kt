@@ -31,7 +31,6 @@ package com.openmobilehub.android.auth.core.async
  * the [OmhCancellable] is returned as nullable.
  */
 abstract class OmhTask<T> {
-
     protected var onSuccess: ((T) -> Unit)? = null
     protected var onFailure: ((Exception) -> Unit)? = null
 

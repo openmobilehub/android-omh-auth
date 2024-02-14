@@ -25,10 +25,9 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class OmhNonGmsTask<T>(private val task: suspend () -> T) : OmhTask<T>() {
+internal class OmhNonGmsTask<T>(private val task: suspend () -> T) : OmhTask<T>() {
     private val coroutineContext = Dispatchers.Main + SupervisorJob()
     private val customScope: CoroutineScope = CoroutineScope(context = coroutineContext)
-
 
     override fun execute(): OmhCancellable {
         customScope.launch {

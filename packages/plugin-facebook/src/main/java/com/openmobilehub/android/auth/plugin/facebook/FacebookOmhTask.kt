@@ -9,9 +9,16 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class FacebookOmhTask<T>(private val task: suspend () -> T) : OmhTask<T>() {
+internal class FacebookOmhTask<T>(private val task: suspend () -> T) : OmhTask<T>() {
     private val coroutineContext = Dispatchers.Main + SupervisorJob()
     private val customScope: CoroutineScope = CoroutineScope(context = coroutineContext)
+
+    override fun execute(): OmhCancellable {
+        customScope.launch {
+            executeScopedTask()
+        }
+        return OmhCancellable { coroutineContext.cancelChildren() }
+    }
 
     @SuppressWarnings("TooGenericExceptionCaught")
     private suspend fun executeScopedTask() {
@@ -34,12 +41,5 @@ class FacebookOmhTask<T>(private val task: suspend () -> T) : OmhTask<T>() {
         withContext(Dispatchers.Main) {
             onFailure?.invoke(e)
         }
-    }
-
-    override fun execute(): OmhCancellable {
-        customScope.launch {
-            executeScopedTask()
-        }
-        return OmhCancellable { coroutineContext.cancelChildren() }
     }
 }

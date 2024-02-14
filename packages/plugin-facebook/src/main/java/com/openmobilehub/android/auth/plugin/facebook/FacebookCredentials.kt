@@ -1,13 +1,14 @@
+package com.openmobilehub.android.auth.plugin.facebook
+
 import com.facebook.AccessToken
 import com.facebook.FacebookException
 import com.openmobilehub.android.auth.core.OmhCredentials
-import com.openmobilehub.android.auth.plugin.facebook.ThreadUtils
 import kotlinx.coroutines.runBlocking
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-class FacebookCredentials : OmhCredentials {
+internal class FacebookCredentials : OmhCredentials {
     override fun blockingRefreshToken(): String {
         ThreadUtils.checkForMainThread()
         return runBlocking {

@@ -26,10 +26,25 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class OmhGmsTask<T>(private val task: Task<T>?) : OmhTask<T>() {
+internal class OmhGmsTask<T>(private val task: Task<T>?) : OmhTask<T>() {
     private var suspendedTask: (suspend () -> T)? = null
     private val coroutineContext = Dispatchers.Main + SupervisorJob()
     private val customScope: CoroutineScope = CoroutineScope(context = coroutineContext)
+
+    override fun execute(): OmhCancellable? {
+        if (task != null) {
+            task.addOnSuccessListener { result -> onSuccess?.invoke(result) }
+                .addOnFailureListener { e -> onFailure?.invoke(e) }
+
+            return null
+        }
+
+        customScope.launch {
+            executeScopedTask()
+        }
+
+        return OmhCancellable { coroutineContext.cancelChildren() }
+    }
 
     fun addSuspendedTask(callback: suspend () -> T) {
         suspendedTask = callback
@@ -56,20 +71,5 @@ class OmhGmsTask<T>(private val task: Task<T>?) : OmhTask<T>() {
         withContext(Dispatchers.Main) {
             onFailure?.invoke(e)
         }
-    }
-
-    override fun execute(): OmhCancellable? {
-        if (task != null) {
-            task.addOnSuccessListener { result -> onSuccess?.invoke(result) }
-                .addOnFailureListener { e -> onFailure?.invoke(e) }
-
-            return null
-        }
-
-        customScope.launch {
-            executeScopedTask()
-        }
-
-        return OmhCancellable { coroutineContext.cancelChildren() }
     }
 }
