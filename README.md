@@ -123,9 +123,9 @@ The SDK also provides a way to revoke the access token provided to the applicati
 
 ```kotlin
 val cancellable = omhAuthClient.revokeToken()
-    .addOnSuccess { navigateToLogin() }
-    .addOnFailure(::showErrorDialog)
-    .execute()
+  .addOnSuccess { navigateToLogin() }
+  .addOnFailure(::showErrorDialog)
+  .execute()
 
 cancellableCollector.addCancellable(cancellable)
 ```
