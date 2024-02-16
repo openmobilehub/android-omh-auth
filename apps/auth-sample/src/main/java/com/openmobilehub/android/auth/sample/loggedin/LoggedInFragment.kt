@@ -31,6 +31,7 @@ import com.openmobilehub.android.auth.core.async.CancellableCollector
 import com.openmobilehub.android.auth.sample.R
 import com.openmobilehub.android.auth.sample.databinding.FragmentLoggedInBinding
 import com.openmobilehub.android.auth.sample.di.AuthClientProvider
+import com.openmobilehub.android.auth.sample.di.LoginState
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -74,9 +75,9 @@ class LoggedInFragment : Fragment() {
     }
 
     private fun getToken() = lifecycleScope.launch(Dispatchers.IO) {
-        try {
-            val authClient = authClientProvider.getClient()
+        val authClient = authClientProvider.getClient(requireContext())
 
+        try {
             val token = when (val credentials = authClient.getCredentials()) {
                 is OmhCredentials -> credentials.accessToken
                 is GoogleAccountCredential -> credentials.token
@@ -95,36 +96,30 @@ class LoggedInFragment : Fragment() {
     }
 
     private fun getUser() = lifecycleScope.launch(Dispatchers.IO) {
-        try {
-            val authClient = authClientProvider.getClient()
+        val authClient = authClientProvider.getClient(requireContext())
 
-            val cancellable = authClient.getUser()
-                .addOnSuccess { profile ->
-                    binding?.run {
-                        Picasso.get().load(profile.profileImage).into(binding?.tvAvatar)
-                        tvName.text = getString(R.string.name_placeholder, profile.name)
-                        tvSurname.text = getString(R.string.surname_placeholder, profile.surname)
-                        tvEmail.text = getString(R.string.email_placeholder, profile.email)
-                    }
-
-                    Toast.makeText(activity, "User Data Fetched", Toast.LENGTH_SHORT)
-                        .show()
+        val cancellable = authClient.getUser()
+            .addOnSuccess { profile ->
+                binding?.run {
+                    Picasso.get().load(profile.profileImage).into(binding?.tvAvatar)
+                    tvName.text = getString(R.string.name_placeholder, profile.name)
+                    tvSurname.text = getString(R.string.surname_placeholder, profile.surname)
+                    tvEmail.text = getString(R.string.email_placeholder, profile.email)
                 }
-                .addOnFailure { throw it }
-                .execute()
 
-            cancellableCollector.addCancellable(cancellable)
-        } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                showErrorDialog(e)
+                Toast.makeText(activity, "User Data Fetched", Toast.LENGTH_SHORT)
+                    .show()
             }
-        }
+            .addOnFailure(::showErrorDialog)
+            .execute()
+
+        cancellableCollector.addCancellable(cancellable)
     }
 
     private fun refreshToken() = lifecycleScope.launch(Dispatchers.IO) {
-        try {
-            val authClient = authClientProvider.getClient()
+        val authClient = authClientProvider.getClient(requireContext())
 
+        try {
             val token =
                 when (val credentials = authClient.getCredentials()) {
                     is OmhCredentials -> credentials.blockingRefreshToken()
@@ -147,45 +142,37 @@ class LoggedInFragment : Fragment() {
     }
 
     private fun revokeToken() = lifecycleScope.launch(Dispatchers.IO) {
-        try {
-            val authClient = authClientProvider.getClient()
+        val authClient = authClientProvider.getClient(requireContext())
 
-            val cancellable = authClient.revokeToken()
-                .addOnSuccess {
-                    Toast.makeText(activity, "Auth Token Revoked", Toast.LENGTH_SHORT)
-                        .show()
-                }
-                .addOnFailure { throw it }
-                .execute()
-
-            cancellableCollector.addCancellable(cancellable)
-        } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                showErrorDialog(e)
+        val cancellable = authClient.revokeToken()
+            .addOnSuccess {
+                Toast.makeText(activity, "Auth Token Revoked", Toast.LENGTH_SHORT)
+                    .show()
             }
-        }
+            .addOnFailure(::showErrorDialog)
+            .execute()
+
+        cancellableCollector.addCancellable(cancellable)
     }
 
     private fun logout() = lifecycleScope.launch(Dispatchers.IO) {
-        try {
-            val authClient = authClientProvider.getClient()
+        val authClient = authClientProvider.getClient(requireContext())
 
-            val cancellable = authClient.signOut()
-                .addOnSuccess {
-                    navigateToLogin()
+        val cancellable = authClient.signOut()
+            .addOnSuccess {
+                navigateToLogin()
 
-                    Toast.makeText(activity, "Logged Out", Toast.LENGTH_SHORT)
-                        .show()
+                lifecycleScope.launch(Dispatchers.IO) {
+                    LoginState(requireContext()).loggedOut()
                 }
-                .addOnFailure { throw it }
-                .execute()
 
-            cancellableCollector.addCancellable(cancellable)
-        } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                showErrorDialog(e)
+                Toast.makeText(activity, "Logged Out", Toast.LENGTH_SHORT)
+                    .show()
             }
-        }
+            .addOnFailure(::showErrorDialog)
+            .execute()
+
+        cancellableCollector.addCancellable(cancellable)
     }
 
     private fun showErrorDialog(exception: Throwable) {

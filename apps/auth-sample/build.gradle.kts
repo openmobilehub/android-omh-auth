@@ -136,6 +136,8 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
     implementation("com.squareup.picasso:picasso:2.8")
 
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
     // Hilt
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-compiler:2.44")
