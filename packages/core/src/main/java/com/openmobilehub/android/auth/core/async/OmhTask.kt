@@ -16,6 +16,13 @@
 
 package com.openmobilehub.android.auth.core.async
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 /**
  * A wrapper class for the async library that's used in a specific OMH implementation. This creates
  * a layer of abstraction between the developer and the library that doesn't force the preferred async
@@ -30,9 +37,12 @@ package com.openmobilehub.android.auth.core.async
  * currently running async operation. Because not all libraries have a way to cancel async operations,
  * the [OmhCancellable] is returned as nullable.
  */
-abstract class OmhTask<T> {
+open class OmhTask<T>(private val task: (suspend () -> T)?) {
     protected var onSuccess: ((T) -> Unit)? = null
     protected var onFailure: ((Exception) -> Unit)? = null
+
+    private val coroutineContext = Dispatchers.Main + SupervisorJob()
+    private val customScope: CoroutineScope = CoroutineScope(context = coroutineContext)
 
     fun addOnSuccess(successListener: OmhSuccessListener<T>): OmhTask<T> {
         this.onSuccess = successListener::onSuccess
@@ -52,5 +62,22 @@ abstract class OmhTask<T> {
      *
      * @return an optional [OmhCancellable] in case the async operation can be cancelled.
      */
-    abstract fun execute(): OmhCancellable?
+    @Suppress("TooGenericExceptionCaught")
+    open fun execute(): OmhCancellable? {
+        customScope.launch {
+            try {
+                val result = task!!.invoke()
+
+                withContext(Dispatchers.Main) {
+                    onSuccess?.invoke(result)
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    onFailure?.invoke(e)
+                }
+            }
+        }
+
+        return OmhCancellable { coroutineContext.cancelChildren() }
+    }
 }

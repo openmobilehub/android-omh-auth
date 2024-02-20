@@ -1,5 +1,6 @@
 package com.openmobilehub.android.auth.plugin.facebook
 
+import com.openmobilehub.android.auth.core.async.OmhTask
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -18,7 +19,7 @@ class FacebookOmhTaskTest {
         val taskFn: suspend () -> String = { expectedResult }
         val onSuccessMock = mockk<(String) -> Unit>(relaxed = true)
 
-        val task = FacebookOmhTask(taskFn)
+        val task = OmhTask(taskFn)
 
         task.addOnSuccess(onSuccessMock).execute()
 
@@ -33,7 +34,7 @@ class FacebookOmhTaskTest {
         val taskFn: suspend () -> String = { throw testException }
         val onFailureMock = mockk<(Exception) -> Unit>(relaxed = true)
 
-        val task = FacebookOmhTask(taskFn)
+        val task = OmhTask(taskFn)
 
         task.addOnFailure(onFailureMock).execute()
 
