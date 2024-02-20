@@ -1,5 +1,4 @@
 /build
 *.keystore
 
-./src/main/res/raw/ms_auth_config.json
-
+/src/main/res/raw/ms_auth_config.json
