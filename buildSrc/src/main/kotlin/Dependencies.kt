@@ -61,6 +61,9 @@ object Libs {
     // Facebook SDK
     val facebookSdk by lazy { "com.facebook.android:facebook-android-sdk:${Versions.facebookSdk}" }
 
+    // Microsoft SDK
+    val microsoftMsal by lazy { "com.microsoft.identity.client:msal:${Versions.microsoftMsal}" }
+
     // Testing
     val junit by lazy { "junit:junit:${Versions.junit}" }
     val androidJunit by lazy { "androidx.test.ext:junit:${Versions.androidJunit}" }

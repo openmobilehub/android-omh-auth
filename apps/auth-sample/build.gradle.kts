@@ -152,8 +152,10 @@ dependencies {
         implementation(project(":packages:plugin-google-gms"))
         implementation(project(":packages:plugin-google-non-gms"))
         implementation(project(":packages:plugin-facebook"))
+        implementation(project(":packages:plugin-microsoft"))
     } else {
         implementation("com.openmobilehub.android.auth:plugin-facebook:2.0.0-beta")
+        implementation("com.openmobilehub.android.auth:plugin-microsoft:2.0.0-beta")
     }
 }
 

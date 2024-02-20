@@ -22,6 +22,8 @@ sealed class OmhAuthException(val statusCode: Int) : Exception() {
         override val cause: Throwable? = null,
     ) : OmhAuthException(OmhAuthStatusCodes.SIGN_IN_CANCELED)
 
+    class NotInitializedException : OmhAuthException(OmhAuthStatusCodes.NOT_INITIALIZED)
+
     class UnrecoverableLoginException(
         override val cause: Throwable? = null,
     ) : OmhAuthException(OmhAuthStatusCodes.SIGN_IN_FAILED)
