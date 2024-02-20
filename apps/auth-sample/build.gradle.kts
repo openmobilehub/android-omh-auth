@@ -1,6 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import java.net.URLEncoder
 
 val useLocalProjects = project.rootProject.extra["useLocalProjects"] as Boolean
 
@@ -80,7 +81,12 @@ android {
 {
   "client_id": "$microsoftClientId",
   "authorization_user_agent": "DEFAULT",
-  "redirect_uri": "msauth://com.openmobilehub.android.auth.sample.base.DemoApp/$keystoreHash",
+  "redirect_uri": "msauth://com.openmobilehub.android.auth.sample.base.DemoApp/${
+                URLEncoder.encode(
+                    keystoreHash,
+                    "UTF-8"
+                )
+            }",
   "account_mode": "SINGLE",
   "authorities": [
     {
