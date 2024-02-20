@@ -73,6 +73,7 @@ android {
         resValue("string", "facebook_app_id", facebookAppId)
         resValue("string", "facebook_client_token", facebookClientToken)
         resValue("string", "fb_login_protocol_scheme", "fb${facebookAppId}")
+        resValue("string", "microsoft_path", "/${keystoreHash}")
 
         file("./src/main/res/raw/ms_auth_config.json").writeText(
             """

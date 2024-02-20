@@ -73,7 +73,7 @@
 
                 <data
                     android:host="com.openmobilehub.android.auth.sample.base.DemoApp"
-                    android:path="/lvGC0B4SWYU8tNPHg/bdMjQinZQ="
+                    android:path="@string/microsoft_path"
                     android:scheme="msauth" />
             </intent-filter>
         </activity>
