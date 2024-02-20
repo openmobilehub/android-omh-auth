@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                authClientProvider.getClient()
+                authClientProvider.getClient(applicationContext)
 
                 withContext(Dispatchers.Main) {
                     navGraph.setStartDestination(R.id.logged_in_fragment)

@@ -26,13 +26,17 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.plugin.facebook.FacebookAuthClient
 import com.openmobilehub.android.auth.sample.R
 import com.openmobilehub.android.auth.sample.databinding.FragmentLoginBinding
+import com.openmobilehub.android.auth.sample.di.LoginState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -93,6 +97,9 @@ class LoginFragment : Fragment() {
         try {
             googleAuthClient.handleLoginIntentResponse(result.data)
             navigateToLoggedIn()
+            lifecycleScope.launch(Dispatchers.IO) {
+                LoginState(requireContext()).loggedIn("google")
+            }
         } catch (exception: OmhAuthException) {
             handleException(exception)
         }
@@ -102,6 +109,9 @@ class LoginFragment : Fragment() {
         try {
             facebookAuthClient.handleLoginIntentResponse(result.data)
             navigateToLoggedIn()
+            lifecycleScope.launch(Dispatchers.IO) {
+                LoginState(requireContext()).loggedIn("facebook")
+            }
         } catch (exception: OmhAuthException) {
             handleException(exception)
         }
