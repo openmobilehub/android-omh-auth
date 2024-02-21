@@ -8,12 +8,15 @@ import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.core.models.OmhUserProfile
 
 class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) : OmhAuthClient {
-    fun initialize(): OmhTask<Unit> {
-        return OmhTask(::initializeClient)
-    }
-
-    private suspend fun initializeClient() {
-        return MicrosoftApplication.getInstance().initialize(context, configFileResourceId)
+    override fun initialize(): OmhTask<Unit> {
+        return OmhTask {
+            @Suppress("SwallowedException")
+            try {
+                MicrosoftApplication.getInstance().getApplication()
+            } catch (e: OmhAuthException.NotInitializedException) {
+                MicrosoftApplication.getInstance().initialize(context, configFileResourceId)
+            }
+        }
     }
 
     override fun getLoginIntent(): Intent {
