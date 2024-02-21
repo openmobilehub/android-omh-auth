@@ -29,6 +29,8 @@ interface OmhAuthClient {
         fun build(context: Context): OmhAuthClient
     }
 
+    fun initialize(): OmhTask<Unit>
+
     fun getLoginIntent(): Intent
 
     @Throws(OmhAuthException::class)

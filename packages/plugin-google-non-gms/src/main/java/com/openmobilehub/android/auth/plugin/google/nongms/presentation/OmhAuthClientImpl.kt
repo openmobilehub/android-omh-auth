@@ -46,6 +46,12 @@ internal class OmhAuthClientImpl(
         applicationContext = context.applicationContext
     }
 
+    override fun initialize(): OmhTask<Unit> {
+        return OmhTask {
+            // No initialization needed for Google Sign-In
+        }
+    }
+
     override fun getLoginIntent(): Intent {
         return Intent(applicationContext, RedirectActivity::class.java)
             .putExtra(RedirectActivity.CLIENT_ID, clientId)

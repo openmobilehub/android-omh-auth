@@ -59,7 +59,11 @@ class LoggedInFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setupUI()
+        lifecycleScope.launch(Dispatchers.IO) {
+            authClientProvider.getClient(requireContext()).initialize().addOnSuccess {
+                setupUI()
+            }.execute()
+        }
     }
 
     private fun setupUI() {

@@ -20,6 +20,13 @@ import kotlin.coroutines.suspendCoroutine
 
 class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) :
     OmhAuthClient {
+
+    override fun initialize(): OmhTask<Unit> {
+        return OmhTask {
+            // No initialization needed for Facebook Sign-In
+        }
+    }
+
     override fun getLoginIntent(): Intent {
         return Intent(
             context, FacebookLoginActivity::class.java
