@@ -10,6 +10,7 @@ import com.openmobilehub.android.auth.core.models.OmhUserProfile
 class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) : OmhAuthClient {
     override fun initialize(): OmhTask<Unit> {
         return OmhTask {
+            @Suppress("SwallowedException")
             try {
                 MicrosoftApplication.getInstance().getApplication()
             } catch (e: OmhAuthException.NotInitializedException) {
