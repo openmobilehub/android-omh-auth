@@ -49,6 +49,9 @@ object Versions {
     // Facebook SDK
     const val facebookSdk = "16.0.0"
 
+    // Microsoft SDK
+    const val microsoftMsal = "5.1.0"
+
     // Testing
     const val junit = "4.13.2"
     const val androidJunit = "1.1.5"

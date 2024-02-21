@@ -1,6 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import java.net.URLEncoder
 
 val useLocalProjects = project.rootProject.extra["useLocalProjects"] as Boolean
 
@@ -67,10 +68,38 @@ android {
 
         val facebookAppId = properties["FACEBOOK_APP_ID"] as String
         val facebookClientToken = properties["FACEBOOK_CLIENT_TOKEN"] as String
+        val microsoftClientId = properties["MICROSOFT_CLIENT_ID"] as String
+        val keystoreHash = properties["KEYSTORE_HASH"] as String
 
         resValue("string", "facebook_app_id", facebookAppId)
         resValue("string", "facebook_client_token", facebookClientToken)
         resValue("string", "fb_login_protocol_scheme", "fb${facebookAppId}")
+        resValue("string", "microsoft_path", "/${keystoreHash}")
+
+        file("./src/main/res/raw/ms_auth_config.json").writeText(
+            """
+{
+  "client_id": "$microsoftClientId",
+  "authorization_user_agent": "DEFAULT",
+  "redirect_uri": "msauth://com.openmobilehub.android.auth.sample.base.DemoApp/${
+                URLEncoder.encode(
+                    keystoreHash,
+                    "UTF-8"
+                )
+            }",
+  "account_mode": "SINGLE",
+  "authorities": [
+    {
+      "type": "AAD",
+      "audience": {
+        "type": "AzureADandPersonalMicrosoftAccount",
+        "tenant_id": "common"
+      }
+    }
+  ]
+}
+            """.trimIndent()
+        )
     }
 
     signingConfigs {
@@ -152,8 +181,10 @@ dependencies {
         implementation(project(":packages:plugin-google-gms"))
         implementation(project(":packages:plugin-google-non-gms"))
         implementation(project(":packages:plugin-facebook"))
+        implementation(project(":packages:plugin-microsoft"))
     } else {
         implementation("com.openmobilehub.android.auth:plugin-facebook:2.0.0-beta")
+        implementation("com.openmobilehub.android.auth:plugin-microsoft:2.0.0-beta")
     }
 }
 

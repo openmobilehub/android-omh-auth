@@ -28,6 +28,7 @@ object OmhAuthStatusCodes {
     const val GMS_UNAVAILABLE = 7
     const val HTTPS_ERROR = 8
     const val SIGN_IN_REQUIRED = 9
+    const val NOT_INITIALIZED = 10
 
     @JvmStatic
     fun getStatusCodeString(code: Int): String {

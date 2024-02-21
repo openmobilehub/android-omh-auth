@@ -18,6 +18,7 @@ package com.openmobilehub.android.auth.sample.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,7 @@ import androidx.navigation.fragment.findNavController
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.plugin.facebook.FacebookAuthClient
+import com.openmobilehub.android.auth.plugin.microsoft.MicrosoftAuthClient
 import com.openmobilehub.android.auth.sample.R
 import com.openmobilehub.android.auth.sample.databinding.FragmentLoginBinding
 import com.openmobilehub.android.auth.sample.di.LoginState
@@ -50,6 +52,10 @@ class LoginFragment : Fragment() {
         ActivityResultContracts.StartActivityForResult(),
         ::handleFacebookLoginResult
     )
+    private val microsoftLoginLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+        ::handleMicrosoftLoginResult
+    )
 
     private var binding: FragmentLoginBinding? = null
 
@@ -58,6 +64,9 @@ class LoginFragment : Fragment() {
 
     @Inject
     lateinit var facebookAuthClient: FacebookAuthClient
+
+    @Inject
+    lateinit var microsoftAuthClient: MicrosoftAuthClient
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,6 +86,7 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.btnGoogleLogin?.setOnClickListener { startGoogleLogin() }
         binding?.btnFacebookLogin?.setOnClickListener { startFacebookLogin() }
+        binding?.btnMicrosoftLogin?.setOnClickListener { startMicrosoftLogin() }
     }
 
     private fun startGoogleLogin() {
@@ -87,6 +97,16 @@ class LoginFragment : Fragment() {
     private fun startFacebookLogin() {
         val loginIntent = facebookAuthClient.getLoginIntent()
         facebookLoginLauncher.launch(loginIntent)
+    }
+
+    private fun startMicrosoftLogin() {
+        microsoftAuthClient.initialize().addOnSuccess {
+            val loginIntent = microsoftAuthClient.getLoginIntent()
+            microsoftLoginLauncher.launch(loginIntent)
+        }.addOnFailure { exception ->
+            Log.d("LoginFragment", "Microsoft failed to initialize")
+            Log.d("LoginFragment", exception.message ?: "No message")
+        }.execute()
     }
 
     private fun navigateToLoggedIn() {
@@ -111,6 +131,18 @@ class LoginFragment : Fragment() {
             navigateToLoggedIn()
             lifecycleScope.launch(Dispatchers.IO) {
                 LoginState(requireContext()).loggedIn("facebook")
+            }
+        } catch (exception: OmhAuthException) {
+            handleException(exception)
+        }
+    }
+
+    private fun handleMicrosoftLoginResult(result: ActivityResult) {
+        try {
+            microsoftAuthClient.handleLoginIntentResponse(result.data)
+            navigateToLoggedIn()
+            lifecycleScope.launch(Dispatchers.IO) {
+                LoginState(requireContext()).loggedIn("microsoft")
             }
         } catch (exception: OmhAuthException) {
             handleException(exception)

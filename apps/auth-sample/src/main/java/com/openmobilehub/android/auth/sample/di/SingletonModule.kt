@@ -20,7 +20,9 @@ import android.content.Context
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.OmhAuthProvider
 import com.openmobilehub.android.auth.plugin.facebook.FacebookAuthClient
+import com.openmobilehub.android.auth.plugin.microsoft.MicrosoftAuthClient
 import com.openmobilehub.android.auth.sample.BuildConfig
+import com.openmobilehub.android.auth.sample.R
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -48,6 +50,14 @@ object SingletonModule {
         return FacebookAuthClient(
             scopes = arrayListOf("public_profile", "email"),
             context = context,
+        )
+    }
+
+    @Provides
+    fun providesMicrosoftAuthClient(@ApplicationContext context: Context): MicrosoftAuthClient {
+        return MicrosoftAuthClient(
+            configFileResourceId = R.raw.ms_auth_config,
+            context = context
         )
     }
 }
