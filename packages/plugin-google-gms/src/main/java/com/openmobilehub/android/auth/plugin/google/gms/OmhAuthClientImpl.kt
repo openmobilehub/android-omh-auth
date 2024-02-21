@@ -40,16 +40,18 @@ internal class OmhAuthClientImpl(
     }
 
     override fun getUser(): OmhTask<OmhUserProfile> {
-        val task = OmhGmsTask<OmhUserProfile>(null)
-
-        task.addSuspendedTask {
+        return OmhTask {
             val googleUser =
                 GoogleSignIn.getLastSignedInAccount(googleSignInClient.applicationContext)
 
-            return@addSuspendedTask googleUser!!.toOmhProfile()
-        }
+            if (googleUser == null) {
+                throw OmhAuthException.UnrecoverableLoginException(
+                    cause = Throwable(message = "No user profile stored")
+                )
+            }
 
-        return task
+            return@OmhTask googleUser.toOmhProfile()
+        }
     }
 
     private fun GoogleSignInAccount.toOmhProfile(): OmhUserProfile {
@@ -72,7 +74,7 @@ internal class OmhAuthClientImpl(
     }
 
     override fun signOut(): OmhTask<Unit> {
-        val task: Task<Unit> = googleSignInClient.signOut().mapToOmhExceptions()
+        val task = googleSignInClient.signOut().mapToOmhExceptions()
         return OmhGmsTask(task)
     }
 
@@ -91,7 +93,7 @@ internal class OmhAuthClientImpl(
     }
 
     override fun revokeToken(): OmhTask<Unit> {
-        val task: Task<Unit> = googleSignInClient.revokeAccess().mapToOmhExceptions()
+        val task = googleSignInClient.revokeAccess().mapToOmhExceptions()
         return OmhGmsTask(task)
     }
 }

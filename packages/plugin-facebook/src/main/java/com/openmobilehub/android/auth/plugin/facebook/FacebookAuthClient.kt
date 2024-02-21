@@ -40,7 +40,7 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) :
     }
 
     override fun getUser(): OmhTask<OmhUserProfile> {
-        return FacebookOmhTask(::getUserRequest)
+        return OmhTask(::getUserRequest)
     }
 
     override fun getCredentials(): OmhCredentials {
@@ -48,11 +48,11 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) :
     }
 
     override fun signOut(): OmhTask<Unit> {
-        return FacebookOmhTask(LoginManager.getInstance()::logOut)
+        return OmhTask(LoginManager.getInstance()::logOut)
     }
 
     override fun revokeToken(): OmhTask<Unit> {
-        return FacebookOmhTask {
+        return OmhTask {
             revokeTokenRequest()
             LoginManager.getInstance().logOut()
         }
