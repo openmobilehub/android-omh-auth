@@ -19,57 +19,15 @@ package com.openmobilehub.android.auth.plugin.google.gms
 import com.google.android.gms.tasks.Task
 import com.openmobilehub.android.auth.core.async.OmhCancellable
 import com.openmobilehub.android.auth.core.async.OmhTask
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-internal class OmhGmsTask<T>(private val task: Task<T>?) : OmhTask<T>() {
-    private var suspendedTask: (suspend () -> T)? = null
-    private val coroutineContext = Dispatchers.Main + SupervisorJob()
-    private val customScope: CoroutineScope = CoroutineScope(context = coroutineContext)
-
+internal class OmhGmsTask<T>(private val task: Task<T>?) : OmhTask<T>(null) {
     override fun execute(): OmhCancellable? {
-        if (task != null) {
-            task.addOnSuccessListener { result -> onSuccess?.invoke(result) }
-                .addOnFailureListener { e -> onFailure?.invoke(e) }
-
-            return null
-        }
-
-        customScope.launch {
-            executeScopedTask()
-        }
-
-        return OmhCancellable { coroutineContext.cancelChildren() }
-    }
-
-    fun addSuspendedTask(callback: suspend () -> T) {
-        suspendedTask = callback
-    }
-
-    @SuppressWarnings("TooGenericExceptionCaught")
-    private suspend fun executeScopedTask() {
-        try {
-            executeSuccess()
-        } catch (e: Exception) {
-            executeFailure(e)
-        }
-    }
-
-    private suspend fun executeSuccess() {
-        val result = suspendedTask!!.invoke()
-
-        withContext(Dispatchers.Main) {
+        task?.addOnSuccessListener { result ->
             onSuccess?.invoke(result)
-        }
-    }
-
-    private suspend fun executeFailure(e: Exception) = withContext(Dispatchers.Main) {
-        withContext(Dispatchers.Main) {
+        }?.addOnFailureListener { e ->
             onFailure?.invoke(e)
         }
+
+        return null
     }
 }

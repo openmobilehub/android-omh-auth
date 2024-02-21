@@ -56,7 +56,7 @@ internal class OmhAuthClientImpl(
         val userRepository = UserRepositoryImpl.getUserRepository(applicationContext)
         val profileUseCase = ProfileUseCase.createUserProfileUseCase(userRepository)
 
-        return OmhNonGmsTask {
+        return OmhTask {
             val profileData = profileUseCase.getProfileData()
 
             if (profileData == null) {
@@ -65,7 +65,7 @@ internal class OmhAuthClientImpl(
                 )
             }
 
-            return@OmhNonGmsTask profileData
+            return@OmhTask profileData
         }
     }
 
@@ -94,7 +94,7 @@ internal class OmhAuthClientImpl(
     override fun signOut(): OmhTask<Unit> {
         val authRepository = AuthRepositoryImpl.getAuthRepository(applicationContext)
         val authUseCase = AuthUseCase.createAuthUseCase(authRepository)
-        return OmhNonGmsTask(authUseCase::logout)
+        return OmhTask(authUseCase::logout)
     }
 
     override fun handleLoginIntentResponse(data: Intent?) {
@@ -111,9 +111,9 @@ internal class OmhAuthClientImpl(
     override fun revokeToken(): OmhTask<Unit> {
         val authRepository = AuthRepositoryImpl.getAuthRepository(applicationContext)
         val authUseCase = AuthUseCase.createAuthUseCase(authRepository)
-        return OmhNonGmsTask {
+        return OmhTask {
             val apiResult: ApiResult<Unit> = authUseCase.revokeToken()
-            return@OmhNonGmsTask apiResult.extractResult()
+            return@OmhTask apiResult.extractResult()
         }
     }
 }
