@@ -9,7 +9,7 @@ import com.openmobilehub.android.auth.core.models.OmhUserProfile
 
 class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) : OmhAuthClient {
     fun initialize(): OmhTask<Unit> {
-        return MicrosoftOmhTask(::initializeClient)
+        return OmhTask(::initializeClient)
     }
 
     private suspend fun initializeClient() {

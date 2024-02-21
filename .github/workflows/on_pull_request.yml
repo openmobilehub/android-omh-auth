@@ -60,7 +60,9 @@ jobs:
         run: |
           echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> ./local.properties &&
           echo FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID }} >> ./local.properties &&
-          echo FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN }} >> ./local.properties
+          echo FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN }} >> ./local.properties &&
+          echo MICROSOFT_CLIENT_ID=${{ secrets.MICROSOFT_CLIENT_ID }} >> ./local.properties &&
+          echo KEYSTORE_HASH=${{ secrets.SAMPLE_APP_KEYSTORE_BASE_64 }} >> ./local.properties
 
       - name: Set useMavenLocal flag
         run: echo useMavenLocal=true >> local.properties
