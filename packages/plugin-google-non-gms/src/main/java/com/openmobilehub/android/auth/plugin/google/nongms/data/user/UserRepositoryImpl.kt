@@ -19,7 +19,7 @@ package com.openmobilehub.android.auth.plugin.google.nongms.data.user
 import android.content.Context
 import android.content.SharedPreferences
 import com.openmobilehub.android.auth.core.models.OmhUserProfile
-import com.openmobilehub.android.auth.core.utils.getEncryptedSharedPrefs
+import com.openmobilehub.android.auth.core.utils.EncryptedSharedPreferences
 import com.openmobilehub.android.auth.plugin.google.nongms.data.user.datasource.GoogleUserDataSource
 import com.openmobilehub.android.auth.plugin.google.nongms.data.user.datasource.UserDataSource
 import com.openmobilehub.android.auth.plugin.google.nongms.domain.user.UserRepository
@@ -53,7 +53,10 @@ internal class UserRepositoryImpl(
         ): UserRepository {
             if (userRepository == null) {
                 val sharedPreferences: SharedPreferences =
-                    getEncryptedSharedPrefs(context, Constants.PROVIDER_GOOGLE)
+                    EncryptedSharedPreferences.getEncryptedSharedPrefs(
+                        context,
+                        Constants.PROVIDER_GOOGLE
+                    )
                 val googleUserDataSource: UserDataSource = GoogleUserDataSource(sharedPreferences)
                 userRepository = UserRepositoryImpl(googleUserDataSource, ioDispatcher)
             }

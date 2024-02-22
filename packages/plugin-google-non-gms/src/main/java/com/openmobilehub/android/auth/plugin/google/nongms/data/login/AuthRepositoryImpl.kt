@@ -18,7 +18,7 @@ package com.openmobilehub.android.auth.plugin.google.nongms.data.login
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.openmobilehub.android.auth.core.utils.getEncryptedSharedPrefs
+import com.openmobilehub.android.auth.core.utils.EncryptedSharedPreferences
 import com.openmobilehub.android.auth.plugin.google.nongms.data.login.datasource.AuthDataSource
 import com.openmobilehub.android.auth.plugin.google.nongms.data.login.datasource.GoogleAuthDataSource
 import com.openmobilehub.android.auth.plugin.google.nongms.data.login.models.AuthTokenResponse
@@ -118,7 +118,10 @@ internal class AuthRepositoryImpl(
             if (authRepository == null) {
                 val authService: GoogleAuthREST = GoogleRetrofitImpl.instance.googleAuthREST
                 val sharedPreferences: SharedPreferences =
-                    getEncryptedSharedPrefs(context, Constants.PROVIDER_GOOGLE)
+                    EncryptedSharedPreferences.getEncryptedSharedPrefs(
+                        context,
+                        Constants.PROVIDER_GOOGLE
+                    )
                 val googleAuthDataSource: AuthDataSource = GoogleAuthDataSource(
                     authService = authService,
                     sharedPreferences = sharedPreferences

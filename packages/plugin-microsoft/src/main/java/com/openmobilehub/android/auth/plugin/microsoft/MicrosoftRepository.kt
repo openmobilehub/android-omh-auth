@@ -2,7 +2,7 @@ package com.openmobilehub.android.auth.plugin.microsoft
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.openmobilehub.android.auth.core.utils.getEncryptedSharedPrefs
+import com.openmobilehub.android.auth.core.utils.EncryptedSharedPreferences
 
 private const val PROVIDER_NAME = "microsoft"
 
@@ -20,7 +20,8 @@ internal class MicrosoftRepository(private val sharedPreferences: SharedPreferen
 
         fun getInstance(context: Context): MicrosoftRepository {
             if (instance == null) {
-                val sharedPreferences = getEncryptedSharedPrefs(context, PROVIDER_NAME)
+                val sharedPreferences =
+                    EncryptedSharedPreferences.getEncryptedSharedPrefs(context, PROVIDER_NAME)
                 instance = MicrosoftRepository(sharedPreferences)
             }
 
