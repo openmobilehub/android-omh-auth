@@ -18,14 +18,15 @@ package com.openmobilehub.android.auth.plugin.google.nongms.data.login
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.openmobilehub.android.auth.plugin.google.nongms.data.utils.GoogleRetrofitImpl
+import com.openmobilehub.android.auth.core.utils.getEncryptedSharedPrefs
 import com.openmobilehub.android.auth.plugin.google.nongms.data.login.datasource.AuthDataSource
 import com.openmobilehub.android.auth.plugin.google.nongms.data.login.datasource.GoogleAuthDataSource
 import com.openmobilehub.android.auth.plugin.google.nongms.data.login.models.AuthTokenResponse
-import com.openmobilehub.android.auth.plugin.google.nongms.data.utils.getEncryptedSharedPrefs
+import com.openmobilehub.android.auth.plugin.google.nongms.data.utils.GoogleRetrofitImpl
 import com.openmobilehub.android.auth.plugin.google.nongms.domain.auth.AuthRepository
 import com.openmobilehub.android.auth.plugin.google.nongms.domain.models.ApiResult
 import com.openmobilehub.android.auth.plugin.google.nongms.domain.models.OAuthTokens
+import com.openmobilehub.android.auth.plugin.google.nongms.utils.Constants
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -116,7 +117,8 @@ internal class AuthRepositoryImpl(
         ): AuthRepository {
             if (authRepository == null) {
                 val authService: GoogleAuthREST = GoogleRetrofitImpl.instance.googleAuthREST
-                val sharedPreferences: SharedPreferences = getEncryptedSharedPrefs(context)
+                val sharedPreferences: SharedPreferences =
+                    getEncryptedSharedPrefs(context, Constants.PROVIDER_GOOGLE)
                 val googleAuthDataSource: AuthDataSource = GoogleAuthDataSource(
                     authService = authService,
                     sharedPreferences = sharedPreferences

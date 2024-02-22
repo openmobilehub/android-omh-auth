@@ -8,13 +8,16 @@ import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.core.models.OmhUserProfile
 
 class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) : OmhAuthClient {
+    private val microsoftApplication = MicrosoftApplication.getInstance()
+    private val microsoftRepository = MicrosoftRepository.getInstance(context)
+
     override fun initialize(): OmhTask<Unit> {
         return OmhTask {
             @Suppress("SwallowedException")
             try {
-                MicrosoftApplication.getInstance().getApplication()
+                microsoftApplication.getApplication()
             } catch (e: OmhAuthException.NotInitializedException) {
-                MicrosoftApplication.getInstance().initialize(context, configFileResourceId)
+                microsoftApplication.initialize(context, configFileResourceId)
             }
         }
     }
@@ -26,14 +29,14 @@ class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) :
     }
 
     override fun handleLoginIntentResponse(data: Intent?) {
-        if (data == null || !data.hasExtra(("accessToken"))) {
-            throw OmhAuthException.LoginCanceledException()
-        }
-
-        if (data.hasExtra("error")) {
+        if (data != null && data.hasExtra("error")) {
             throw OmhAuthException.UnrecoverableLoginException(
                 data.getSerializableExtra("error") as Throwable
             )
+        }
+
+        if (data == null || !data.hasExtra(("accessToken"))) {
+            throw OmhAuthException.LoginCanceledException()
         }
     }
 
@@ -42,7 +45,7 @@ class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) :
     }
 
     override fun getCredentials(): Any? {
-        TODO("Not yet implemented")
+        return microsoftRepository.token
     }
 
     override fun revokeToken(): OmhTask<Unit> {
