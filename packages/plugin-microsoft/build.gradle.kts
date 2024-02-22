@@ -21,6 +21,8 @@ dependencies {
         exclude(group = "com.microsoft.device.display")
     }
 
+    api("com.android.volley:volley:1.2.1")
+
     // Test dependencies
     testImplementation(Libs.junit)
     testImplementation(Libs.mockk)

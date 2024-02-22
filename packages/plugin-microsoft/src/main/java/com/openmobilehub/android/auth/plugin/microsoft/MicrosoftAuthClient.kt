@@ -2,10 +2,17 @@ package com.openmobilehub.android.auth.plugin.microsoft
 
 import android.content.Context
 import android.content.Intent
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.async.OmhTask
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.core.models.OmhUserProfile
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) : OmhAuthClient {
     private val microsoftApplication = MicrosoftApplication.getInstance()
@@ -41,7 +48,7 @@ class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) :
     }
 
     override fun getUser(): OmhTask<OmhUserProfile> {
-        TODO("Not yet implemented")
+        return OmhTask(::getUserRequest)
     }
 
     override fun getCredentials(): MicrosoftCredentials {
@@ -55,4 +62,35 @@ class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) :
     override fun signOut(): OmhTask<Unit> {
         TODO("Not yet implemented")
     }
+
+    internal suspend fun getUserRequest(): OmhUserProfile = suspendCoroutine { continuation ->
+        val queue: RequestQueue = Volley.newRequestQueue(context)
+
+        val stringRequest = object : JsonObjectRequest(
+            "https://graph.microsoft.com/v1.0/me",
+            Response.Listener { jsonObject ->
+                continuation.resume(
+                    OmhUserProfile(
+                        jsonObject.getString("givenName"),
+                        jsonObject.getString("surname"),
+                        jsonObject.getString("mail"),
+                        null
+                    )
+                )
+            },
+            Response.ErrorListener(continuation::resumeWithException)
+        ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+
+                headers["Authorization"] =
+                    "Bearer " + microsoftRepository.token
+
+                return headers
+            }
+        }
+
+        queue.add(stringRequest)
+    }
+
 }
