@@ -56,11 +56,11 @@ class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) :
     }
 
     override fun revokeToken(): OmhTask<Unit> {
-        TODO("Not yet implemented")
+        return OmhTask(::signOutRequest)
     }
 
     override fun signOut(): OmhTask<Unit> {
-        TODO("Not yet implemented")
+        return OmhTask(::signOutRequest)
     }
 
     internal suspend fun getUserRequest(): OmhUserProfile = suspendCoroutine { continuation ->
@@ -92,5 +92,15 @@ class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) :
                 continuation.resumeWithException(t)
             }
         })
+    }
+
+    internal suspend fun signOutRequest() = suspendCoroutine { continuation ->
+        val success = microsoftApplication.getApplication().signOut()
+
+        if (!success) {
+            continuation.resumeWithException(Exception("Failed to sign out"))
+        } else {
+            continuation.resume(Unit)
+        }
     }
 }
