@@ -21,7 +21,8 @@ dependencies {
         exclude(group = "com.microsoft.device.display")
     }
 
-    api("com.android.volley:volley:1.2.1")
+    api("com.squareup.retrofit2:retrofit:2.9.0")
+    api("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // Test dependencies
     testImplementation(Libs.junit)

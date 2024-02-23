@@ -2,14 +2,13 @@ package com.openmobilehub.android.auth.plugin.microsoft
 
 import android.content.Context
 import android.content.Intent
-import com.android.volley.RequestQueue
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.async.OmhTask
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.core.models.OmhUserProfile
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -17,6 +16,7 @@ import kotlin.coroutines.suspendCoroutine
 class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) : OmhAuthClient {
     private val microsoftApplication = MicrosoftApplication.getInstance()
     private val microsoftRepository = MicrosoftRepository.getInstance(context)
+    private val microsoftApiService = MicrosoftApiService.service
 
     override fun initialize(): OmhTask<Unit> {
         return OmhTask {
@@ -64,33 +64,33 @@ class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) :
     }
 
     internal suspend fun getUserRequest(): OmhUserProfile = suspendCoroutine { continuation ->
-        val queue: RequestQueue = Volley.newRequestQueue(context)
+        val call =
+            microsoftApiService.getUserProfile("Bearer " + microsoftRepository.token)
 
-        val stringRequest = object : JsonObjectRequest(
-            "https://graph.microsoft.com/v1.0/me",
-            Response.Listener { jsonObject ->
-                continuation.resume(
-                    OmhUserProfile(
-                        jsonObject.getString("givenName"),
-                        jsonObject.getString("surname"),
-                        jsonObject.getString("mail"),
-                        null
+        call.enqueue(object : Callback<User> {
+            override fun onResponse(
+                call: Call<User>,
+                response: Response<User>
+            ) {
+                if (response.isSuccessful) {
+                    val user = response.body()
+
+                    continuation.resume(
+                        OmhUserProfile(
+                            user?.givenName,
+                            user?.surname,
+                            user?.mail,
+                            null
+                        )
                     )
-                )
-            },
-            Response.ErrorListener(continuation::resumeWithException)
-        ) {
-            override fun getHeaders(): MutableMap<String, String> {
-                val headers = HashMap<String, String>()
-
-                headers["Authorization"] =
-                    "Bearer " + microsoftRepository.token
-
-                return headers
+                } else {
+                    continuation.resumeWithException(Exception(response.message()))
+                }
             }
-        }
 
-        queue.add(stringRequest)
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                continuation.resumeWithException(t)
+            }
+        })
     }
-
 }
