@@ -40,12 +40,12 @@ import kotlin.coroutines.CoroutineContext
  */
 open class OmhTask<T>(
     private val task: (suspend () -> T)?,
-    private val coroutineContext: CoroutineContext? = Dispatchers.IO + SupervisorJob()
+    private val coroutineContext: CoroutineContext = Dispatchers.IO + SupervisorJob(),
+    private val customScope: CoroutineScope = CoroutineScope(context = coroutineContext)
 ) {
     protected var onSuccess: ((T) -> Unit)? = null
     protected var onFailure: ((Exception) -> Unit)? = null
 
-    private val customScope = CoroutineScope(context = coroutineContext!!)
 
     fun addOnSuccess(successListener: OmhSuccessListener<T>): OmhTask<T> {
         this.onSuccess = successListener::onSuccess
@@ -81,6 +81,6 @@ open class OmhTask<T>(
             }
         }
 
-        return OmhCancellable { coroutineContext!!.cancelChildren() }
+        return OmhCancellable { coroutineContext.cancelChildren() }
     }
 }
