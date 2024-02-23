@@ -6,7 +6,7 @@ import com.openmobilehub.android.auth.core.utils.EncryptedSharedPreferences
 
 private const val PROVIDER_NAME = "microsoft"
 
-internal class MicrosoftRepository(private val sharedPreferences: SharedPreferences) {
+class MicrosoftRepository(private val sharedPreferences: SharedPreferences) {
     var token: String?
         get() {
             return sharedPreferences.getString("token", null)

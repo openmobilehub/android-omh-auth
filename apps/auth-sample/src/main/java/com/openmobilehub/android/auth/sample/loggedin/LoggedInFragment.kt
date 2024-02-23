@@ -25,8 +25,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
-import com.openmobilehub.android.auth.core.OmhCredentials
 import com.openmobilehub.android.auth.core.async.CancellableCollector
 import com.openmobilehub.android.auth.sample.R
 import com.openmobilehub.android.auth.sample.databinding.FragmentLoggedInBinding
@@ -82,12 +80,7 @@ class LoggedInFragment : Fragment() {
         val authClient = authClientProvider.getClient(requireContext())
 
         try {
-            val token = when (val credentials = authClient.getCredentials()) {
-                is OmhCredentials -> credentials.accessToken
-                is GoogleAccountCredential -> credentials.token
-                null -> return@launch
-                else -> throw Exception("Unsupported credential type")
-            }
+            val token = authClient.getCredentials().accessToken
 
             withContext(Dispatchers.Main) {
                 binding?.tvToken?.text = getString(R.string.token_placeholder, token)
@@ -123,26 +116,14 @@ class LoggedInFragment : Fragment() {
     private fun refreshToken() = lifecycleScope.launch(Dispatchers.IO) {
         val authClient = authClientProvider.getClient(requireContext())
 
-        try {
-            val token =
-                when (val credentials = authClient.getCredentials()) {
-                    is OmhCredentials -> credentials.blockingRefreshToken()
-                    is GoogleAccountCredential -> credentials.token
-                    null -> return@launch
-                    else -> throw Exception("Unsupported credential type")
-                }
+        authClient.getCredentials().refreshToken().addOnSuccess { token ->
+            binding?.tvToken?.text = getString(R.string.token_placeholder, token)
 
-            withContext(Dispatchers.Main) {
-                binding?.tvToken?.text = getString(R.string.token_placeholder, token)
-
-                Toast.makeText(activity, "Auth Token Refreshed", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                showErrorDialog(e)
-            }
-        }
+            Toast.makeText(activity, "Auth Token Refreshed", Toast.LENGTH_SHORT)
+                .show()
+        }.addOnFailure { e ->
+            showErrorDialog(e)
+        }.execute()
     }
 
     private fun revokeToken() = lifecycleScope.launch(Dispatchers.IO) {

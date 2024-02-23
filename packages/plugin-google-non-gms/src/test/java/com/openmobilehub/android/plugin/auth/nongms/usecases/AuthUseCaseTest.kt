@@ -34,7 +34,7 @@ import org.junit.Test
 internal class AuthUseCaseTest {
 
     private val authRepository: AuthRepository = mockk()
-    private val pkce: Pkce = mockk() {
+    private val pkce: Pkce = mockk {
         every { codeVerifier } returns "codeverifier"
         every { generateCodeChallenge() } returns "codechallenge"
     }
@@ -71,7 +71,7 @@ internal class AuthUseCaseTest {
             val packageName = "com.package.name"
             val mockedResponse: OAuthTokens = mockk()
             val expectedResult = ApiResult.Success(mockedResponse)
-        val clientId = "client ID"
+            val clientId = "client ID"
 
             coEvery {
                 authRepository.requestTokens(
@@ -117,7 +117,7 @@ internal class AuthUseCaseTest {
 
         coEvery { authRepository.refreshAccessToken(any()) } returns expectedResult
 
-        val newToken = authUseCase.blockingRefreshToken(clientId)
+        val newToken = authUseCase.refreshToken(clientId)
 
         assertEquals(expectedResult, newToken)
     }
@@ -131,6 +131,7 @@ internal class AuthUseCaseTest {
 
         coVerify { authRepository.clearData() }
     }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `given revoke was requested when revoke succeeds then storage is cleaned up`() = runTest {

@@ -7,7 +7,7 @@ import com.openmobilehub.android.auth.core.models.OmhAuthException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-internal class MicrosoftApplication {
+class MicrosoftApplication {
     private var application: ISingleAccountPublicClientApplication? = null
 
     fun getApplication(): ISingleAccountPublicClientApplication {

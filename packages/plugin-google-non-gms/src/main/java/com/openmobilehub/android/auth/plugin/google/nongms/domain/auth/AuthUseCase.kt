@@ -48,7 +48,7 @@ internal class AuthUseCase(
         )
     }
 
-    suspend fun blockingRefreshToken(clientId: String): ApiResult<String> {
+    suspend fun refreshToken(clientId: String): ApiResult<String> {
         return authRepository.refreshAccessToken(clientId)
     }
 

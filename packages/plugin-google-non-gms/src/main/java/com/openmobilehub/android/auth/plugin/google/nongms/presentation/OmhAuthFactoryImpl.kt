@@ -45,6 +45,6 @@ internal object OmhAuthFactoryImpl : OmhAuthFactory {
     internal fun getCredentials(clientId: String, context: Context): OmhCredentials {
         val authRepository: AuthRepository = AuthRepositoryImpl.getAuthRepository(context)
         val authUseCase = AuthUseCase.createAuthUseCase(authRepository)
-        return OmhCredentialsImpl(authUseCase, clientId)
+        return NonGmsCredentials(authUseCase, clientId)
     }
 }

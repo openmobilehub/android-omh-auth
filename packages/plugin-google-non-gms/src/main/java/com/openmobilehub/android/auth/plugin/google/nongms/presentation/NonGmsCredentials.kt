@@ -17,20 +17,18 @@
 package com.openmobilehub.android.auth.plugin.google.nongms.presentation
 
 import com.openmobilehub.android.auth.core.OmhCredentials
+import com.openmobilehub.android.auth.core.async.OmhTask
 import com.openmobilehub.android.auth.plugin.google.nongms.domain.auth.AuthUseCase
 import com.openmobilehub.android.auth.plugin.google.nongms.domain.models.ApiResult
-import com.openmobilehub.android.auth.plugin.google.nongms.utils.ThreadUtils
-import kotlinx.coroutines.runBlocking
 
-internal class OmhCredentialsImpl(
+internal class NonGmsCredentials(
     private val authUseCase: AuthUseCase,
     private val clientId: String
 ) : OmhCredentials {
 
-    override fun blockingRefreshToken(): String? {
-        ThreadUtils.checkForMainThread()
-        return runBlocking {
-            when (val apiResult = authUseCase.blockingRefreshToken(clientId)) {
+    override fun refreshToken(): OmhTask<String?> {
+        return OmhTask {
+            when (val apiResult = authUseCase.refreshToken(clientId)) {
                 is ApiResult.Success -> apiResult.data
                 else -> null
             }
