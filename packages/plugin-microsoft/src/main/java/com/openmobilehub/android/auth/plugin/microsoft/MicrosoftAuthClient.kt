@@ -44,8 +44,8 @@ class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) :
         TODO("Not yet implemented")
     }
 
-    override fun getCredentials(): Any? {
-        return microsoftRepository.token
+    override fun getCredentials(): MicrosoftCredentials {
+        return MicrosoftCredentials(microsoftRepository, microsoftApplication)
     }
 
     override fun revokeToken(): OmhTask<Unit> {

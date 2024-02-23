@@ -12,7 +12,7 @@ class MicrosoftLoginActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val scopes = arrayListOf<String>("User.Read")
+        val scopes = arrayListOf("User.Read")
         val params =
             SignInParameters
                 .builder()

@@ -22,7 +22,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.async.OmhTask
 import com.openmobilehub.android.auth.core.models.OmhAuthException
@@ -69,14 +68,8 @@ internal class OmhAuthClientImpl(
         )
     }
 
-    override fun getCredentials(): Any? {
-        val context = googleSignInClient.applicationContext
-        val lastSignedInAccount: GoogleSignInAccount =
-            GoogleSignIn.getLastSignedInAccount(context) ?: return null
-        val scopes = lastSignedInAccount.grantedScopes.map { scope -> scope.scopeUri }
-        return GoogleAccountCredential.usingOAuth2(context, scopes).apply {
-            selectedAccount = lastSignedInAccount.account
-        }
+    override fun getCredentials(): GmsCredentials {
+        return GmsCredentials(googleSignInClient.applicationContext)
     }
 
     override fun signOut(): OmhTask<Unit> {

@@ -19,6 +19,7 @@ package com.openmobilehub.android.auth.plugin.google.nongms.presentation
 import android.content.Context
 import android.content.Intent
 import com.openmobilehub.android.auth.core.OmhAuthClient
+import com.openmobilehub.android.auth.core.OmhCredentials
 import com.openmobilehub.android.auth.core.async.OmhTask
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.core.models.OmhUserProfile
@@ -92,7 +93,7 @@ internal class OmhAuthClientImpl(
         }
     }
 
-    override fun getCredentials(): Any {
+    override fun getCredentials(): OmhCredentials {
         return OmhAuthFactoryImpl.getCredentials(clientId, applicationContext)
     }
 
