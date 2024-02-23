@@ -21,6 +21,9 @@ dependencies {
         exclude(group = "com.microsoft.device.display")
     }
 
+    api("com.squareup.retrofit2:retrofit:2.9.0")
+    api("com.squareup.retrofit2:converter-gson:2.9.0")
+
     // Test dependencies
     testImplementation(Libs.junit)
     testImplementation(Libs.mockk)
