@@ -2,11 +2,12 @@ package com.openmobilehub.android.auth.plugin.facebook
 
 import com.facebook.AccessToken
 import com.facebook.FacebookException
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
-import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -45,7 +46,9 @@ class FacebookCredentialsTest {
             token = newToken
         }.execute()
 
-        verify {
+        advanceUntilIdle()
+
+        coVerify {
             AccessToken.refreshCurrentAccessTokenAsync(any())
             assertEquals(token, testAccessToken)
         }
@@ -64,5 +67,7 @@ class FacebookCredentialsTest {
         FacebookCredentials().refreshToken().addOnFailure { e ->
             assertEquals(e, mockException)
         }.execute()
+
+        advanceUntilIdle()
     }
 }
