@@ -18,11 +18,12 @@ package com.openmobilehub.android.auth.plugin.google.nongms.data.user
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.openmobilehub.android.auth.core.models.OmhUserProfile
+import com.openmobilehub.android.auth.core.utils.EncryptedSharedPreferences
 import com.openmobilehub.android.auth.plugin.google.nongms.data.user.datasource.GoogleUserDataSource
 import com.openmobilehub.android.auth.plugin.google.nongms.data.user.datasource.UserDataSource
-import com.openmobilehub.android.auth.plugin.google.nongms.data.utils.getEncryptedSharedPrefs
 import com.openmobilehub.android.auth.plugin.google.nongms.domain.user.UserRepository
-import com.openmobilehub.android.auth.core.models.OmhUserProfile
+import com.openmobilehub.android.auth.plugin.google.nongms.utils.Constants
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -51,7 +52,11 @@ internal class UserRepositoryImpl(
             ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
         ): UserRepository {
             if (userRepository == null) {
-                val sharedPreferences: SharedPreferences = getEncryptedSharedPrefs(context)
+                val sharedPreferences: SharedPreferences =
+                    EncryptedSharedPreferences.getEncryptedSharedPrefs(
+                        context,
+                        Constants.PROVIDER_GOOGLE
+                    )
                 val googleUserDataSource: UserDataSource = GoogleUserDataSource(sharedPreferences)
                 userRepository = UserRepositoryImpl(googleUserDataSource, ioDispatcher)
             }

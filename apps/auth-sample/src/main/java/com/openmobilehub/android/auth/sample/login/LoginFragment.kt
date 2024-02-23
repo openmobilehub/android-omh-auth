@@ -140,10 +140,10 @@ class LoginFragment : Fragment() {
     private fun handleMicrosoftLoginResult(result: ActivityResult) {
         try {
             microsoftAuthClient.handleLoginIntentResponse(result.data)
-            navigateToLoggedIn()
-            lifecycleScope.launch(Dispatchers.IO) {
-                LoginState(requireContext()).loggedIn("microsoft")
-            }
+//            navigateToLoggedIn()
+//            lifecycleScope.launch(Dispatchers.IO) {
+//                LoginState(requireContext()).loggedIn("microsoft")
+//            }
         } catch (exception: OmhAuthException) {
             handleException(exception)
         }

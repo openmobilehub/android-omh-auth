@@ -20,6 +20,8 @@ class MicrosoftLoginActivity : Activity() {
                 .withScopes(scopes)
                 .withCallback(object : AuthenticationCallback {
                     override fun onSuccess(authenticationResult: IAuthenticationResult) {
+                        MicrosoftRepository.getInstance(applicationContext).token =
+                            authenticationResult.accessToken
                         setResult(
                             RESULT_OK,
                             Intent().putExtra("accessToken", authenticationResult.accessToken)

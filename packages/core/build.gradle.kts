@@ -13,6 +13,7 @@ dependencies {
     implementation(Libs.reflection)
 
     implementation(Libs.googlePlayBase) // Provides a way to check for GMS availability
+    implementation(Libs.androidSecurity)
 
     // Test dependencies
     testImplementation(Libs.junit)

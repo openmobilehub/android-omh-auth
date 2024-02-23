@@ -25,7 +25,7 @@ android {
 val useLocalProjects = project.rootProject.extra["useLocalProjects"] as Boolean
 
 dependencies {
-    if(useLocalProjects) {
+    if (useLocalProjects) {
         api(project(":packages:core"))
     } else {
         api("com.openmobilehub.android.auth:core:2.0.0-beta")
@@ -51,8 +51,6 @@ dependencies {
     // Custom tabs
     implementation(Libs.customTabs)
 
-    // Encrypted Shared Prefs and ID token resolution
-    implementation(Libs.androidSecurity)
     implementation(Libs.googleApiClient) {
         exclude("org.apache.httpcomponents")
     }
