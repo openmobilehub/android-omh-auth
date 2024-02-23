@@ -96,6 +96,7 @@ class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) :
 
     internal suspend fun signOutRequest() = suspendCoroutine { continuation ->
         val success = microsoftApplication.getApplication().signOut()
+        microsoftRepository.token = null
 
         if (!success) {
             continuation.resumeWithException(Exception("Failed to sign out"))
