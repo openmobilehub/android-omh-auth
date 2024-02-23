@@ -22,6 +22,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 /**
  * A wrapper class for the async library that's used in a specific OMH implementation. This creates
@@ -37,12 +38,14 @@ import kotlinx.coroutines.withContext
  * currently running async operation. Because not all libraries have a way to cancel async operations,
  * the [OmhCancellable] is returned as nullable.
  */
-open class OmhTask<T>(private val task: (suspend () -> T)?) {
+open class OmhTask<T>(
+    private val task: (suspend () -> T)?,
+    private val coroutineContext: CoroutineContext? = Dispatchers.IO + SupervisorJob()
+) {
     protected var onSuccess: ((T) -> Unit)? = null
     protected var onFailure: ((Exception) -> Unit)? = null
 
-    private val coroutineContext = Dispatchers.IO + SupervisorJob()
-    private val customScope = CoroutineScope(context = coroutineContext)
+    private val customScope = CoroutineScope(context = coroutineContext!!)
 
     fun addOnSuccess(successListener: OmhSuccessListener<T>): OmhTask<T> {
         this.onSuccess = successListener::onSuccess
@@ -78,6 +81,6 @@ open class OmhTask<T>(private val task: (suspend () -> T)?) {
             }
         }
 
-        return OmhCancellable { coroutineContext.cancelChildren() }
+        return OmhCancellable { coroutineContext!!.cancelChildren() }
     }
 }

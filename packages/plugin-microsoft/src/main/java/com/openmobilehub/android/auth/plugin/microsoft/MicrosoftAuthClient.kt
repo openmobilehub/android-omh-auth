@@ -19,14 +19,14 @@ class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) :
     private val microsoftApiService = MicrosoftApiService.service
 
     override fun initialize(): OmhTask<Unit> {
-        return OmhTask {
+        return OmhTask({
             @Suppress("SwallowedException")
             try {
                 microsoftApplication.getApplication()
             } catch (e: OmhAuthException.NotInitializedException) {
                 microsoftApplication.initialize(context, configFileResourceId)
             }
-        }
+        })
     }
 
     override fun getLoginIntent(): Intent {

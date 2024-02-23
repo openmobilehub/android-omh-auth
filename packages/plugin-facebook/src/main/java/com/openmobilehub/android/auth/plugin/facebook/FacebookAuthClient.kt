@@ -21,9 +21,11 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) :
     OmhAuthClient {
 
     override fun initialize(): OmhTask<Unit> {
-        return OmhTask {
-            // No initialization needed for Facebook Sign-In
-        }
+        return OmhTask(
+            {
+                // No initialization needed for Facebook Sign-In
+            },
+        )
     }
 
     override fun getLoginIntent(): Intent {
@@ -58,10 +60,10 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) :
     }
 
     override fun revokeToken(): OmhTask<Unit> {
-        return OmhTask {
+        return OmhTask({
             revokeTokenRequest()
             LoginManager.getInstance().logOut()
-        }
+        })
     }
 
     internal suspend fun getUserRequest(): OmhUserProfile = suspendCoroutine { continuation ->

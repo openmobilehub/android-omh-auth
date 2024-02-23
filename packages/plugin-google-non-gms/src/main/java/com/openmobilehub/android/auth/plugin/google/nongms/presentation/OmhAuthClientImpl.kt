@@ -48,9 +48,9 @@ internal class OmhAuthClientImpl(
     }
 
     override fun initialize(): OmhTask<Unit> {
-        return OmhTask {
+        return OmhTask({
             // No initialization needed for Google Sign-In
-        }
+        })
     }
 
     override fun getLoginIntent(): Intent {
@@ -63,7 +63,7 @@ internal class OmhAuthClientImpl(
         val userRepository = UserRepositoryImpl.getUserRepository(applicationContext)
         val profileUseCase = ProfileUseCase.createUserProfileUseCase(userRepository)
 
-        return OmhTask {
+        return OmhTask({
             val profileData = profileUseCase.getProfileData()
 
             if (profileData == null) {
@@ -73,7 +73,7 @@ internal class OmhAuthClientImpl(
             }
 
             return@OmhTask profileData
-        }
+        })
     }
 
     internal class Builder(
@@ -118,9 +118,9 @@ internal class OmhAuthClientImpl(
     override fun revokeToken(): OmhTask<Unit> {
         val authRepository = AuthRepositoryImpl.getAuthRepository(applicationContext)
         val authUseCase = AuthUseCase.createAuthUseCase(authRepository)
-        return OmhTask {
+        return OmhTask({
             val apiResult: ApiResult<Unit> = authUseCase.revokeToken()
             return@OmhTask apiResult.extractResult()
-        }
+        })
     }
 }
