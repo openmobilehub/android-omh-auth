@@ -27,12 +27,12 @@ internal class NonGmsCredentials(
 ) : OmhCredentials {
 
     override fun refreshToken(): OmhTask<String?> {
-        return OmhTask {
+        return OmhTask({
             when (val apiResult = authUseCase.refreshToken(clientId)) {
                 is ApiResult.Success -> apiResult.data
                 else -> null
             }
-        }
+        })
     }
 
     override val accessToken: String?

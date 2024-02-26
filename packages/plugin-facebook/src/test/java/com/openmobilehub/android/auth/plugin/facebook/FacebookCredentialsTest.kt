@@ -40,14 +40,12 @@ class FacebookCredentialsTest {
             callback.OnTokenRefreshed(accessTokenMock)
         }
 
-        var token: String? = ""
-        FacebookCredentials().refreshToken().addOnSuccess { newToken ->
-            token = newToken
+        FacebookCredentials().refreshToken().addOnSuccess { token ->
+            assertEquals(token, testAccessToken)
         }.execute()
 
         verify {
             AccessToken.refreshCurrentAccessTokenAsync(any())
-            assertEquals(token, testAccessToken)
         }
     }
 

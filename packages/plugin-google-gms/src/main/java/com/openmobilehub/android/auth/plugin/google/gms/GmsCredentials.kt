@@ -25,10 +25,10 @@ class GmsCredentials(private val context: Context) : OmhCredentials {
         }
 
     override fun refreshToken(): OmhTask<String?> {
-        return OmhTask {
+        return OmhTask({
             withContext(Dispatchers.IO) {
                 googleAccountCredential?.token
             }
-        }
+        })
     }
 }

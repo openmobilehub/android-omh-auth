@@ -19,14 +19,14 @@ class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) :
     private val microsoftApiService = MicrosoftApiService.service
 
     override fun initialize(): OmhTask<Unit> {
-        return OmhTask {
+        return OmhTask({
             @Suppress("SwallowedException")
             try {
                 microsoftApplication.getApplication()
             } catch (e: OmhAuthException.NotInitializedException) {
                 microsoftApplication.initialize(context, configFileResourceId)
             }
-        }
+        })
     }
 
     override fun getLoginIntent(): Intent {
@@ -56,11 +56,11 @@ class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) :
     }
 
     override fun revokeToken(): OmhTask<Unit> {
-        TODO("Not yet implemented")
+        return OmhTask(::signOutRequest)
     }
 
     override fun signOut(): OmhTask<Unit> {
-        TODO("Not yet implemented")
+        return OmhTask(::signOutRequest)
     }
 
     internal suspend fun getUserRequest(): OmhUserProfile = suspendCoroutine { continuation ->
@@ -92,5 +92,16 @@ class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) :
                 continuation.resumeWithException(t)
             }
         })
+    }
+
+    internal suspend fun signOutRequest() = suspendCoroutine { continuation ->
+        val success = microsoftApplication.getApplication().signOut()
+        microsoftRepository.token = null
+
+        if (!success) {
+            continuation.resumeWithException(Exception("Failed to sign out"))
+        } else {
+            continuation.resume(Unit)
+        }
     }
 }

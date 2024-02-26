@@ -35,9 +35,9 @@ internal class OmhAuthClientImpl(
 ) : OmhAuthClient {
 
     override fun initialize(): OmhTask<Unit> {
-        return OmhTask {
+        return OmhTask({
             // No initialization needed for Google Sign-In
-        }
+        })
     }
 
     override fun getLoginIntent(): Intent {
@@ -45,7 +45,7 @@ internal class OmhAuthClientImpl(
     }
 
     override fun getUser(): OmhTask<OmhUserProfile> {
-        return OmhTask {
+        return OmhTask({
             val googleUser =
                 GoogleSignIn.getLastSignedInAccount(googleSignInClient.applicationContext)
 
@@ -56,7 +56,7 @@ internal class OmhAuthClientImpl(
             }
 
             return@OmhTask googleUser.toOmhProfile()
-        }
+        })
     }
 
     private fun GoogleSignInAccount.toOmhProfile(): OmhUserProfile {
