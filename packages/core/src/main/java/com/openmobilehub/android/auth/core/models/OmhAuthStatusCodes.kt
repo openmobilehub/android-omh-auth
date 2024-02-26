@@ -29,6 +29,8 @@ object OmhAuthStatusCodes {
     const val HTTPS_ERROR = 8
     const val SIGN_IN_REQUIRED = 9
     const val NOT_INITIALIZED = 10
+    const val PROVIDER_ERROR = 11
+    const val CANCELED = 12
 
     @JvmStatic
     fun getStatusCodeString(code: Int): String {
@@ -43,6 +45,8 @@ object OmhAuthStatusCodes {
             GMS_UNAVAILABLE -> "GMS not available."
             HTTPS_ERROR -> "An HTTPS error has occurred."
             SIGN_IN_REQUIRED -> "Sign in required."
+            PROVIDER_ERROR -> "Provider error."
+            CANCELED -> "Cancelled."
             else -> "Unknown status code: $code"
         }
     }

@@ -116,7 +116,7 @@ class LoggedInFragment : Fragment() {
     private fun refreshToken() = lifecycleScope.launch(Dispatchers.IO) {
         val authClient = authClientProvider.getClient(requireContext())
 
-        authClient.getCredentials().refreshToken().addOnSuccess { token ->
+        authClient.getCredentials().refreshAccessToken().addOnSuccess { token ->
             binding?.tvToken?.text = getString(R.string.token_placeholder, token)
 
             Toast.makeText(activity, "Auth Token Refreshed", Toast.LENGTH_SHORT)

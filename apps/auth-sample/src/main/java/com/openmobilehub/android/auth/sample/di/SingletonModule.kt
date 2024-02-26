@@ -57,7 +57,8 @@ object SingletonModule {
     fun providesMicrosoftAuthClient(@ApplicationContext context: Context): MicrosoftAuthClient {
         return MicrosoftAuthClient(
             configFileResourceId = R.raw.ms_auth_config,
-            context = context
+            context = context,
+            scopes = arrayListOf("User.Read"),
         )
     }
 }

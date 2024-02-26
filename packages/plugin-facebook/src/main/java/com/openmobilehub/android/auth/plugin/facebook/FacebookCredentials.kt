@@ -9,14 +9,14 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 class FacebookCredentials : OmhCredentials {
-    override fun refreshToken(): OmhTask<String?> {
-        return OmhTask(::refreshAccessToken)
+    override fun refreshAccessToken(): OmhTask<String?> {
+        return OmhTask(::refreshAccessTokenRequest)
     }
 
     override val accessToken: String?
         get() = AccessToken.getCurrentAccessToken()?.token
 
-    private suspend fun refreshAccessToken() = suspendCoroutine { continuation ->
+    private suspend fun refreshAccessTokenRequest() = suspendCoroutine { continuation ->
         val callback = object : AccessToken.AccessTokenRefreshCallback {
             override fun OnTokenRefreshed(accessToken: AccessToken?) {
                 continuation.resume(accessToken?.token)
