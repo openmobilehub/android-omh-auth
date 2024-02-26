@@ -18,7 +18,7 @@ package com.openmobilehub.android.auth.core
 
 import android.content.Context
 import android.content.Intent
-import com.openmobilehub.android.auth.core.async.OmhTask
+import com.openmobilehub.android.auth.core.async.IOmhTask
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.core.models.OmhUserProfile
 
@@ -29,18 +29,18 @@ interface OmhAuthClient {
         fun build(context: Context): OmhAuthClient
     }
 
-    fun initialize(): OmhTask<Unit>
+    fun initialize(): IOmhTask<Unit>
 
     fun getLoginIntent(): Intent
 
     @Throws(OmhAuthException::class)
     fun handleLoginIntentResponse(data: Intent?)
 
-    fun getUser(): OmhTask<OmhUserProfile>
+    fun getUser(): IOmhTask<OmhUserProfile>
 
     fun getCredentials(): OmhCredentials
 
-    fun signOut(): OmhTask<Unit>
+    fun signOut(): IOmhTask<Unit>
 
-    fun revokeToken(): OmhTask<Unit>
+    fun revokeToken(): IOmhTask<Unit>
 }

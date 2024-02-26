@@ -17,17 +17,20 @@
 package com.openmobilehub.android.auth.plugin.google.gms
 
 import com.google.android.gms.tasks.Task
+import com.openmobilehub.android.auth.core.async.BaseOmhTask
 import com.openmobilehub.android.auth.core.async.OmhCancellable
-import com.openmobilehub.android.auth.core.async.OmhTask
 
-internal class OmhGmsTask<T>(private val task: Task<T>?) : OmhTask<T>(null) {
-    override fun execute(): OmhCancellable? {
-        task?.addOnSuccessListener { result ->
+/**
+ * Wraps GMS task in OMH task interface.
+ */
+internal class OmhGmsTask<T>(private val task: Task<T>) : BaseOmhTask<T>() {
+    override fun execute(): OmhCancellable {
+        task.addOnSuccessListener { result ->
             onSuccess?.invoke(result)
-        }?.addOnFailureListener { e ->
+        }.addOnFailureListener { e ->
             onFailure?.invoke(e)
         }
 
-        return null
+        return OmhCancellable { }
     }
 }
