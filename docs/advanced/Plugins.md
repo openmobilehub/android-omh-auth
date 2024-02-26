@@ -74,7 +74,7 @@ You'll have access to the application context in case you need it and the OAuth 
 Here you'll need to provide a function and a parameter:
 
 ```kotlin
-fun blockingRefreshToken(): String?
+fun refreshAccessToken(): OmhTask<String?>
 
 val accessToken: String?
 ```
@@ -108,7 +108,7 @@ omhConfig {
 }
 ```
 
-If you are not using the core plugin the you can always pass the path manually to the provider like this:
+If you are not using the core plugin then you can always pass the path manually to the provider like this:
 
 ```kotlin
 val omhAuthProvider = OmhAuthProvider.Builder()

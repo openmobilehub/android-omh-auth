@@ -76,8 +76,12 @@ To logout using the Android OMH Auth SDK the client provides the `omhAuthClient.
 
 ```kotlin
 val cancellable = omhAuthClient.signOut()
-  .addOnSuccess { /* navigate back to the login screen */ }
-  .addOnFailure { /* show an error dialog */ }
+  .addOnSuccess {
+    // Navigate back to the login screen
+  }
+  .addOnFailure {
+    // Show an error dialog
+  }
   .execute()
 cancellableCollector.addCancellable(cancellable)
 ```
@@ -88,8 +92,12 @@ The revoke token serves a similar functionality as the logout, but on top of cle
 
 ```kotlin
 val cancellable = omhAuthClient.revokeToken()
-  .addOnSuccess { /* navigate back to the login screen */ }
-  .addOnFailure { /* show an error dialog */ }
+  .addOnSuccess {
+    // Navigate back to the login screen
+  }
+  .addOnFailure {
+    // Show an error dialog
+  }
   .execute()
 cancellableCollector.addCancellable(cancellable)
 ```
@@ -109,11 +117,15 @@ class OmhUserProfile(
 )
 
 omhAuthClient.getUser()
-  .addOnSuccess()
-  .addOnFailure()
+  .addOnSuccess {
+    // Perform action with the user
+  }
+  .addOnFailure {
+    // Show an error dialog
+  }
   .execute()
 ```
 
 # Working with the credentials
 
-If you wish to obtain the given credentials you can use the function `getCredentials()`. Take into mind that this will return an `Any` object as this credentials may vary depending on the implementation. For the GMS version of the Android OMH Auth SDK a `GoogleAccountCredential` will be returned. You can read more about it [here](https://cloud.google.com/java/docs/reference/google-api-client/latest/com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential). In the case of the non GMS version, an interface is provided called `OmhCredentials`. You can read more about it [here](/docs/advanced/OMH-Credentials.md)
+If you wish to obtain the given credentials you can use the function `getCredentials()`. You can read more about it [here](/docs/advanced/OMH-Credentials.md)
