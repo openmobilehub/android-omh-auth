@@ -79,16 +79,14 @@ fun blockingRefreshToken(): String?
 val accessToken: String?
 ```
 
-`blockingRefreshToken` should be a blocking sync call that requests a refresh of the access token from the provider. This is designed to be used in a Retrofit Interceptor class and should never be run from the main thread.
-
 The `accessToken` variable should return the stored token received in the login use case.
 
-## Implementing the OMH Tasks abstract class
+## Implementing the OMH Base Task abstract class
 
 This is an abstraction for the async layer of your library. The idea is to avoid forcing the user to use a specific async library and give the more flexibility with your OMH Auth implementation. You can read more about it [here](/docs/advanced/OMH-Task.md). Here the only function you need to implement is:
 
 ```kotlin
-abstract fun execute(): OmhCancellable?
+abstract override fun execute(): OmhCancellable
 ```
 
 This should execute your async code and return a way to cancel the operation with the `OmhCancellable` interface if possible. The cancellable interface can be represented as a lambda for convenience.
