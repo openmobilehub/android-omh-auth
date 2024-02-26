@@ -40,7 +40,7 @@ class FacebookCredentialsTest {
             callback.OnTokenRefreshed(accessTokenMock)
         }
 
-        FacebookCredentials().refreshToken().addOnSuccess { token ->
+        FacebookCredentials().refreshAccessToken().addOnSuccess { token ->
             assertEquals(token, testAccessToken)
         }.execute()
 
@@ -59,7 +59,7 @@ class FacebookCredentialsTest {
             callback.OnTokenRefreshFailed(mockException)
         }
 
-        FacebookCredentials().refreshToken().addOnFailure { e ->
+        FacebookCredentials().refreshAccessToken().addOnFailure { e ->
             assertEquals(e, mockException)
         }.execute()
     }

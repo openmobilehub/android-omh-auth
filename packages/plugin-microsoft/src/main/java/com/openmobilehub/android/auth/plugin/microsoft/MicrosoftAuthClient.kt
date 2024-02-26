@@ -13,7 +13,11 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) : OmhAuthClient {
+class MicrosoftAuthClient(
+    val configFileResourceId: Int,
+    val scopes: ArrayList<String>,
+    val context: Context
+) : OmhAuthClient {
     private val microsoftApplication = MicrosoftApplication.getInstance()
     private val microsoftRepository = MicrosoftRepository.getInstance(context)
     private val microsoftApiService = MicrosoftApiService.service
@@ -32,7 +36,9 @@ class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) :
     override fun getLoginIntent(): Intent {
         return Intent(
             context, MicrosoftLoginActivity::class.java
-        ).putExtra("configFileResourceId", configFileResourceId)
+        )
+            .putExtra("configFileResourceId", configFileResourceId)
+            .putStringArrayListExtra("scopes", scopes)
     }
 
     override fun handleLoginIntentResponse(data: Intent?) {
@@ -52,7 +58,7 @@ class MicrosoftAuthClient(val configFileResourceId: Int, val context: Context) :
     }
 
     override fun getCredentials(): MicrosoftCredentials {
-        return MicrosoftCredentials(microsoftRepository, microsoftApplication)
+        return MicrosoftCredentials(microsoftRepository, microsoftApplication, scopes)
     }
 
     override fun revokeToken(): OmhTask<Unit> {

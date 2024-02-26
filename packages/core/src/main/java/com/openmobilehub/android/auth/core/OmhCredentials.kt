@@ -19,7 +19,7 @@ package com.openmobilehub.android.auth.core
 import com.openmobilehub.android.auth.core.async.OmhTask
 
 interface OmhCredentials {
-    fun refreshToken(): OmhTask<String?>
+    fun refreshAccessToken(): OmhTask<String?>
 
     val accessToken: String?
 }
