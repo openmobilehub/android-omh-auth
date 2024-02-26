@@ -39,37 +39,15 @@ import kotlin.coroutines.CoroutineContext
  * the [OmhCancellable] is returned as nullable.
  */
 open class OmhTask<T>(
-    private val task: (suspend () -> T)?,
+    private val task: (suspend () -> T),
     private val coroutineContext: CoroutineContext = Dispatchers.IO + SupervisorJob(),
     private val customScope: CoroutineScope = CoroutineScope(context = coroutineContext)
-) {
-    protected var onSuccess: ((T) -> Unit)? = null
-    protected var onFailure: ((Exception) -> Unit)? = null
-
-
-    fun addOnSuccess(successListener: OmhSuccessListener<T>): OmhTask<T> {
-        this.onSuccess = successListener::onSuccess
-        return this
-    }
-
-    fun addOnFailure(errorListener: OmhErrorListener): OmhTask<T> {
-        this.onFailure = errorListener::onError
-        return this
-    }
-
-    /**
-     * Executes the async operation and returns a way to cancel the operation if possible. Do take in
-     * mind that not all async libraries have "cold" tasks. Some operation may already be in motion
-     * when added to the wrapper. In this case, execute will only add the [onSuccess] and [onFailure]
-     * listeners.
-     *
-     * @return an optional [OmhCancellable] in case the async operation can be cancelled.
-     */
+) : BaseOmhTask<T>() {
     @Suppress("TooGenericExceptionCaught")
-    open fun execute(): OmhCancellable? {
+    override fun execute(): OmhCancellable {
         customScope.launch {
             try {
-                val result = task!!.invoke()
+                val result = task.invoke()
 
                 withContext(Dispatchers.Main) {
                     onSuccess?.invoke(result)

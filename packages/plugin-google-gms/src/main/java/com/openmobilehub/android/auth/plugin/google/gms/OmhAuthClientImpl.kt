@@ -72,7 +72,7 @@ internal class OmhAuthClientImpl(
         return GmsCredentials(googleSignInClient.applicationContext)
     }
 
-    override fun signOut(): OmhTask<Unit> {
+    override fun signOut(): OmhGmsTask<Unit> {
         val task = googleSignInClient.signOut().mapToOmhExceptions()
         return OmhGmsTask(task)
     }
@@ -91,7 +91,7 @@ internal class OmhAuthClientImpl(
         }
     }
 
-    override fun revokeToken(): OmhTask<Unit> {
+    override fun revokeToken(): OmhGmsTask<Unit> {
         val task = googleSignInClient.revokeAccess().mapToOmhExceptions()
         return OmhGmsTask(task)
     }
