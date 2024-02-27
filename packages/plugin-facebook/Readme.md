@@ -121,7 +121,7 @@ implementation("com.openmobilehub.android.auth:plugin-facebook:2.0.0-beta")
 
 Save the file and [sync your project with Gradle](https://developer.android.com/studio/build#sync-files).
 
-## Provide the Facebook Omh Auth Client
+## Provide the Facebook OMH Auth Client
 
 In the `SingletonModule.kt` file in the `:auth-starter-sample` module add the following code to provide the Facebook OMH Auth Client.
 

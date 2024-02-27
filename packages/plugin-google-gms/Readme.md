@@ -51,7 +51,7 @@ Save the file and [sync your project with Gradle](https://developer.android.com/
 
 Please see the advanced documentation on how to use the [Android OMH Core](/docs/advanced/OMH-Core.md) Plugin.
 
-## Provide the Google Omh Auth Client
+## Provide the Google OMH Auth Client
 
 In the `SingletonModule.kt` file in the `:auth-starter-sample` module add the following function to provide the Google OMH Auth Client:
 

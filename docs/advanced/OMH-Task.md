@@ -14,7 +14,7 @@ val task: OmhTask<Unit> = OmhAuthClient.logout()
   }
 ```
 
-# Omh Task execution and cancellation
+# OMH Task execution and cancellation
 
 The OMH Task is designed as a cold task, meaning that you need to call the function `execute()` to start the operation. In reality, not all async libraries are cold tasks, which mean that even before they're wrapped into an OMH Task, the execution will had begun. To handle this, the `execute()` function also is responsible for attaching the listeners to the wrapped task.
 

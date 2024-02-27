@@ -167,7 +167,7 @@ implementation("com.openmobilehub.android.auth:plugin-google-non-gms:2.0.0-beta"
 Save the file
 and [sync your project with Gradle](https://developer.android.com/studio/build#sync-files).
 
-## Provide the Google Omh Auth Client
+## Provide the Google OMH Auth Client
 
 In the `SingletonModule.kt` file in the `:auth-starter-sample` module add the following function to
 provide the Google OMH Auth Client:
