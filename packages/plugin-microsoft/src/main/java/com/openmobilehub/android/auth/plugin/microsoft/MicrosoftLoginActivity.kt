@@ -8,7 +8,7 @@ import com.microsoft.identity.client.IAuthenticationResult
 import com.microsoft.identity.client.SignInParameters
 import com.microsoft.identity.client.exception.MsalException
 
-class MicrosoftLoginActivity : Activity() {
+internal class MicrosoftLoginActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
