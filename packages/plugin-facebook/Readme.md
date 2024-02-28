@@ -54,23 +54,22 @@ To access Facebook APIs, generate a unique **App ID** and **App Secret** for you
 
 > To enable the email scope: in your [Meta for Developers](https://developers.facebook.com/apps) app, navigate to "Use cases" -> "Customize" -> "Permissions" and click **Add** for the **Email** permissions.
 
-## Edit your resources and manifest
+## Configure the AndroidManifest.xml
 
-1. Open the **/app/manifest/AndroidManifest.xml** file.
-2. Add meta-data elements to the application element for your app ID and client token:
+1. Add meta-data elements to the application element for your app ID and client token:
 
-   ```XML
+```XML
    <application android:label="@string/app_name" ...>
      ...
      <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
      <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
      ...
    </application>
-   ```
+```
 
-3. Add an activity for Facebook, and an activity and intent filter for Chrome Custom Tabs inside your application element:
+2. Add an activity for Facebook, and an activity and intent filter for Chrome Custom Tabs inside your application element:
 
-   ```XML
+```XML
    <activity android:name="com.facebook.FacebookActivity"
        android:configChanges=
            "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -86,15 +85,15 @@ To access Facebook APIs, generate a unique **App ID** and **App Secret** for you
            <data android:scheme="@string/fb_login_protocol_scheme" />
        </intent-filter>
    </activity>
-   ```
+```
 
-4. Add a uses-permission element to the manifest after the application element:
+3. Add a uses-permission element to the manifest after the application element:
 
-   ```XML
-   <uses-permission android:name="android.permission.INTERNET"/>
-   ```
+```XML
+  <uses-permission android:name="android.permission.INTERNET"/>
+```
 
-5. (Optional) To opt out of the Advertising ID Permission, add a uses-permission element to the manifest after the application element:
+4. (Optional) To opt out of the Advertising ID Permission, add a uses-permission element to the manifest after the application element:
 
    ```XML
    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
@@ -121,7 +120,7 @@ implementation("com.openmobilehub.android.auth:plugin-facebook:2.0.0-beta")
 
 Save the file and [sync your project with Gradle](https://developer.android.com/studio/build#sync-files).
 
-## Provide the Facebook Omh Auth Client
+## Provide the Facebook OMH Auth Client
 
 In the `SingletonModule.kt` file in the `:auth-starter-sample` module add the following code to provide the Facebook OMH Auth Client.
 

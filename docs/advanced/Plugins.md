@@ -74,21 +74,19 @@ You'll have access to the application context in case you need it and the OAuth 
 Here you'll need to provide a function and a parameter:
 
 ```kotlin
-fun blockingRefreshToken(): String?
+fun refreshAccessToken(): OmhTask<String?>
 
 val accessToken: String?
 ```
 
-`blockingRefreshToken` should be a blocking sync call that requests a refresh of the access token from the provider. This is designed to be used in a Retrofit Interceptor class and should never be run from the main thread.
-
 The `accessToken` variable should return the stored token received in the login use case.
 
-## Implementing the OMH Tasks abstract class
+## Implementing the OMH Base Task abstract class
 
 This is an abstraction for the async layer of your library. The idea is to avoid forcing the user to use a specific async library and give the more flexibility with your OMH Auth implementation. You can read more about it [here](/docs/advanced/OMH-Task.md). Here the only function you need to implement is:
 
 ```kotlin
-abstract fun execute(): OmhCancellable?
+abstract override fun execute(): OmhCancellable
 ```
 
 This should execute your async code and return a way to cancel the operation with the `OmhCancellable` interface if possible. The cancellable interface can be represented as a lambda for convenience.
@@ -110,7 +108,7 @@ omhConfig {
 }
 ```
 
-If you are not using the core plugin the you can always pass the path manually to the provider like this:
+If you are not using the core plugin then you can always pass the path manually to the provider like this:
 
 ```kotlin
 val omhAuthProvider = OmhAuthProvider.Builder()

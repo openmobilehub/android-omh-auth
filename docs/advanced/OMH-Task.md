@@ -1,8 +1,8 @@
-The OMH Task is an interface that allows to abstract the async libraries that are using in the specific implementations of the OMH SDKs. It also depends on other OMH classes and interfaces that will be detailed upon here.
+The OMH Task is a utility class that allows to abstract the async logic in libraries that are using the specific implementations of the OMH SDKs. It also depends on other OMH classes and interfaces that will be detailed upon here.
 
 # OMH Task listeners
 
-The OMH Task itself is an abstract class that defines two functions to setup listeners for the two possible results: `Success` and `Failure`. This allows for a modular build of the async task's behavior. The snippet below shows how to add this listeners to the OMH Task:
+The OMH Task itself implements the `BaseOmhTask` which is an abstract class that defines two functions to setup listeners for the two possible results: `Success` and `Failure`. This allows for a modular build of the async task's behavior. The snippet below shows how to add this listeners to the OMH Task:
 
 ```kotlin
 val task: OmhTask<Unit> = OmhAuthClient.logout()
@@ -14,7 +14,7 @@ val task: OmhTask<Unit> = OmhAuthClient.logout()
   }
 ```
 
-# Omh Task execution and cancellation
+# OMH Task execution and cancellation
 
 The OMH Task is designed as a cold task, meaning that you need to call the function `execute()` to start the operation. In reality, not all async libraries are cold tasks, which mean that even before they're wrapped into an OMH Task, the execution will had begun. To handle this, the `execute()` function also is responsible for attaching the listeners to the wrapped task.
 

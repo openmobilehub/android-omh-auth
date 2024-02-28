@@ -49,6 +49,7 @@ There are different setup requirements based on the provider you will be includi
 
 - [Google GMS and non-GMS](/packages/plugin-google-gms/Readme.md)
 - [Facebook](/packages/plugin-facebook/Readme.md)
+- [Microsoft](/packages/plugin-microsoft/Readme.md)
 
 ### Adding Auth to your app.
 
