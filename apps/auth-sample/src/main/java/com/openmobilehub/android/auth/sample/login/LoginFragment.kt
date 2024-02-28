@@ -39,6 +39,7 @@ import com.openmobilehub.android.auth.sample.di.LoginState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -116,9 +117,11 @@ class LoginFragment : Fragment() {
     private fun handleLoginResult(result: ActivityResult) {
         try {
             googleAuthClient.handleLoginIntentResponse(result.data)
-            navigateToLoggedIn()
             lifecycleScope.launch(Dispatchers.IO) {
                 LoginState(requireContext()).loggedIn("google")
+                withContext(Dispatchers.Main) {
+                    navigateToLoggedIn()
+                }
             }
         } catch (exception: OmhAuthException) {
             handleException(exception)
@@ -128,9 +131,11 @@ class LoginFragment : Fragment() {
     private fun handleFacebookLoginResult(result: ActivityResult) {
         try {
             facebookAuthClient.handleLoginIntentResponse(result.data)
-            navigateToLoggedIn()
             lifecycleScope.launch(Dispatchers.IO) {
                 LoginState(requireContext()).loggedIn("facebook")
+                withContext(Dispatchers.Main) {
+                    navigateToLoggedIn()
+                }
             }
         } catch (exception: OmhAuthException) {
             handleException(exception)
@@ -140,9 +145,11 @@ class LoginFragment : Fragment() {
     private fun handleMicrosoftLoginResult(result: ActivityResult) {
         try {
             microsoftAuthClient.handleLoginIntentResponse(result.data)
-            navigateToLoggedIn()
             lifecycleScope.launch(Dispatchers.IO) {
                 LoginState(requireContext()).loggedIn("microsoft")
+                withContext(Dispatchers.Main) {
+                    navigateToLoggedIn()
+                }
             }
         } catch (exception: OmhAuthException) {
             handleException(exception)
