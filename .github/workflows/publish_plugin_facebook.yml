@@ -1,0 +1,12 @@
+name: Publish Facebook Plugin
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Publish Facebook Plugin
+    uses: ./.github/workflows/build_and_publish_to_maven_remotely.yml
+    with:
+      package-name: :packages:plugin-facebook
+    secrets: inherit
