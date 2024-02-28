@@ -95,14 +95,29 @@ class LoginFragment : Fragment() {
     }
 
     private fun startFacebookLogin() {
-        val loginIntent = facebookAuthClient.getLoginIntent()
-        facebookLoginLauncher.launch(loginIntent)
+        facebookAuthClient.signIn(requireActivity()).addOnSuccess {
+            Log.d("LoginFragment", "Logged in to facebook")
+            navigateToLoggedIn()
+            lifecycleScope.launch(Dispatchers.IO) {
+                LoginState(requireContext()).loggedIn("facebook")
+            }
+        }.addOnFailure {
+            Log.d("LoginFragment", "Failed to log in to facebook")
+        }.execute()
     }
 
     private fun startMicrosoftLogin() {
         microsoftAuthClient.initialize().addOnSuccess {
-            val loginIntent = microsoftAuthClient.getLoginIntent()
-            microsoftLoginLauncher.launch(loginIntent)
+            microsoftAuthClient.signIn(requireActivity()).addOnSuccess {
+                Log.d("LoginFragment", "Logged in to Microsoft")
+
+                navigateToLoggedIn()
+                lifecycleScope.launch(Dispatchers.IO) {
+                    LoginState(requireContext()).loggedIn("microsoft")
+                }
+            }.addOnFailure {
+                Log.d("LoginFragment", "Failed to log in to Microsoft")
+            }.execute()
         }.addOnFailure { exception ->
             Log.d("LoginFragment", "Microsoft failed to initialize")
             Log.d("LoginFragment", exception.message ?: "No message")

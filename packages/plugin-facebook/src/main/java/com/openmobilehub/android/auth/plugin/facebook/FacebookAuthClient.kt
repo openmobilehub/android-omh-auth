@@ -1,5 +1,6 @@
 package com.openmobilehub.android.auth.plugin.facebook
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,23 +10,32 @@ import com.facebook.HttpMethod
 import com.facebook.Profile
 import com.facebook.login.LoginManager
 import com.openmobilehub.android.auth.core.OmhAuthClient
+import com.openmobilehub.android.auth.core.OmhLoginTask
 import com.openmobilehub.android.auth.core.async.OmhTask
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.core.models.OmhAuthStatusCodes
 import com.openmobilehub.android.auth.core.models.OmhUserProfile
+import java.util.UUID
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) :
     OmhAuthClient {
-
     override fun initialize(): OmhTask<Unit> {
         return OmhTask(
             {
                 // No initialization needed for Facebook Sign-In
             },
         )
+    }
+
+    fun signIn(activity: Activity): OmhLoginTask {
+        val callbackId = UUID.randomUUID().toString()
+
+        return OmhLoginTask(callbackId) {
+            activity.startActivity(getLoginIntent().putExtra("callbackId", callbackId))
+        }
     }
 
     override fun getLoginIntent(): Intent {

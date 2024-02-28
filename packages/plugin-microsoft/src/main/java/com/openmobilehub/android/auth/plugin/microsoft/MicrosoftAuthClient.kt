@@ -1,11 +1,18 @@
 package com.openmobilehub.android.auth.plugin.microsoft
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import com.microsoft.identity.client.AuthenticationCallback
+import com.microsoft.identity.client.IAuthenticationResult
+import com.microsoft.identity.client.SignInParameters
+import com.microsoft.identity.client.exception.MsalException
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.async.OmhTask
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.core.models.OmhUserProfile
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,6 +38,43 @@ class MicrosoftAuthClient(
                 microsoftApplication.initialize(context, configFileResourceId)
             }
         })
+    }
+
+    fun signIn(activity: Activity): OmhTask<Unit> {
+        return OmhTask({
+            signInRequest(activity)
+        }, Dispatchers.Main + SupervisorJob())
+    }
+
+    private suspend fun signInRequest(activity: Activity) = suspendCoroutine { continuation ->
+        val params =
+            SignInParameters
+                .builder()
+                .withActivity(activity)
+                .withScopes(scopes)
+                .withCallback(object : AuthenticationCallback {
+                    override fun onSuccess(authenticationResult: IAuthenticationResult) {
+                        MicrosoftRepository.getInstance(context).token =
+                            authenticationResult.accessToken
+                        continuation.resume(Unit)
+                    }
+
+                    override fun onError(exception: MsalException?) {
+                        continuation.resumeWithException(
+                            OmhAuthException.UnrecoverableLoginException(
+                                exception
+                            )
+                        )
+                    }
+
+                    override fun onCancel() {
+                        continuation.resumeWithException(OmhAuthException.LoginCanceledException())
+                    }
+                })
+                .build()
+
+        MicrosoftApplication.getInstance().getApplication()
+            .signIn(params)
     }
 
     override fun getLoginIntent(): Intent {

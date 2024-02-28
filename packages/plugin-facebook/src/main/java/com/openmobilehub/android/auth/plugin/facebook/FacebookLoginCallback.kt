@@ -1,45 +1,32 @@
 package com.openmobilehub.android.auth.plugin.facebook
 
 import android.app.Activity
-import android.content.Intent
+import android.os.Bundle
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginResult
 
 internal class FacebookLoginCallback(val activity: Activity) {
+    var isLoginSuccessful = false
+    var callbackResult = Bundle()
+
     fun getLoginCallback(): FacebookCallback<LoginResult> {
         return object : FacebookCallback<LoginResult> {
             override fun onSuccess(result: LoginResult) {
-                onSuccessCb(result)
+                isLoginSuccessful = true
+                activity.finish()
             }
 
             override fun onCancel() {
-                onCancelCb()
+                isLoginSuccessful = false
+                activity.finish()
             }
 
             override fun onError(error: FacebookException) {
-                onErrorCb(error)
+                isLoginSuccessful = false
+                callbackResult.putSerializable("error", error.cause)
+                activity.finish()
             }
         }
-    }
-
-    private fun onSuccessCb(result: LoginResult) {
-        activity.setResult(
-            Activity.RESULT_OK,
-            Intent()
-                .putExtra("accessToken", result.accessToken)
-                .putExtra("authenticationToken", result.authenticationToken)
-        )
-        activity.finish()
-    }
-
-    private fun onCancelCb() {
-        activity.setResult(Activity.RESULT_CANCELED)
-        activity.finish()
-    }
-
-    private fun onErrorCb(error: FacebookException) {
-        activity.setResult(Activity.RESULT_CANCELED, Intent().putExtra("error", error.cause))
-        activity.finish()
     }
 }
