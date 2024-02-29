@@ -7,6 +7,7 @@ import com.microsoft.identity.client.AuthenticationCallback
 import com.microsoft.identity.client.IAuthenticationResult
 import com.microsoft.identity.client.SignInParameters
 import com.microsoft.identity.client.exception.MsalException
+import com.openmobilehub.android.auth.core.models.OmhAuthException
 
 internal class MicrosoftLoginActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,12 +32,21 @@ internal class MicrosoftLoginActivity : Activity() {
                     }
 
                     override fun onError(exception: MsalException?) {
-                        setResult(RESULT_CANCELED, Intent().putExtra("error", exception?.cause))
+                        setResult(
+                            RESULT_CANCELED,
+                            Intent().putExtra("errorMessage", exception?.message)
+                        )
                         finish()
                     }
 
                     override fun onCancel() {
-                        setResult(RESULT_CANCELED)
+                        setResult(
+                            RESULT_CANCELED,
+                            Intent().putExtra(
+                                "errorMessage",
+                                OmhAuthException.LoginCanceledException().message
+                            )
+                        )
                         finish()
                     }
                 })

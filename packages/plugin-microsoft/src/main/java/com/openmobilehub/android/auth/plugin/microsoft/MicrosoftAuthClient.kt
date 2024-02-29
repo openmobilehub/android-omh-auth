@@ -41,18 +41,6 @@ class MicrosoftAuthClient(
             .putStringArrayListExtra("scopes", scopes)
     }
 
-    override fun handleLoginIntentResponse(data: Intent?) {
-        if (data != null && data.hasExtra("error")) {
-            throw OmhAuthException.UnrecoverableLoginException(
-                data.getSerializableExtra("error") as Throwable
-            )
-        }
-
-        if (data == null || !data.hasExtra(("accessToken"))) {
-            throw OmhAuthException.LoginCanceledException()
-        }
-    }
-
     override fun getUser(): OmhTask<OmhUserProfile> {
         return OmhTask(::getUserRequest)
     }

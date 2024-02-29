@@ -20,15 +20,11 @@ import android.content.Intent
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.async.OmhTask
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.core.models.OmhUserProfile
-import com.openmobilehub.android.auth.core.utils.OmhAuthUtils
 import com.openmobilehub.android.auth.plugin.google.gms.util.mapToOmhExceptions
-import com.openmobilehub.android.auth.plugin.google.gms.util.toOmhLoginException
 
 internal class OmhAuthClientImpl(
     private val googleSignInClient: GoogleSignInClient
@@ -41,7 +37,9 @@ internal class OmhAuthClientImpl(
     }
 
     override fun getLoginIntent(): Intent {
-        return googleSignInClient.signInIntent
+        return Intent(googleSignInClient.applicationContext, GmsLoginActivity::class.java)
+            .putExtra("gmsIntent", googleSignInClient.signInIntent)
+//        return googleSignInClient.signInIntent
     }
 
     override fun getUser(): OmhTask<OmhUserProfile> {
@@ -75,20 +73,6 @@ internal class OmhAuthClientImpl(
     override fun signOut(): OmhGmsTask<Unit> {
         val task = googleSignInClient.signOut().mapToOmhExceptions()
         return OmhGmsTask(task)
-    }
-
-    override fun handleLoginIntentResponse(data: Intent?) {
-        val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
-        try {
-            task.getResult(ApiException::class.java)
-        } catch (apiException: ApiException) {
-            val isRunningOnNonGms = !OmhAuthUtils.isGmsDevice(googleSignInClient.applicationContext)
-            val omhException: OmhAuthException = toOmhLoginException(
-                apiException = apiException,
-                isNonGmsDevice = isRunningOnNonGms
-            )
-            throw omhException
-        }
     }
 
     override fun revokeToken(): OmhGmsTask<Unit> {
