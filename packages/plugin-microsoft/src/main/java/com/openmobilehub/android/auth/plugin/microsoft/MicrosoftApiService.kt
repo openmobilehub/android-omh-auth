@@ -1,5 +1,6 @@
 package com.openmobilehub.android.auth.plugin.microsoft
 
+import androidx.annotation.Keep
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -22,6 +23,7 @@ internal interface ApiService {
     ): Call<User>
 }
 
+@Keep
 internal data class User(
     val givenName: String,
     val surname: String,
