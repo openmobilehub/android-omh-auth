@@ -32,4 +32,5 @@ internal object Constants {
     const val PICTURE_KEY = "picture"
     const val ID_KEY = "id"
     const val CAUSE_KEY = "cause"
+    const val ERROR_MESSAGE_KEY = "errorMessage"
 }

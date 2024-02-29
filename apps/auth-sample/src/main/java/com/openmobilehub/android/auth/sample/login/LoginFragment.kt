@@ -16,6 +16,7 @@
 
 package com.openmobilehub.android.auth.sample.login
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -30,7 +31,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.openmobilehub.android.auth.core.OmhAuthClient
-import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.plugin.facebook.FacebookAuthClient
 import com.openmobilehub.android.auth.plugin.microsoft.MicrosoftAuthClient
 import com.openmobilehub.android.auth.sample.R
@@ -39,22 +39,23 @@ import com.openmobilehub.android.auth.sample.di.LoginState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
 
     private val loginLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
-        /* contract = */ ActivityResultContracts.StartActivityForResult(),
-        /* callback = */ ::handleLoginResult
+        ActivityResultContracts.StartActivityForResult(),
+        handleLoginResult("google")
     )
     private val facebookLoginLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult(),
-        ::handleFacebookLoginResult
+        handleLoginResult("facebook")
     )
     private val microsoftLoginLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult(),
-        ::handleMicrosoftLoginResult
+        handleLoginResult("microsoft")
     )
 
     private var binding: FragmentLoginBinding? = null
@@ -113,43 +114,25 @@ class LoginFragment : Fragment() {
         findNavController().navigate(R.id.action_login_fragment_to_logged_in_fragment)
     }
 
-    private fun handleLoginResult(result: ActivityResult) {
-        try {
-            googleAuthClient.handleLoginIntentResponse(result.data)
-            navigateToLoggedIn()
-            lifecycleScope.launch(Dispatchers.IO) {
-                LoginState(requireContext()).loggedIn("google")
+    private fun handleLoginResult(provider: String): (ActivityResult) -> Unit {
+        return { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    LoginState(requireContext()).loggedIn(provider)
+                    withContext(Dispatchers.Main) {
+                        navigateToLoggedIn()
+                    }
+                }
             }
-        } catch (exception: OmhAuthException) {
-            handleException(exception)
+
+            if (result.resultCode == Activity.RESULT_CANCELED) {
+                val errorMessage = result.data?.getStringExtra("errorMessage")
+                handleException(Exception(errorMessage))
+            }
         }
     }
 
-    private fun handleFacebookLoginResult(result: ActivityResult) {
-        try {
-            facebookAuthClient.handleLoginIntentResponse(result.data)
-            navigateToLoggedIn()
-            lifecycleScope.launch(Dispatchers.IO) {
-                LoginState(requireContext()).loggedIn("facebook")
-            }
-        } catch (exception: OmhAuthException) {
-            handleException(exception)
-        }
-    }
-
-    private fun handleMicrosoftLoginResult(result: ActivityResult) {
-        try {
-            microsoftAuthClient.handleLoginIntentResponse(result.data)
-            navigateToLoggedIn()
-            lifecycleScope.launch(Dispatchers.IO) {
-                LoginState(requireContext()).loggedIn("microsoft")
-            }
-        } catch (exception: OmhAuthException) {
-            handleException(exception)
-        }
-    }
-
-    private fun handleException(exception: OmhAuthException) {
+    private fun handleException(exception: Exception) {
         exception.printStackTrace()
         val ctx = context ?: return
         AlertDialog.Builder(ctx)

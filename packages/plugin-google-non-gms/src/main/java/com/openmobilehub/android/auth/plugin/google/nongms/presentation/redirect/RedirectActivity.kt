@@ -150,7 +150,7 @@ internal class RedirectActivity : AppCompatActivity() {
     private fun returnResult(result: Int, exception: OmhAuthException? = null) {
         val intent = Intent()
         if (result == Activity.RESULT_CANCELED) {
-            intent.putExtra(Constants.CAUSE_KEY, exception)
+            intent.putExtra(Constants.ERROR_MESSAGE_KEY, exception?.message)
         }
         setResult(result, intent)
         finish()

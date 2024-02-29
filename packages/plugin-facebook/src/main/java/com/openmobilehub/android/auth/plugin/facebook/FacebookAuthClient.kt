@@ -10,8 +10,6 @@ import com.facebook.Profile
 import com.facebook.login.LoginManager
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.async.OmhTask
-import com.openmobilehub.android.auth.core.models.OmhAuthException
-import com.openmobilehub.android.auth.core.models.OmhAuthStatusCodes
 import com.openmobilehub.android.auth.core.models.OmhUserProfile
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -32,19 +30,6 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) :
         return Intent(
             context, FacebookLoginActivity::class.java
         ).putStringArrayListExtra("scopes", scopes)
-    }
-
-    override fun handleLoginIntentResponse(data: Intent?) {
-        if (data == null || !data.hasExtra(("accessToken"))) {
-            throw OmhAuthException.LoginCanceledException()
-        }
-
-        if (data.hasExtra("error")) {
-            throw OmhAuthException.RecoverableLoginException(
-                OmhAuthStatusCodes.DEVELOPER_ERROR,
-                data.getSerializableExtra("error") as Throwable
-            )
-        }
     }
 
     override fun getUser(): OmhTask<OmhUserProfile> {

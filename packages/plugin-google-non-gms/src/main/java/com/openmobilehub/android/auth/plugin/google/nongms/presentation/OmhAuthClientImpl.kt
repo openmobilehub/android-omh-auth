@@ -29,7 +29,6 @@ import com.openmobilehub.android.auth.plugin.google.nongms.domain.auth.AuthUseCa
 import com.openmobilehub.android.auth.plugin.google.nongms.domain.models.ApiResult
 import com.openmobilehub.android.auth.plugin.google.nongms.domain.user.ProfileUseCase
 import com.openmobilehub.android.auth.plugin.google.nongms.presentation.redirect.RedirectActivity
-import com.openmobilehub.android.auth.plugin.google.nongms.utils.Constants
 
 /**
  * Non GMS implementation of the OmhAuthClient abstraction. Required a clientId and defined scopes as
@@ -102,17 +101,6 @@ internal class OmhAuthClientImpl(
         val authRepository = AuthRepositoryImpl.getAuthRepository(applicationContext)
         val authUseCase = AuthUseCase.createAuthUseCase(authRepository)
         return OmhTask(authUseCase::logout)
-    }
-
-    override fun handleLoginIntentResponse(data: Intent?) {
-        if (data?.hasExtra(Constants.CAUSE_KEY) == true) {
-            val exception = data.getSerializableExtra(Constants.CAUSE_KEY) as OmhAuthException
-            throw exception
-        }
-
-        getUser()
-            .addOnFailure { e -> throw e }
-            .execute()
     }
 
     override fun revokeToken(): OmhTask<Unit> {

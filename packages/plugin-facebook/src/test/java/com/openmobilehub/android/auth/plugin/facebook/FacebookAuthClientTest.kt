@@ -9,7 +9,6 @@ import com.facebook.FacebookException
 import com.facebook.GraphRequest
 import com.facebook.GraphResponse
 import com.facebook.Profile
-import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.core.models.OmhUserProfile
 import io.mockk.EqMatcher
 import io.mockk.MockKAnnotations
@@ -79,42 +78,6 @@ class FacebookAuthClientTest {
 
         Assert.assertNotNull(intent)
         Assert.assertEquals(intent.getStringArrayListExtra("scopes"), scopes)
-    }
-
-    @Test
-    fun shouldThrowErrorOnNoLoginIntent() {
-        val intentMock = null
-
-        Assert.assertThrows(OmhAuthException.LoginCanceledException::class.java) {
-            authClient.handleLoginIntentResponse(intentMock)
-        }
-    }
-
-    @Test
-    fun shouldThrowLoginErrorOnNoAccessToken() {
-        val intentMock = mockk<Intent>()
-
-        every { intentMock.hasExtra("accessToken") } returns false
-
-        Assert.assertThrows(OmhAuthException.LoginCanceledException::class.java) {
-            authClient.handleLoginIntentResponse(intentMock)
-        }
-    }
-
-    @Test
-    fun shouldReThrowIntentError() {
-        val intentMock = mockk<Intent>()
-        val intentError = Exception("Test error")
-
-        every { intentMock.hasExtra("accessToken") } returns true
-        every { intentMock.hasExtra("error") } returns true
-        every { intentMock.getSerializableExtra("error") } returns intentError
-
-        val error = Assert.assertThrows(OmhAuthException.RecoverableLoginException::class.java) {
-            authClient.handleLoginIntentResponse(intentMock)
-        }
-
-        Assert.assertEquals(error.cause, intentError)
     }
 
     @Test
