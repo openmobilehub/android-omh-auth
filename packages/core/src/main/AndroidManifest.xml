@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2023 Open Mobile Hub
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,5 +15,9 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application
+        android:dataExtractionRules="@xml/backup_rules_12_up"
+        android:fullBackupContent="@xml/backup_rules_11_down" />
 
 </manifest>
