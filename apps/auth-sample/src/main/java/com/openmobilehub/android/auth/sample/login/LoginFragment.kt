@@ -31,6 +31,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.openmobilehub.android.auth.core.OmhAuthClient
+import com.openmobilehub.android.auth.plugin.dropbox.DropboxAuthClient
 import com.openmobilehub.android.auth.plugin.facebook.FacebookAuthClient
 import com.openmobilehub.android.auth.plugin.microsoft.MicrosoftAuthClient
 import com.openmobilehub.android.auth.sample.R
@@ -58,6 +59,11 @@ class LoginFragment : Fragment() {
         handleLoginResult("microsoft")
     )
 
+    private val dropboxLoginLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+        handleLoginResult("dropbox")
+    )
+
     private var binding: FragmentLoginBinding? = null
 
     @Inject
@@ -68,6 +74,9 @@ class LoginFragment : Fragment() {
 
     @Inject
     lateinit var microsoftAuthClient: MicrosoftAuthClient
+
+    @Inject
+    lateinit var dropboxAuthClient: DropboxAuthClient
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -88,6 +97,7 @@ class LoginFragment : Fragment() {
         binding?.btnGoogleLogin?.setOnClickListener { startGoogleLogin() }
         binding?.btnFacebookLogin?.setOnClickListener { startFacebookLogin() }
         binding?.btnMicrosoftLogin?.setOnClickListener { startMicrosoftLogin() }
+        binding?.btnDropboxLogin?.setOnClickListener { startDropboxLogin() }
     }
 
     private fun startGoogleLogin() {
@@ -108,6 +118,11 @@ class LoginFragment : Fragment() {
             Log.d("LoginFragment", "Microsoft failed to initialize")
             Log.d("LoginFragment", exception.message ?: "No message")
         }.execute()
+    }
+
+    private fun startDropboxLogin() {
+        val loginIntent = dropboxAuthClient.getLoginIntent()
+        dropboxLoginLauncher.launch(loginIntent)
     }
 
     private fun navigateToLoggedIn() {

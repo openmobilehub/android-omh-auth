@@ -19,6 +19,11 @@ dependencies {
     api(Libs.dropboxCoreSdk)
     api(Libs.dropboxAndroidSdk)
 
+    // Coroutines
+    implementation(Libs.coroutinesCore)
+
+    implementation(Libs.androidSecurity)
+
     // Test dependencies
     testImplementation(Libs.junit)
     testImplementation(Libs.mockk)
