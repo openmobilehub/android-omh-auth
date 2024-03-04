@@ -182,9 +182,11 @@ dependencies {
         implementation(project(":packages:plugin-google-non-gms"))
         implementation(project(":packages:plugin-facebook"))
         implementation(project(":packages:plugin-microsoft"))
+        implementation(project(":packages:plugin-dropbox"))
     } else {
         implementation("com.openmobilehub.android.auth:plugin-facebook:2.0.0-beta")
         implementation("com.openmobilehub.android.auth:plugin-microsoft:2.0.0-beta")
+        implementation("com.openmobilehub.android.auth:plugin-dropbox:2.0.0-beta")
     }
 }
 

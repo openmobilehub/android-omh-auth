@@ -52,6 +52,9 @@ object Versions {
     // Microsoft SDK
     const val microsoftMsal = "5.1.0"
 
+    // Dropbox SDK
+    const val dropboxSdk = "6.0.0"
+
     // Testing
     const val junit = "4.13.2"
     const val androidJunit = "1.1.5"
