@@ -8,12 +8,10 @@ import com.dropbox.core.android.Auth
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 
 internal class DropboxLoginActivity : Activity() {
-    var isAwaitingResult: Boolean = false
+    private var isFirstResume = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        println("Create")
 
         val scopes = intent.getStringArrayListExtra("scopes")
 
@@ -22,18 +20,15 @@ internal class DropboxLoginActivity : Activity() {
         Auth.startOAuth2PKCE(
             this, "fhnsfpb2r74n6iv", requestConfig, scopes
         )
-
-        isAwaitingResult = true
     }
 
     override fun onResume() {
         super.onResume()
 
-        if (!isAwaitingResult) {
+        if (isFirstResume) {
+            isFirstResume = false
             return
         }
-
-//        val credentials = Auth.getDbxCredential()
 
         val accessToken = Auth.getOAuth2Token()
 
@@ -45,16 +40,14 @@ internal class DropboxLoginActivity : Activity() {
                     OmhAuthException.UnrecoverableLoginException().message
                 )
             )
-            
-            finish()
+        } else {
+            DropboxRepository.getInstance(applicationContext).token = accessToken
+
+            setResult(
+                RESULT_OK,
+                Intent().putExtra("accessToken", accessToken)
+            )
         }
-
-        DropboxRepository.getInstance(applicationContext).token = accessToken
-
-        setResult(
-            RESULT_OK,
-            Intent().putExtra("accessToken", accessToken)
-        )
 
         finish()
     }
