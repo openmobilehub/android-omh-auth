@@ -5,14 +5,13 @@ import android.content.Intent
 import com.facebook.AccessToken
 import com.facebook.FacebookException
 import com.facebook.login.LoginResult
+import com.openmobilehub.android.auth.core.models.OmhAuthException
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkConstructor
 import io.mockk.verify
-import org.junit.Ignore
 import org.junit.Test
 
-@Ignore("Rewrite these failing tests")
 class FacebookLoginCallbackTest {
     @Test
     fun shouldHandleLoginSuccess() {
@@ -49,9 +48,17 @@ class FacebookLoginCallbackTest {
 
     @Test
     fun shouldHandleLoginCancel() {
+        val errorMessage = OmhAuthException.LoginCanceledException().message
         val activity = mockk<Activity>()
+        val mockIntentResult = mockk<Intent>()
 
-        every { activity.setResult(Activity.RESULT_CANCELED) } returns Unit
+        mockkConstructor(Intent::class)
+        every {
+            anyConstructed<Intent>()
+                .putExtra("errorMessage", errorMessage)
+        } returns mockIntentResult
+
+        every { activity.setResult(Activity.RESULT_CANCELED, any()) } returns Unit
         every { activity.finish() } returns Unit
 
         val callback = FacebookLoginCallback(activity).getLoginCallback()
@@ -59,8 +66,10 @@ class FacebookLoginCallbackTest {
         callback.onCancel()
 
         verify {
-            activity.setResult(Activity.RESULT_CANCELED)
+            activity.setResult(Activity.RESULT_CANCELED, any())
             activity.finish()
+            anyConstructed<Intent>()
+                .putExtra("errorMessage", errorMessage)
         }
     }
 
@@ -68,14 +77,14 @@ class FacebookLoginCallbackTest {
     fun shouldHandleLoginError() {
         val activity = mockk<Activity>()
         val exception = mockk<FacebookException>()
-        val exceptionCause = Throwable()
+        val errorMessage = "Error message"
         val mockIntentResult = mockk<Intent>()
 
-        every { exception.cause } returns exceptionCause
+        every { exception.message } returns errorMessage
         mockkConstructor(Intent::class)
         every {
             anyConstructed<Intent>()
-                .putExtra("error", exceptionCause)
+                .putExtra("errorMessage", errorMessage)
         } returns mockIntentResult
         every { activity.setResult(Activity.RESULT_CANCELED, any()) } returns Unit
         every { activity.finish() } returns Unit
@@ -88,7 +97,7 @@ class FacebookLoginCallbackTest {
             activity.setResult(Activity.RESULT_CANCELED, any())
             activity.finish()
             anyConstructed<Intent>()
-                .putExtra("error", exceptionCause)
+                .putExtra("errorMessage", errorMessage)
         }
     }
 }
