@@ -32,9 +32,9 @@ internal class DropboxLoginActivity : Activity() {
             return
         }
 
-        val accessToken = Auth.getOAuth2Token()
+        val credential = Auth.getDbxCredential()
 
-        if (accessToken == null) {
+        if (credential?.accessToken == null) {
             setResult(
                 RESULT_CANCELED,
                 Intent().putExtra(
@@ -43,11 +43,11 @@ internal class DropboxLoginActivity : Activity() {
                 )
             )
         } else {
-            DropboxRepository.getInstance(applicationContext).token = accessToken
+            DropboxRepository.getInstance(applicationContext).credential = credential
 
             setResult(
                 RESULT_OK,
-                Intent().putExtra("accessToken", accessToken)
+                Intent().putExtra("accessToken", credential.accessToken)
             )
         }
 

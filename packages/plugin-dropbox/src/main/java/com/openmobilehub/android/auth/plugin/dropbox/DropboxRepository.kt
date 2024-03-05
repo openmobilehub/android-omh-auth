@@ -2,17 +2,33 @@ package com.openmobilehub.android.auth.plugin.dropbox
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.dropbox.core.oauth.DbxCredential
 import com.openmobilehub.android.auth.core.utils.EncryptedSharedPreferences
 
 private const val PROVIDER_NAME = "dropbox"
 
 class DropboxRepository(private val sharedPreferences: SharedPreferences) {
-    var token: String?
+    var credential: DbxCredential?
         get() {
-            return sharedPreferences.getString("token", null)
+            val serializedCredentialJson = sharedPreferences.getString("credential", null)
+
+            @Suppress("SwallowedException", "TooGenericExceptionCaught")
+            return try {
+                DbxCredential.Reader.readFully(serializedCredentialJson)
+            } catch (e: Exception) {
+                null
+            }
         }
-        set(newToken) {
-            sharedPreferences.edit().putString("token", newToken).apply()
+        set(dbxCredential) {
+            if (dbxCredential == null) {
+                sharedPreferences.edit().remove("credential")
+                    .apply()
+                return
+            }
+
+            sharedPreferences.edit()
+                .putString("credential", DbxCredential.Writer.writeToString(dbxCredential))
+                .apply()
         }
 
     companion object {
