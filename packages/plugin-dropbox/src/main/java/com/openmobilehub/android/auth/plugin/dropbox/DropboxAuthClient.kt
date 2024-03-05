@@ -29,11 +29,20 @@ class DropboxAuthClient(
     }
 
     override fun getUser(): OmhTask<OmhUserProfile> {
-        TODO()
+        return OmhTask(
+            {
+                OmhUserProfile(
+                    null,
+                    null,
+                    null,
+                    null,
+                )
+            },
+        )
     }
 
     override fun getCredentials(): OmhCredentials {
-        return DropboxCredentials(dropboxRepository, scopes)
+        return DropboxCredentials(dropboxRepository)
     }
 
     override fun revokeToken(): OmhTask<Unit> {

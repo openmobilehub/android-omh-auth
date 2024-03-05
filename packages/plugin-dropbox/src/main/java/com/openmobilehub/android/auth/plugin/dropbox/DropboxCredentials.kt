@@ -5,7 +5,6 @@ import com.openmobilehub.android.auth.core.async.OmhTask
 
 class DropboxCredentials(
     private val dropboxRepository: DropboxRepository,
-    private val scopes: ArrayList<String>
 ) : OmhCredentials {
     override val accessToken: String?
         get() = dropboxRepository.token
