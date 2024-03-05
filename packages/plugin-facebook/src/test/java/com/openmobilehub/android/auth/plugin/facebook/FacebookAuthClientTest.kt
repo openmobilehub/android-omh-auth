@@ -72,12 +72,10 @@ class FacebookAuthClientTest {
                     scopes
                 )
         } returns intentMock
-        every { intentMock.getStringArrayListExtra("scopes") } returns scopes
 
         val intent = authClient.getLoginIntent()
 
         Assert.assertNotNull(intent)
-        Assert.assertEquals(intent.getStringArrayListExtra("scopes"), scopes)
     }
 
     @Test

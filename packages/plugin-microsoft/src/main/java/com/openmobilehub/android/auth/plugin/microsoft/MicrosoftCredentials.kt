@@ -24,7 +24,7 @@ class MicrosoftCredentials(
         return OmhTask(::requestAccessToken)
     }
 
-    private suspend fun requestAccessToken() = suspendCoroutine { continuation ->
+    internal suspend fun requestAccessToken() = suspendCoroutine { continuation ->
         val currentAccount = microsoftApplication.getApplication().currentAccount.currentAccount
         val params =
             AcquireTokenSilentParameters.Builder()
