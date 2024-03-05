@@ -64,6 +64,10 @@ object Libs {
     // Microsoft SDK
     val microsoftMsal by lazy { "com.microsoft.identity.client:msal:${Versions.microsoftMsal}" }
 
+    // Dropbox SDK
+    val dropboxCoreSdk by lazy { "com.dropbox.core:dropbox-core-sdk:${Versions.dropboxSdk}" }
+    val dropboxAndroidSdk by lazy { "com.dropbox.core:dropbox-android-sdk:${Versions.dropboxSdk}" }
+
     // Testing
     val junit by lazy { "junit:junit:${Versions.junit}" }
     val androidJunit by lazy { "androidx.test.ext:junit:${Versions.androidJunit}" }

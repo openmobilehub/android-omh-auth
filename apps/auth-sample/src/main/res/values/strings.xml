@@ -5,6 +5,7 @@
     <string name="google_login">Google Login</string>
     <string name="facebook_login">Facebook Login</string>
     <string name="microsoft_login">Microsoft Login</string>
+    <string name="dropbox_login">Dropbox Login</string>
     <string name="name_placeholder"><b>Name:</b> %s</string>
     <string name="surname_placeholder"><b>Surname:</b> %s</string>
     <string name="email_placeholder"><b>Email:</b> %s</string>

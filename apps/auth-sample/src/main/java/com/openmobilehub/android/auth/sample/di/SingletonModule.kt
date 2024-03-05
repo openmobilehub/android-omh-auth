@@ -19,6 +19,7 @@ package com.openmobilehub.android.auth.sample.di
 import android.content.Context
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.OmhAuthProvider
+import com.openmobilehub.android.auth.plugin.dropbox.DropboxAuthClient
 import com.openmobilehub.android.auth.plugin.facebook.FacebookAuthClient
 import com.openmobilehub.android.auth.plugin.microsoft.MicrosoftAuthClient
 import com.openmobilehub.android.auth.sample.BuildConfig
@@ -59,6 +60,15 @@ object SingletonModule {
             configFileResourceId = R.raw.ms_auth_config,
             context = context,
             scopes = arrayListOf("User.Read"),
+        )
+    }
+
+    @Provides
+    fun providesDropboxAuthClient(@ApplicationContext context: Context): DropboxAuthClient {
+        return DropboxAuthClient(
+            scopes = arrayListOf("account_info.read"),
+            context = context,
+            appId = BuildConfig.DROPBOX_APP_ID,
         )
     }
 }

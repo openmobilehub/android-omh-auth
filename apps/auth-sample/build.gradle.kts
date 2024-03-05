@@ -70,11 +70,14 @@ android {
         val facebookClientToken = properties["FACEBOOK_CLIENT_TOKEN"] as String
         val microsoftClientId = properties["MICROSOFT_CLIENT_ID"] as String
         val keystoreHash = properties["KEYSTORE_HASH"] as String
+        val dropboxAppId = properties["DROPBOX_APP_ID"] as String
 
         resValue("string", "facebook_app_id", facebookAppId)
         resValue("string", "facebook_client_token", facebookClientToken)
         resValue("string", "fb_login_protocol_scheme", "fb${facebookAppId}")
         resValue("string", "microsoft_path", "/${keystoreHash}")
+        resValue("string", "dropbox_app_id", dropboxAppId)
+        resValue("string", "db_login_protocol_scheme", "db-${dropboxAppId}")
 
         file("./src/main/res/raw/ms_auth_config.json").writeText(
             """
@@ -182,9 +185,11 @@ dependencies {
         implementation(project(":packages:plugin-google-non-gms"))
         implementation(project(":packages:plugin-facebook"))
         implementation(project(":packages:plugin-microsoft"))
+        implementation(project(":packages:plugin-dropbox"))
     } else {
         implementation("com.openmobilehub.android.auth:plugin-facebook:2.0.0-beta")
         implementation("com.openmobilehub.android.auth:plugin-microsoft:2.0.0-beta")
+        implementation("com.openmobilehub.android.auth:plugin-dropbox:2.0.0-beta")
     }
 }
 
