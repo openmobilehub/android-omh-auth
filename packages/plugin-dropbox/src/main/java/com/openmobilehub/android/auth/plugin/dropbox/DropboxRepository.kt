@@ -19,15 +19,15 @@ class DropboxRepository(private val sharedPreferences: SharedPreferences) {
                 null
             }
         }
-        set(dbxCredential) {
-            if (dbxCredential == null) {
+        set(credential) {
+            if (credential == null) {
                 sharedPreferences.edit().remove("credential")
                     .apply()
                 return
             }
 
             sharedPreferences.edit()
-                .putString("credential", DbxCredential.Writer.writeToString(dbxCredential))
+                .putString("credential", DbxCredential.Writer.writeToString(credential))
                 .apply()
         }
 

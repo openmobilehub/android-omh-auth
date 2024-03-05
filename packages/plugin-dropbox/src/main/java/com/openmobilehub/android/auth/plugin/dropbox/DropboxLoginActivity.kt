@@ -8,6 +8,7 @@ import com.dropbox.core.android.Auth
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 
 internal class DropboxLoginActivity : Activity() {
+    private val dropboxRepository = DropboxRepository.getInstance(this)
     private var isFirstResume = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +44,7 @@ internal class DropboxLoginActivity : Activity() {
                 )
             )
         } else {
-            DropboxRepository.getInstance(applicationContext).credential = credential
+            dropboxRepository.credential = credential
 
             setResult(
                 RESULT_OK,
