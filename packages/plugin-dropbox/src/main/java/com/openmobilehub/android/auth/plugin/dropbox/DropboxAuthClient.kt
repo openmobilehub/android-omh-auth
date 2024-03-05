@@ -9,7 +9,8 @@ import com.openmobilehub.android.auth.core.models.OmhUserProfile
 
 class DropboxAuthClient(
     val scopes: ArrayList<String>,
-    val context: Context
+    val context: Context,
+    val appId: String
 ) : OmhAuthClient {
     private val dropboxRepository = DropboxRepository.getInstance(context)
 
@@ -26,6 +27,7 @@ class DropboxAuthClient(
             context, DropboxLoginActivity::class.java
         )
             .putStringArrayListExtra("scopes", scopes)
+            .putExtra("appId", appId)
     }
 
     override fun getUser(): OmhTask<OmhUserProfile> {

@@ -89,7 +89,7 @@
             android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>
-                <data android:scheme="db-fhnsfpb2r74n6iv" />
+                <data android:scheme="@string/db_login_protocol_scheme" />
 
                 <action android:name="android.intent.action.VIEW" />
 

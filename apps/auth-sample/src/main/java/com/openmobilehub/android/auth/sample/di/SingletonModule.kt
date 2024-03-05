@@ -68,6 +68,7 @@ object SingletonModule {
         return DropboxAuthClient(
             scopes = arrayListOf("account_info.read"),
             context = context,
+            appId = BuildConfig.DROPBOX_APP_ID,
         )
     }
 }

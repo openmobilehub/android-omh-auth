@@ -15,10 +15,12 @@ internal class DropboxLoginActivity : Activity() {
 
         val scopes = intent.getStringArrayListExtra("scopes")
 
-        val requestConfig = DbxRequestConfig("db-fhnsfpb2r74n6iv")
+        val appId = intent.getStringExtra("appId")
+
+        val requestConfig = DbxRequestConfig("db-${appId}")
 
         Auth.startOAuth2PKCE(
-            this, "fhnsfpb2r74n6iv", requestConfig, scopes
+            this, appId, requestConfig, scopes
         )
     }
 
