@@ -33,11 +33,14 @@ class DropboxAuthClient(
     override fun getUser(): OmhTask<OmhUserProfile> {
         return OmhTask(
             {
+                val currentAccount =
+                    DropboxClient.getInstance(dropboxRepository.credential).users().currentAccount
+
                 OmhUserProfile(
-                    null,
-                    null,
-                    null,
-                    null,
+                    currentAccount.name.givenName,
+                    currentAccount.name.surname,
+                    currentAccount.email,
+                    currentAccount.profilePhotoUrl,
                 )
             },
         )
@@ -48,10 +51,18 @@ class DropboxAuthClient(
     }
 
     override fun revokeToken(): OmhTask<Unit> {
-        TODO()
+        return OmhTask(
+            {
+                DropboxClient.getInstance(dropboxRepository.credential).auth().tokenRevoke()
+            },
+        )
     }
 
     override fun signOut(): OmhTask<Unit> {
-        TODO()
+        return OmhTask(
+            {
+                dropboxRepository.credential = null
+            },
+        )
     }
 }
