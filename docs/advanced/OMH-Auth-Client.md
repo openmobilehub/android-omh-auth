@@ -120,6 +120,8 @@ val cancellable = omhAuthClient.revokeToken()
 cancellableCollector.addCancellable(cancellable)
 ```
 
+> Some providers like in the case of Microsoft, doesn't provide a way to revoke the authentication token. For this reason, the default behavior for Microsoft when revoking a token is to sign out the user. This is identical to calling the `omhAuthClient.signOut()` function.
+
 # Obtaining the user's profile
 
 To obtain the user profile use the function `omhAuthClient.getUser()`. This returns an `OmhTask`
