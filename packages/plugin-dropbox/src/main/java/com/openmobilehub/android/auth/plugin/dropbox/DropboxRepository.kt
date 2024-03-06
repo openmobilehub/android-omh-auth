@@ -29,6 +29,8 @@ class DropboxRepository(private val sharedPreferences: SharedPreferences) {
             sharedPreferences.edit()
                 .putString("credential", DbxCredential.Writer.writeToString(credential))
                 .apply()
+
+            DropboxClient.getInstance(credential, true)
         }
 
     companion object {
