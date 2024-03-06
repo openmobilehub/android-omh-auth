@@ -27,7 +27,7 @@ provider implementations.
 <div align="center">
 
 | Non-GMS </br> Pixel 6                                                                                     | GMS </br> Pixel 6                                                                                         |
-|-----------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
+| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
 | <img src="https://github.com/openmobilehub/omh-auth/assets/1755383/6cd96f8d-c5dd-469f-b73b-f1a793597bcb"> | <img src="https://github.com/openmobilehub/omh-auth/assets/1755383/dcf3df18-ce91-45e7-8455-2eb64a814137"> |
 
 </div>
@@ -76,6 +76,22 @@ Please find the specific setup instruction for the providers below:
 First and foremost, the main interface that you'll be interacting with is called `OmhAuthClient`. It
 contains all your basic authentication functionalities like login, getting the user profile, sign
 out, revoking a token, etc.
+
+#### Initialize client
+
+In order to be able to interact with our OMH Auth client, we need to initialize it first.
+
+The snippet below shows how to initialize the OMH Auth client. The `initialize` method returns an `OmhTask`. This is the interface to interact with async functionalities and subscribe to the success or error results. In the `MainActivity.kt`, add the following code to the `onViewCreated()` function:
+
+```kotlin
+lifecycleScope.launch(Dispatchers.IO) {
+    authClientProvider.getClient(requireContext()).initialize()
+        .addOnSuccess {
+            setupUI()
+        }
+        .execute()
+}
+```
 
 #### Get user
 
