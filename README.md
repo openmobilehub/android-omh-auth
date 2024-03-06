@@ -69,6 +69,7 @@ Please find the specific setup instruction for the providers below:
 - [Google GMS and non-GMS](/packages/plugin-google-gms/Readme.md)
 - [Facebook](/packages/plugin-facebook/Readme.md)
 - [Microsoft](/packages/plugin-microsoft/Readme.md)
+- [Dropbox](/packages/plugin-dropbox/Readme.md)
 
 ### Adding Auth to your app.
 
