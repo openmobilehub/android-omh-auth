@@ -1,4 +1,4 @@
-# Google GMS and non-GMS plugin
+# Google GMS plugin
 
 ## Set up your Google Cloud project for applications with Google Services (Google Auth)
 
