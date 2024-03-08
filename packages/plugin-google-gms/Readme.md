@@ -1,4 +1,4 @@
-# Google GMS and non-GMS plugin
+# Google GMS plugin
 
 ## Set up your Google Cloud project for applications with Google Services (Google Auth)
 
@@ -30,7 +30,7 @@ storing it in the `local.properties` file, which is located in the root director
 1. Open the `local.properties` in your project level directory, and then add the following code.
    Replace `YOUR_GOOGLE_CLIENT_ID` with your API key. `GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID`
 2. Save the
-   fileand [sync your project with Gradle](https://developer.android.com/studio/build#sync-files).
+   file and [sync your project with Gradle](https://developer.android.com/studio/build#sync-files).
 
 ## Gradle configuration
 

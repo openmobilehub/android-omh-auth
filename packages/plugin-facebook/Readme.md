@@ -54,9 +54,23 @@ To access Facebook APIs, generate a unique **App ID** and **App Secret** for you
 
 > To enable the email scope: in your [Meta for Developers](https://developers.facebook.com/apps) app, navigate to "Use cases" -> "Customize" -> "Permissions" and click **Add** for the **Email** permissions.
 
-## Configure the AndroidManifest.xml
+## Edit Your Resources and Manifest
 
-1. Add meta-data elements to the application element for your app ID and client token:
+Create strings for your Facebook app ID and for those needed to enable Chrome Custom Tabs. Also, add `FacebookActivity` to your Android manifest.
+
+1.  Open your `/app/res/values/strings.xml` file.
+
+2 Add string elements with the names `facebook_app_id`, `fb_login_protocol_scheme` and `facebook_client_token`, and set the values to your **App ID** and **Client Token**. For example, if your app ID is 1234 and your client token is 56789 your code looks like the following:
+
+```XML
+<string name="facebook_app_id">1234</string>
+<string name="fb_login_protocol_scheme">fb1234</string>
+<string name="facebook_client_token">56789</string>
+```
+
+3. Open the `/app/manifest/AndroidManifest.xml` file.
+
+4. Add meta-data elements to the application element for your app ID and client token:
 
 ```XML
    <application android:label="@string/app_name" ...>
@@ -67,48 +81,41 @@ To access Facebook APIs, generate a unique **App ID** and **App Secret** for you
    </application>
 ```
 
-2. Add an activity for Facebook, and an activity and intent filter for Chrome Custom Tabs inside your application element:
+5. Add an activity for Facebook, and an activity and intent filter for Chrome Custom Tabs inside your application element:
 
 ```XML
-   <activity android:name="com.facebook.FacebookActivity"
-       android:configChanges=
-           "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-       android:label="OMH" />
+<activity android:name="com.facebook.FacebookActivity"
+    android:configChanges=
+        "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+    android:label="OMH" />
 
-   <activity
-       android:name="com.facebook.CustomTabActivity"
-       android:exported="true">
-       <intent-filter>
-           <action android:name="android.intent.action.VIEW" />
-           <category android:name="android.intent.category.DEFAULT" />
-           <category android:name="android.intent.category.BROWSABLE" />
-           <data android:scheme="@string/fb_login_protocol_scheme" />
-       </intent-filter>
-   </activity>
+<activity
+    android:name="com.facebook.CustomTabActivity"
+    android:exported="true">
+    <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="@string/fb_login_protocol_scheme" />
+    </intent-filter>
+</activity>
 ```
 
-3. Add a uses-permission element to the manifest after the application element:
+6. Add a uses-permission element to the manifest after the application element:
 
 ```XML
-  <uses-permission android:name="android.permission.INTERNET"/>
+<uses-permission android:name="android.permission.INTERNET"/>
 ```
 
-4. (Optional) To opt out of the Advertising ID Permission, add a uses-permission element to the manifest after the application element:
+7. (Optional) To opt out of the Advertising ID Permission, add a uses-permission element to the manifest after the application element:
 
-   ```XML
-   <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
-   ```
+```XML
+<uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
+```
 
-   > Note: You may directly set the auto-logging of App Events to “true” or “false” by setting the AutoLogAppEventsEnabled flag in the AndroidManifest.xml file.
+> Note: You may directly set the auto-logging of App Events to “true” or “false” by setting the AutoLogAppEventsEnabled flag in the AndroidManifest.xml file.
 
-## Add the App ID and App Secret to your app
-
-You should not check your App ID or App Secret into your version control system, so it is recommended storing it in the `local.properties` file, which is located in the root directory of your project. For more information about the `local.properties` file, see [Gradle properties](https://developer.android.com/studio/build#properties-files) [files](https://developer.android.com/studio/build#properties-files).
-
-Open the `local.properties` in your project level directory, and do the following:
-
-- Replace `YOUR_FACEBOOK_APP_ID` with your **App ID**: `FACEBOOK_APP_ID=YOUR_FACEBOOK_APP_ID`.
-- Replace `YOUR_FACEBOOK_CLIENT_TOKEN` with your **App Secret**: `FACEBOOK_CLIENT_TOKEN=YOUR_FACEBOOK_CLIENT_TOKEN`.
+> You can find more information on how to integrate the Facebook SDK by following the [official documentation](https://github.com/facebook/facebook-android-sdk).
 
 ## Gradle configuration
 

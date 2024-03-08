@@ -49,45 +49,40 @@ To access Microsoft APIs, generate a unique **Client ID** and **Keystore Hash** 
 
     ### Setting the Signature Hash
 
-    Once you generated the debug or the release key hash, add it under **Signature Hash** input and save your changes.
+    1. Once you generated the debug or the release key hash, add it under **Signature Hash** input and save your changes.
 
-## Configure the AndroidManifest.xml
+    2. Next, click on **View** and copy the **MSAL Configuration** contents into a new file under `/app/res/raw/ms_auth_config.json`.
+
+## Edit Your Resources and Manifest
 
 1. Configure an intent filter in the Android Manifest, using your redirect URI:
 
 ```XML
-  <activity
-    android:name="com.microsoft.identity.client.BrowserTabActivity"
-    android:exported="true">
-    <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
+<activity
+  android:name="com.microsoft.identity.client.BrowserTabActivity"
+  android:exported="true">
+  <intent-filter>
+      <action android:name="android.intent.action.VIEW" />
 
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
+      <category android:name="android.intent.category.DEFAULT" />
+      <category android:name="android.intent.category.BROWSABLE" />
 
-        <data
-          android:host="<YOUR_PACKAGE_NAME>"
-            android:path="@string/microsoft_path"
-            android:scheme="msauth" />
-    </intent-filter>
-  </activity>
+      <data
+        android:host="<YOUR_PACKAGE_NAME>"
+          android:path="/<YOUR_SIGNATURE_HASH>"
+          android:scheme="msauth" />
+  </intent-filter>
+</activity>
 ```
 
 2. Add a uses-permission element to the manifest after the application element:
 
 ```XML
-  <uses-permission android:name="android.permission.INTERNET"/>
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+<uses-permission android:name="android.permission.INTERNET"/>
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 ```
 
-## Add the Client ID and Keystore Hash to your app
-
-You should not check your Client ID or Keystore Hash into your version control system, so it is recommended storing it in the `local.properties` file, which is located in the root directory of your project. For more information about the `local.properties` file, see [Gradle properties](https://developer.android.com/studio/build#properties-files) [files](https://developer.android.com/studio/build#properties-files).
-
-Open the `local.properties` in your project level directory, and do the following:
-
-- Replace `YOUR_MICROSOFT_CLIENT_ID` with your **CLIENT ID**: `MICROSOFT_CLIENT_ID=YOUR_MICROSOFT_CLIENT_ID`.
-- Replace `YOUR_KEYSTORE_HASH` with your **Keystore Hash**: `KEYSTORE_HASH=YOUR_KEYSTORE_HASH`.
+> You can find more information on how to integrate the Microsoft SDK by following the [official documentation](https://github.com/AzureAD/microsoft-authentication-library-for-android).
 
 ## Gradle configuration
 
