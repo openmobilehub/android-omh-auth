@@ -90,7 +90,6 @@ android {
                     "UTF-8"
                 )
             }",
-  "account_mode": "SINGLE",
   "authorities": [
     {
       "type": "AAD",
@@ -99,7 +98,8 @@ android {
         "tenant_id": "common"
       }
     }
-  ]
+  ],
+  "account_mode": "SINGLE",
 }
             """.trimIndent()
         )

@@ -53,6 +53,8 @@ To access Microsoft APIs, generate a unique **Client ID** and **Keystore Hash** 
 
     2. Next, click on **View** and copy the **MSAL Configuration** contents into a new file under `/app/res/raw/ms_auth_config.json`.
 
+    3. In the newly created JSON **MSAL Configuration**, add a new key: `account_mode` and set it's value to: `"SINGLE"`.
+
 ## Edit Your Resources and Manifest
 
 1. Configure an intent filter in the Android Manifest, using your redirect URI:
