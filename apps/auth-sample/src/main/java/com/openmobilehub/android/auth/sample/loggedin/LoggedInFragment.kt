@@ -98,7 +98,10 @@ class LoggedInFragment : Fragment() {
         val cancellable = authClient.getUser()
             .addOnSuccess { profile ->
                 binding?.run {
-                    Picasso.get().load(profile.profileImage).into(binding?.tvAvatar)
+                    val profilePicture = profile.profileImage
+                        ?: "https://www.btklsby.go.id/images/placeholder/avatar.png"
+
+                    Picasso.get().load(profilePicture).into(binding?.tvAvatar)
                     tvName.text = getString(R.string.name_placeholder, profile.name)
                     tvSurname.text = getString(R.string.surname_placeholder, profile.surname)
                     tvEmail.text = getString(R.string.email_placeholder, profile.email)
