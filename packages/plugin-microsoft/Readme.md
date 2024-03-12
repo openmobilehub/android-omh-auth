@@ -5,7 +5,7 @@
 To access Microsoft APIs, generate a unique **Client ID** and **Keystore Hash** for your app in the Microsoft Azure. Add the **Application ID** and **Keystore Hash** to your app's code and complete the required Microsoft Azure setup steps:
 
 1.  [Go to the Microsoft Azure](https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade).
-2.  Click on "New registration" to start creating a new Microsoft Azure application.
+2.  Click on "New registration" to start creating a new Microsoft Azure application. Make sure that the "accounts in any organizational directory (Any Microsoft Entra ID tenant - Multitenant) and personal Microsoft accounts (e.g. Skype, Xbox)" option is chosen under **Supported account types**.
 3.  Once created the application, go to the Authentication and add a new Android platform.
 4.  Set your app package name (Use "com.openmobilehub.android.auth.sample.base.DemoApp" if you are following the starter-code).
 5.  Generate and set your Signature Hash:
@@ -52,6 +52,8 @@ To access Microsoft APIs, generate a unique **Client ID** and **Keystore Hash** 
     1. Once you generated the debug or the release key hash, add it under **Signature Hash** input and save your changes.
 
     2. Next, click on **View** and copy the **MSAL Configuration** contents into a new file under `/app/res/raw/ms_auth_config.json`.
+
+    3. In the newly created JSON **MSAL Configuration**, add a new key: `account_mode` and set it's value to: `"SINGLE"`.
 
 ## Edit Your Resources and Manifest
 
