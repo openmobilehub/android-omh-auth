@@ -69,13 +69,13 @@ android {
         val facebookAppId = properties["FACEBOOK_APP_ID"] as String
         val facebookClientToken = properties["FACEBOOK_CLIENT_TOKEN"] as String
         val microsoftClientId = properties["MICROSOFT_CLIENT_ID"] as String
-        val keystoreHash = properties["KEYSTORE_HASH"] as String
+        val microsoftSignatureHash = properties["MICROSOFT_SIGNATURE_HASH"] as String
         val dropboxAppKey = properties["DROPBOX_APP_KEY"] as String
 
         resValue("string", "facebook_app_id", facebookAppId)
         resValue("string", "facebook_client_token", facebookClientToken)
         resValue("string", "fb_login_protocol_scheme", "fb${facebookAppId}")
-        resValue("string", "microsoft_path", "/${keystoreHash}")
+        resValue("string", "microsoft_path", "/${microsoftSignatureHash}")
         resValue("string", "dropbox_app_key", dropboxAppKey)
         resValue("string", "db_login_protocol_scheme", "db-${dropboxAppKey}")
 
@@ -86,7 +86,7 @@ android {
   "authorization_user_agent": "DEFAULT",
   "redirect_uri": "msauth://com.openmobilehub.android.auth.sample.base.DemoApp/${
                 URLEncoder.encode(
-                    keystoreHash,
+                    microsoftSignatureHash,
                     "UTF-8"
                 )
             }",
