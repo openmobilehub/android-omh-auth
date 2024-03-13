@@ -1,5 +1,8 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import org.jetbrains.dokka.DokkaConfiguration.Visibility
+import org.gradle.internal.Cast.uncheckedCast
+import org.jetbrains.dokka.DokkaConfiguration
+import org.jetbrains.dokka.base.DokkaBase
+import org.jetbrains.dokka.base.DokkaBaseConfiguration
 import org.jetbrains.dokka.gradle.DokkaTaskPartial
 import java.net.URL
 import java.util.Properties
@@ -27,23 +30,26 @@ plugins {
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin") version "2.0.1" apply false
     id("com.github.hierynomus.license") version "0.16.1"
-    id("org.jetbrains.dokka")
+    id("org.jetbrains.dokka") version Versions.dokka
 }
 
-downloadLicenses {
-    includeProjectDependencies = true
-    dependencyConfiguration = "debugRuntimeClasspath"
+buildscript {
+    dependencies {
+        classpath("org.jetbrains.dokka:dokka-base:${Versions.dokka}")
+    }
 }
 
 subprojects {
     apply(plugin = "org.jetbrains.dokka")
 
     tasks.withType<DokkaTaskPartial>().configureEach {
+        suppressInheritedMembers.set(true)
+
         dokkaSourceSets.configureEach {
             documentedVisibilities.set(
                 setOf(
-                    Visibility.PUBLIC,
-                    Visibility.PROTECTED
+                    DokkaConfiguration.Visibility.PUBLIC,
+                    DokkaConfiguration.Visibility.PROTECTED
                 )
             )
 
@@ -53,6 +59,12 @@ subprojects {
                 localDirectory.set(rootProject.projectDir)
                 remoteUrl.set(URL(exampleDir))
                 remoteLineSuffix.set("#L")
+            }
+
+            // include the top-level README for that module
+            val readmeFile = project.file("README.md")
+            if (readmeFile.exists()) {
+                includes.from(readmeFile.path)
             }
         }
     }
@@ -70,11 +82,6 @@ subprojects {
             maven("https://s01.oss.sonatype.org/content/groups/staging/")
         }
     }
-}
-
-tasks.dokkaHtmlMultiModule {
-    moduleName.set("OMH Auth")
-    outputDirectory.set(rootProject.projectDir.resolve("docs/generated"))
 }
 
 tasks.register("installPrePushHook", Copy::class) {
@@ -149,4 +156,33 @@ fun getValueFromEnvOrProperties(name: String): Any? {
 fun getBooleanFromProperties(name: String): Boolean {
     val localProperties = gradleLocalProperties(rootDir)
     return (project.ext.has(name) && project.ext.get(name) == "true") || localProperties[name] == "true"
+}
+
+apply("./plugin/docsTasks.gradle.kts") // applies all tasks related to docs
+val discoverImagesInProject =
+    uncheckedCast<(project: Project) -> (List<File>?)>(extra["discoverImagesInProject"])
+val dokkaDocsOutputDir = uncheckedCast<File>(extra["dokkaDocsOutputDir"])
+val copyMarkdownDocsTask = uncheckedCast<TaskProvider<Task>>(extra["copyMarkdownDocsTask"])
+
+tasks.register("cleanDokkaDocsOutputDirectory", Delete::class) {
+    group = "other"
+    description = "Deletes the Dokka HTML docs output directory in root project"
+    delete = setOf(dokkaDocsOutputDir)
+}
+
+tasks.dokkaHtmlMultiModule {
+    dependsOn("cleanDokkaDocsOutputDirectory")
+
+    moduleName.set("OMH Auth")
+    outputDirectory.set(dokkaDocsOutputDir)
+    includes.from("README.md")
+
+    // copy assets: images/**/* from the rootProject images directory & all subprojects' images directories
+    pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
+        footerMessage = "(c) 2023 Open Mobile Hub"
+        separateInheritedMembers = false
+        customAssets = (setOf(rootProject) union subprojects).mapNotNull { project ->
+            discoverImagesInProject!!(project)
+        }.flatten()
+    }
 }

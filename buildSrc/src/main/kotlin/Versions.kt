@@ -20,6 +20,7 @@ object Versions {
     const val kotlin = "1.7.20"
     const val detekt = "1.22.0"
     const val jacoco = "0.8.6"
+    const val dokka = "1.9.10"
 
     // KTX
     const val coreKtx = "1.9.0"
