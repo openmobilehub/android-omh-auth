@@ -161,13 +161,12 @@ dependencies {
     implementation(Libs.lifecycleKtx)
     implementation(Libs.androidAppCompat)
     implementation(Libs.material)
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("com.google.android.gms:play-services-auth-base:18.0.8")
+    implementation(Libs.googlePlayBase)
 
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
     implementation("com.squareup.picasso:picasso:2.8")
-
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Hilt

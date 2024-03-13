@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import org.gradle.plugins.signing.SigningPlugin
-
 val useMavenLocal = project.rootProject.extra["useMavenLocal"] as Boolean
 
 plugins {
@@ -28,7 +26,7 @@ plugins {
     id("org.jetbrains.dokka")
 }
 
-if(!useMavenLocal) {
+if (!useMavenLocal) {
     apply<SigningPlugin>()
 }
 
@@ -139,7 +137,7 @@ fun MavenPublication.setupPublication() {
     }
 }
 
-if(useMavenLocal) {
+if (useMavenLocal) {
     publishing {
         publications {
             register<MavenPublication>("release") {
