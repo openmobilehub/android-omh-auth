@@ -83,6 +83,28 @@ tasks.register("installPreCommitHook", Copy::class) {
     fileMode = 0b000_111_111_111
 }
 
+tasks.register("publishCoreToMavenLocal") {
+    dependsOn(
+        ":packages:core:assembleRelease",
+        ":packages:core:publishToMavenLocal",
+    )
+}
+
+tasks.register("publishPluginsToMavenLocal") {
+    dependsOn(
+        ":packages:plugin-google-gms:assembleRelease",
+        ":packages:plugin-google-gms:publishToMavenLocal",
+        ":packages:plugin-google-non-gms:assembleRelease",
+        ":packages:plugin-google-non-gms:publishToMavenLocal",
+        ":packages:plugin-facebook:assembleRelease",
+        ":packages:plugin-facebook:publishToMavenLocal",
+        ":packages:plugin-microsoft:assembleRelease",
+        ":packages:plugin-microsoft:publishToMavenLocal",
+        ":packages:plugin-dropbox:assembleRelease",
+        ":packages:plugin-dropbox:publishToMavenLocal",
+    )
+}
+
 tasks {
     val installPrePushHook by existing
     val installPreCommitHook by existing
