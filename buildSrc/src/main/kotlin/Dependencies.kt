@@ -47,6 +47,15 @@ object Libs {
     // Security
     val androidSecurity by lazy { "androidx.security:security-crypto:${Versions.androidSecurity}" }
 
+    // OMH
+    val omhCore by lazy { "com.openmobilehub.android:omh-core:${Versions.omhCore}" }
+    val omhAuthCore by lazy { "com.openmobilehub.android.auth:core:${Versions.omhAuthCore}" }
+    val omhGoogleGms by lazy { "com.openmobilehub.android.auth:plugin-google-gms:${Versions.omhGoogleGms}" }
+    val omhGoogleNonGms by lazy { "com.openmobilehub.android.auth:plugin-google-non-gms:${Versions.omhGoogleNonGms}" }
+    val omhFacebook by lazy { "com.openmobilehub.android.auth:plugin-facebook:${Versions.omhFacebook}" }
+    val omhMicrosoft by lazy { "com.openmobilehub.android.auth:plugin-microsoft:${Versions.omhMicrosoft}" }
+    val omhDropbox by lazy { "com.openmobilehub.android.auth:plugin-dropbox:${Versions.omhDropbox}" }
+
     // Google Api Client
     val googleApiClient by lazy { "com.google.api-client:google-api-client:${Versions.googleApiClient}" }
     val googleApiClientAndroid by lazy { "com.google.api-client:google-api-client-android:${Versions.googleApiClient}" }

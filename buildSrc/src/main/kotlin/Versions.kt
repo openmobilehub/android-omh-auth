@@ -42,6 +42,15 @@ object Versions {
     const val androidAppCompat = "1.6.1"
     const val material = "1.8.0"
 
+    // OMH
+    const val omhCore = "2.0.1-beta"
+    const val omhAuthCore = "2.0.0-beta"
+    const val omhGoogleGms = "2.0.0-beta"
+    const val omhGoogleNonGms = "2.0.0-beta"
+    const val omhFacebook = "2.0.0-beta"
+    const val omhMicrosoft = "2.0.0-beta"
+    const val omhDropbox = "2.0.0-beta"
+
     // Google Sign In
     const val googleSignIn = "20.4.1"
     const val googlePlayBase = "18.2.0"
