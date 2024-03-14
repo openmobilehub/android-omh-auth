@@ -9,52 +9,7 @@ plugins {
     `android-application`
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android") version "2.44" apply true
-    id("com.openmobilehub.android.omh-core")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-}
-
-var googleGmsDependency = "com.openmobilehub.android.auth:plugin-google-gms:2.0.0-beta"
-var googleNongmsDependency = "com.openmobilehub.android.auth:plugin-google-non-gms:2.0.0-beta"
-
-var googleGmsPath = "com.openmobilehub.android.auth.plugin.google.gms.OmhAuthFactoryImpl"
-var googleNongmsPath =
-    "com.openmobilehub.android.auth.plugin.google.nongms.presentation.OmhAuthFactoryImpl"
-
-tasks.dokkaHtmlPartial {
-    enabled = false
-}
-
-omhConfig {
-    enableLocalProjects = useLocalProjects
-
-    bundle("singleBuild") {
-        auth {
-            gmsService {
-                if (!useLocalProjects) dependency = googleGmsDependency
-                path = googleGmsPath
-            }
-            nonGmsService {
-                if (!useLocalProjects) dependency = googleNongmsDependency
-                path = googleNongmsPath
-            }
-        }
-    }
-    bundle("gms") {
-        auth {
-            gmsService {
-                if (!useLocalProjects) dependency = googleGmsDependency
-                path = googleGmsPath
-            }
-        }
-    }
-    bundle("nongms") {
-        auth {
-            nonGmsService {
-                if (!useLocalProjects) dependency = googleNongmsDependency
-                path = googleNongmsPath
-            }
-        }
-    }
 }
 
 android {
