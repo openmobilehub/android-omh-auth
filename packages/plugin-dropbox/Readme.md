@@ -1,4 +1,4 @@
-# Dropbox plugin
+# Module plugin-dropbox
 
 ## Set up your Dropbox application
 

@@ -1,4 +1,4 @@
-# Facebook plugin
+# Module plugin-facebook
 
 ## Set up your Facebook application
 

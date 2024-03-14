@@ -1,4 +1,4 @@
-# Microsoft plugin
+# Module plugin-microsoft
 
 ## Set up your Microsoft application
 
