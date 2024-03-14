@@ -1,4 +1,12 @@
-This plugin simplifies the addition of Gradle dependencies, allowing you to effortlessly manage and include the necessary dependencies for seamless integration. The subsequent instructions will outline the necessary steps for including the OMH Core Plugin as a Gradle dependency.
+---
+title: OMH Core Plugin
+layout: default
+parent: Advanced features
+---
+
+This plugin simplifies the addition of Gradle dependencies, allowing you to effortlessly manage and
+include the necessary dependencies for seamless integration. The subsequent instructions will
+outline the necessary steps for including the OMH Core Plugin as a Gradle dependency.
 
 # Configure the Android OMH Core plugin
 
