@@ -99,7 +99,7 @@ android {
       }
     }
   ],
-  "account_mode": "SINGLE",
+  "account_mode": "SINGLE"
 }
             """.trimIndent()
         )
