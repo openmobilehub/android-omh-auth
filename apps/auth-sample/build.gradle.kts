@@ -134,14 +134,12 @@ dependencies {
 
     // Use local implementation instead of dependencies
     if (useLocalProjects) {
-        implementation(project(":packages:core"))
         implementation(project(":packages:plugin-google-gms"))
         implementation(project(":packages:plugin-google-non-gms"))
         implementation(project(":packages:plugin-facebook"))
         implementation(project(":packages:plugin-microsoft"))
         implementation(project(":packages:plugin-dropbox"))
     } else {
-        implementation(Libs.omhAuthCore)
         implementation(Libs.omhGoogleGms)
         implementation(Libs.omhGoogleNonGms)
         implementation(Libs.omhFacebook)
