@@ -36,8 +36,8 @@ object SingletonModule {
     @Provides
     fun providesGoogleAuthClient(@ApplicationContext context: Context): OmhAuthClient {
         val omhAuthProvider = OmhAuthProvider.Builder()
-            .addNonGmsPath(BuildConfig.AUTH_NON_GMS_PATH)
-            .addGmsPath(BuildConfig.AUTH_GMS_PATH)
+            .addNonGmsPath("com.openmobilehub.android.auth.plugin.google.nongms.presentation.OmhAuthFactoryImpl")
+            .addGmsPath("com.openmobilehub.android.auth.plugin.google.gms.OmhAuthFactoryImpl")
             .build()
         return omhAuthProvider.provideAuthClient(
             scopes = listOf("openid", "email", "profile"),

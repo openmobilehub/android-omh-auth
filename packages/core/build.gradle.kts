@@ -7,7 +7,6 @@ android {
 }
 
 dependencies {
-
     implementation(Libs.androidAppCompat)
     implementation(Libs.material)
     implementation(Libs.reflection)

@@ -9,52 +9,7 @@ plugins {
     `android-application`
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android") version "2.44" apply true
-    id("com.openmobilehub.android.omh-core")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-}
-
-var googleGmsDependency = "com.openmobilehub.android.auth:plugin-google-gms:2.0.0-beta"
-var googleNongmsDependency = "com.openmobilehub.android.auth:plugin-google-non-gms:2.0.0-beta"
-
-var googleGmsPath = "com.openmobilehub.android.auth.plugin.google.gms.OmhAuthFactoryImpl"
-var googleNongmsPath =
-    "com.openmobilehub.android.auth.plugin.google.nongms.presentation.OmhAuthFactoryImpl"
-
-tasks.dokkaHtmlPartial {
-    enabled = false
-}
-
-omhConfig {
-    enableLocalProjects = useLocalProjects
-
-    bundle("singleBuild") {
-        auth {
-            gmsService {
-                if (!useLocalProjects) dependency = googleGmsDependency
-                path = googleGmsPath
-            }
-            nonGmsService {
-                if (!useLocalProjects) dependency = googleNongmsDependency
-                path = googleNongmsPath
-            }
-        }
-    }
-    bundle("gms") {
-        auth {
-            gmsService {
-                if (!useLocalProjects) dependency = googleGmsDependency
-                path = googleGmsPath
-            }
-        }
-    }
-    bundle("nongms") {
-        auth {
-            nonGmsService {
-                if (!useLocalProjects) dependency = googleNongmsDependency
-                path = googleNongmsPath
-            }
-        }
-    }
 }
 
 android {
@@ -161,13 +116,12 @@ dependencies {
     implementation(Libs.lifecycleKtx)
     implementation(Libs.androidAppCompat)
     implementation(Libs.material)
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("com.google.android.gms:play-services-auth-base:18.0.8")
+    implementation(Libs.googlePlayBase)
 
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
     implementation("com.squareup.picasso:picasso:2.8")
-
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Hilt
@@ -180,16 +134,17 @@ dependencies {
 
     // Use local implementation instead of dependencies
     if (useLocalProjects) {
-        implementation(project(":packages:core"))
         implementation(project(":packages:plugin-google-gms"))
         implementation(project(":packages:plugin-google-non-gms"))
         implementation(project(":packages:plugin-facebook"))
         implementation(project(":packages:plugin-microsoft"))
         implementation(project(":packages:plugin-dropbox"))
     } else {
-        implementation("com.openmobilehub.android.auth:plugin-facebook:2.0.0-beta")
-        implementation("com.openmobilehub.android.auth:plugin-microsoft:2.0.0-beta")
-        implementation("com.openmobilehub.android.auth:plugin-dropbox:2.0.0-beta")
+        implementation(Libs.omhGoogleGms)
+        implementation(Libs.omhGoogleNonGms)
+        implementation(Libs.omhFacebook)
+        implementation(Libs.omhMicrosoft)
+        implementation(Libs.omhDropbox)
     }
 }
 

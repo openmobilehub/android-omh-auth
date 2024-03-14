@@ -9,10 +9,10 @@ android {
 val useLocalProjects = project.rootProject.extra["useLocalProjects"] as Boolean
 
 dependencies {
-    if(useLocalProjects) {
+    if (useLocalProjects) {
         api(project(":packages:core"))
     } else {
-        api("com.openmobilehub.android.auth:core:2.0.0-beta")
+        api(Libs.omhAuthCore)
     }
 
     // KTX

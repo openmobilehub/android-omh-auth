@@ -26,7 +26,13 @@ project.extra.set("useMavenLocal", useMavenLocal)
 plugins {
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin") version "2.0.1" apply false
+    id("com.github.hierynomus.license") version "0.16.1"
     id("org.jetbrains.dokka")
+}
+
+downloadLicenses {
+    includeProjectDependencies = true
+    dependencyConfiguration = "debugRuntimeClasspath"
 }
 
 subprojects {
@@ -83,6 +89,28 @@ tasks.register("installPreCommitHook", Copy::class) {
     fileMode = 0b000_111_111_111
 }
 
+tasks.register("publishCoreToMavenLocal") {
+    dependsOn(
+        ":packages:core:assembleRelease",
+        ":packages:core:publishToMavenLocal",
+    )
+}
+
+tasks.register("publishPluginsToMavenLocal") {
+    dependsOn(
+        ":packages:plugin-google-gms:assembleRelease",
+        ":packages:plugin-google-gms:publishToMavenLocal",
+        ":packages:plugin-google-non-gms:assembleRelease",
+        ":packages:plugin-google-non-gms:publishToMavenLocal",
+        ":packages:plugin-facebook:assembleRelease",
+        ":packages:plugin-facebook:publishToMavenLocal",
+        ":packages:plugin-microsoft:assembleRelease",
+        ":packages:plugin-microsoft:publishToMavenLocal",
+        ":packages:plugin-dropbox:assembleRelease",
+        ":packages:plugin-dropbox:publishToMavenLocal",
+    )
+}
+
 tasks {
     val installPrePushHook by existing
     val installPreCommitHook by existing
@@ -90,23 +118,25 @@ tasks {
     getByName("prepareKotlinBuildScriptModel").dependsOn(installPreCommitHook)
 }
 
-val ossrhUsername by extra(getValueFromEnvOrProperties("OSSRH_USERNAME"))
-val ossrhPassword by extra(getValueFromEnvOrProperties("OSSRH_PASSWORD"))
-val mStagingProfileId by extra(getValueFromEnvOrProperties("SONATYPE_STAGING_PROFILE_ID"))
-val signingKeyId by extra(getValueFromEnvOrProperties("SIGNING_KEY_ID"))
-val signingPassword by extra(getValueFromEnvOrProperties("SIGNING_PASSWORD"))
-val signingKey by extra(getValueFromEnvOrProperties("SIGNING_KEY"))
+if (!useMavenLocal) {
+    val ossrhUsername by extra(getValueFromEnvOrProperties("OSSRH_USERNAME"))
+    val ossrhPassword by extra(getValueFromEnvOrProperties("OSSRH_PASSWORD"))
+    val mStagingProfileId by extra(getValueFromEnvOrProperties("SONATYPE_STAGING_PROFILE_ID"))
+    val signingKeyId by extra(getValueFromEnvOrProperties("SIGNING_KEY_ID"))
+    val signingPassword by extra(getValueFromEnvOrProperties("SIGNING_PASSWORD"))
+    val signingKey by extra(getValueFromEnvOrProperties("SIGNING_KEY"))
 
-// Set up Sonatype repository
-nexusPublishing {
-    repositories {
-        sonatype {
-            stagingProfileId.set(mStagingProfileId.toString())
-            username.set(ossrhUsername.toString())
-            password.set(ossrhPassword.toString())
-            // Add these lines if using new Sonatype infra
-            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+    // Set up Sonatype repository
+    nexusPublishing {
+        repositories {
+            sonatype {
+                stagingProfileId.set(mStagingProfileId.toString())
+                username.set(ossrhUsername.toString())
+                password.set(ossrhPassword.toString())
+                // Add these lines if using new Sonatype infra
+                nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+                snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+            }
         }
     }
 }

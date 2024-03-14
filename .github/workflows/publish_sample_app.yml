@@ -4,10 +4,10 @@ on:
   workflow_call:
     inputs:
       input-cache-prefix:
-        description: 'Input cache prefix'
+        description: "Input cache prefix"
         type: string
         required: false
-        default: ''
+        default: ""
 
 jobs:
   build_and_publish:
@@ -16,35 +16,27 @@ jobs:
 
     env:
       SAMPLE_APP_PATH: "./apps/auth-sample"
-      GRADLE_ASSEMBLE_TASK: ":apps:auth-sample:assembleReleaseSingleBuild"
-      APK_PATH: "./apps/auth-sample/build/outputs/apk/releaseSingleBuild/auth-sample-releaseSingleBuild.apk"
+      GRADLE_ASSEMBLE_TASK: ":apps:auth-sample:assembleRelease"
+      APK_PATH: "./apps/auth-sample/build/outputs/apk/release/auth-sample-release.apk"
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: set up JDK 11
-        uses: actions/setup-java@v3
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
         with:
-          java-version: 11
-          distribution: adopt
-          cache: gradle
+          cache-read-only: false
 
       - name: Restore Cache MavenLocal
         if: ${{ inputs.input-cache-prefix != '' }}
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.m2/repository
           key: ${{ inputs.input-cache-prefix }}-${{ github.run_id }}
 
-      - name: Update local properties for secrets
-        run: |
-          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> ./local.properties &&
-          echo FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID }} >> ./local.properties &&
-          echo FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN }} >> ./local.properties &&
-          echo MICROSOFT_CLIENT_ID=${{ secrets.MICROSOFT_CLIENT_ID }} >> ./local.properties &&
-          echo MICROSOFT_SIGNATURE_HASH=${{ secrets.MICROSOFT_SIGNATURE_HASH }} >> ./local.properties &&
-          echo DROPBOX_APP_KEY=${{ secrets.DROPBOX_APP_KEY }} >> ./local.properties
+      - name: Setup secrets
+        run: bash ./.github/scripts/setup_secrets.sh "${{ secrets.GOOGLE_CLIENT_ID}}" "${{ secrets.FACEBOOK_APP_ID }}" "${{ secrets.FACEBOOK_CLIENT_TOKEN }}" "${{ secrets.MICROSOFT_CLIENT_ID }}" "${{ secrets.MICROSOFT_SIGNATURE_HASH }}" "${{ secrets.DROPBOX_APP_KEY }}"
 
       - name: Set useMavenLocal flag
         run: echo useMavenLocal=true >> local.properties
@@ -65,7 +57,7 @@ jobs:
           SAMPLE_APP_KEYSTORE_STORE_PASSWORD: ${{ secrets.SAMPLE_APP_KEYSTORE_STORE_PASSWORD }}
           SAMPLE_APP_KEYSTORE_KEY_ALIAS: ${{ secrets.SAMPLE_APP_KEYSTORE_KEY_ALIAS }}
           SAMPLE_APP_KEYSTORE_KEY_PASSWORD: ${{ secrets.SAMPLE_APP_KEYSTORE_KEY_PASSWORD }}
-        
+
         # Publishes the app to App Center
       - name: Publish app to App Center
         uses: wzieba/AppCenter-Github-Action@v1
@@ -76,3 +68,4 @@ jobs:
           file: ${{ env.APK_PATH }}
           notifyTesters: true
           debug: true
+          gitReleaseNotes: true
