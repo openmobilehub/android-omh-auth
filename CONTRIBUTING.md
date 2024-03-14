@@ -105,7 +105,7 @@ Readme files belonging to subprojects are included in API documentation auto-gen
 
 You can find more information in the advanced sections of each package:
 
-- [core](/packages/core/docs/advanced/Readme.md)
+- [core](/packages/core/docs/Readme.md)
 
 Generally, all files that are placed inside `packages/<name>/docs/` are included in the custom markdown documentation and is collected by custom Gradle task `copyMarkdownDocs`.
 

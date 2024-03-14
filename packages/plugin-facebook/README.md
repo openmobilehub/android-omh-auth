@@ -62,7 +62,7 @@ Create strings for your Facebook app ID and for those needed to enable Chrome Cu
 
 2 Add string elements with the names `facebook_app_id`, `fb_login_protocol_scheme` and `facebook_client_token`, and set the values to your **App ID** and **Client Token**. For example, if your app ID is 1234 and your client token is 56789 your code looks like the following:
 
-```XML
+```xml
 <string name="facebook_app_id">1234</string>
 <string name="fb_login_protocol_scheme">fb1234</string>
 <string name="facebook_client_token">56789</string>
@@ -72,7 +72,7 @@ Create strings for your Facebook app ID and for those needed to enable Chrome Cu
 
 4. Add meta-data elements to the application element for your app ID and client token:
 
-```XML
+```xml
    <application android:label="@string/app_name" ...>
      ...
      <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
@@ -83,7 +83,7 @@ Create strings for your Facebook app ID and for those needed to enable Chrome Cu
 
 5. Add an activity for Facebook, and an activity and intent filter for Chrome Custom Tabs inside your application element:
 
-```XML
+```xml
 <activity android:name="com.facebook.FacebookActivity"
     android:configChanges=
         "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -103,13 +103,13 @@ Create strings for your Facebook app ID and for those needed to enable Chrome Cu
 
 6. Add a uses-permission element to the manifest after the application element:
 
-```XML
+```xml
 <uses-permission android:name="android.permission.INTERNET"/>
 ```
 
 7. (Optional) To opt out of the Advertising ID Permission, add a uses-permission element to the manifest after the application element:
 
-```XML
+```xml
 <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
 ```
 
