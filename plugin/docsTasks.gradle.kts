@@ -9,14 +9,14 @@ val docsOutputDir = rootProject.file("docs")
 val dokkaDocsOutputDir = File(docsOutputDir, "generated")
 val markdownDocsOutputDirBase = File(docsOutputDir, "markdown")
 
-fun discoverImagesInProject(project: Project): List<File> {
+fun discoverImagesInProject(project: Project): List<File>? {
     return file("${project.projectDir}/images")
         .takeIf {
             // walk all directories & ensure we are not looping a child of the output directory
             it.exists() && it.isDirectory && !it.canonicalPath.startsWith(docsOutputDir.canonicalPath)
         }
         ?.walk()
-        ?.filter { it.isFile }!!.toList()
+        ?.filter { it.isFile }?.toList()
 }
 
 val copyMarkdownDocsTask = tasks.register("copyMarkdownDocs") {
