@@ -37,14 +37,8 @@ jobs:
           path: ~/.m2/repository
           key: ${{ inputs.input-cache-prefix }}-${{ github.run_id }}
 
-      - name: Update local properties for secrets
-        run: |
-          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> ./local.properties &&
-          echo FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID }} >> ./local.properties &&
-          echo FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN }} >> ./local.properties &&
-          echo MICROSOFT_CLIENT_ID=${{ secrets.MICROSOFT_CLIENT_ID }} >> ./local.properties &&
-          echo MICROSOFT_SIGNATURE_HASH=${{ secrets.MICROSOFT_SIGNATURE_HASH }} >> ./local.properties &&
-          echo DROPBOX_APP_KEY=${{ secrets.DROPBOX_APP_KEY }} >> ./local.properties
+      - name: Setup secrets
+        run: bash ./.github/scripts/setup_secrets.sh "${{ secrets.GOOGLE_CLIENT_ID}}" "${{ secrets.FACEBOOK_APP_ID }}" "${{ secrets.FACEBOOK_CLIENT_TOKEN }}" "${{ secrets.MICROSOFT_CLIENT_ID }}" "${{ secrets.MICROSOFT_SIGNATURE_HASH }}" "${{ secrets.DROPBOX_APP_KEY }}"
 
       - name: Set useMavenLocal flag
         run: echo useMavenLocal=true >> local.properties
