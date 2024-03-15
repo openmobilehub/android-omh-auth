@@ -93,7 +93,7 @@ loginLauncher.launch(loginIntent)
 
 To logout using the Android OMH Auth SDK the client provides the `omhAuthClient.signOut()` function.
 This returns an OMH Task which represents an async functionality. If you wish to read more about
-this interface, you can do so [here](OMH-Task.md). Take into account that this
+this interface, you can do so [here](./OMH-Task.md). Take into account that this
 functionality only clears the local user data stored in the application but doesn't revoke the
 tokens emitted. Here's a snippet on how you could use the sign out functionality:
 
@@ -161,4 +161,4 @@ omhAuthClient.getUser()
 # Working with the credentials
 
 If you wish to obtain the given credentials you can use the function `getCredentials()`. You can
-read more about it [here](OMH-Credentials.md)
+read more about it [here](./OMH-Credentials.md)

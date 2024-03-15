@@ -76,7 +76,7 @@ The only function you have to implement here is:
 fun getCredentials(): OmhCredentials
 ```
 
-More information about OmhCredentials can be found [here](OMH-Credentials.md)
+More information about OmhCredentials can be found [here](./OMH-Credentials.md)
 
 ## Implementing the OMH Auth Factory
 
