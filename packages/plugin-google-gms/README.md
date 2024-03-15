@@ -1,4 +1,4 @@
-# Google GMS plugin
+# Module plugin-google-gms
 
 ## Set up your Google Cloud project for applications with Google Services (Google Auth)
 

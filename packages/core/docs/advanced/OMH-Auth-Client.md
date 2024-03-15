@@ -1,3 +1,9 @@
+---
+title: OMH Auth Client
+layout: default
+parent: Advanced features
+---
+
 The Android OMH Auth Client acts as the facade of the library serving as the only interface that
 you'll ever interact with. It provides you with a host of functionalities that range from logging in
 to logging out.
@@ -87,7 +93,7 @@ loginLauncher.launch(loginIntent)
 
 To logout using the Android OMH Auth SDK the client provides the `omhAuthClient.signOut()` function.
 This returns an OMH Task which represents an async functionality. If you wish to read more about
-this interface, you can do so [here](/docs/advanced/OMH-Task.md). Take into account that this
+this interface, you can do so [here](OMH-Task.md). Take into account that this
 functionality only clears the local user data stored in the application but doesn't revoke the
 tokens emitted. Here's a snippet on how you could use the sign out functionality:
 
@@ -120,7 +126,9 @@ val cancellable = omhAuthClient.revokeToken()
 cancellableCollector.addCancellable(cancellable)
 ```
 
-> Some providers like in the case of Microsoft, doesn't provide a way to revoke the authentication token. For this reason, the default behavior for Microsoft when revoking a token is to sign out the user. This is identical to calling the `omhAuthClient.signOut()` function.
+> Some providers like in the case of Microsoft, doesn't provide a way to revoke the authentication
+> token. For this reason, the default behavior for Microsoft when revoking a token is to sign out the
+> user. This is identical to calling the `omhAuthClient.signOut()` function.
 
 # Obtaining the user's profile
 
@@ -153,4 +161,4 @@ omhAuthClient.getUser()
 # Working with the credentials
 
 If you wish to obtain the given credentials you can use the function `getCredentials()`. You can
-read more about it [here](/docs/advanced/OMH-Credentials.md)
+read more about it [here](OMH-Credentials.md)

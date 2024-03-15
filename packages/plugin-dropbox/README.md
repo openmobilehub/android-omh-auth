@@ -1,4 +1,4 @@
-# Dropbox plugin
+# Module plugin-dropbox
 
 ## Set up your Dropbox application
 
@@ -17,7 +17,7 @@ Create strings for your Dropbox App Key. Also, add `AuthActivity` to your Androi
 2. Add a new string element with the name **db_login_protocol_scheme** and set the value to your App
    ID. For example, if your app ID is 1234, your code looks like the following:
 
-```XML
+```xml
 
 <string name="db_login_protocol_scheme">db-1234</string>
 ```
@@ -26,7 +26,7 @@ Create strings for your Dropbox App Key. Also, add `AuthActivity` to your Androi
 
 4. Configure an intent filter in the Android Manifest, using your redirect URI:
 
-```XML
+```xml
 
 <activity android:name="com.dropbox.core.android.AuthActivity"
     android:configChanges="orientation|keyboard" android:exported="true"
@@ -50,7 +50,7 @@ Create strings for your Dropbox App Key. Also, add `AuthActivity` to your Androi
 
 5. Add Dropbox package to queries:
 
-```XML
+```xml
 
 <queries>
     <package android:name="com.dropbox.android" />

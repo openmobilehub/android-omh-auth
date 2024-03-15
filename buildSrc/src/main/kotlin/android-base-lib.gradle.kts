@@ -23,7 +23,6 @@ plugins {
     id("jacoco")
     id("maven-publish")
     id("signing").apply(false)
-    id("org.jetbrains.dokka")
 }
 
 if (!useMavenLocal) {

@@ -5,9 +5,6 @@ pluginManagement {
         gradlePluginPortal()
         mavenLocal()
     }
-    plugins {
-        id("org.jetbrains.dokka") version "1.9.10"
-    }
 }
 
 dependencyResolutionManagement {

@@ -1,4 +1,4 @@
-# Microsoft plugin
+# Module plugin-microsoft
 
 ## Set up your Microsoft application
 
@@ -59,7 +59,7 @@ To access Microsoft APIs, generate a unique **Client ID** and **Keystore Hash** 
 
 1. Configure an intent filter in the Android Manifest, using your redirect URI:
 
-```XML
+```xml
 <activity
   android:name="com.microsoft.identity.client.BrowserTabActivity"
   android:exported="true">
@@ -79,7 +79,7 @@ To access Microsoft APIs, generate a unique **Client ID** and **Keystore Hash** 
 
 2. Add a uses-permission element to the manifest after the application element:
 
-```XML
+```xml
 <uses-permission android:name="android.permission.INTERNET"/>
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 ```

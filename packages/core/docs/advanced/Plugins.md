@@ -1,3 +1,9 @@
+---
+title: Plugins
+layout: default
+parent: Advanced features
+---
+
 For creating a custom implementation of our Android OMH Auth interfaces you'll need to get our
 Android OMH Auth Core dependency:
 
@@ -13,7 +19,7 @@ step by step guide on how to do it.
 ## Implementing the OMH Auth Client
 
 As explained in
-the [OMH Auth Client page](/docs/advanced/OMH-Auth-Client.md#obtaining-the-users-profile), this will
+the [OMH Auth Client page](OMH-Auth-Client.md#obtaining-the-users-profile), this will
 be the main interactor for the library. You will need to provide an implementation for each of the
 functionalities so that the developers can interact with the Auth provider you'll be implementing.
 
@@ -70,7 +76,7 @@ The only function you have to implement here is:
 fun getCredentials(): OmhCredentials
 ```
 
-More information about OmhCredentials can be found [here](/docs/advanced/OMH-Credentials.md)
+More information about OmhCredentials can be found [here](OMH-Credentials.md)
 
 ## Implementing the OMH Auth Factory
 
@@ -105,7 +111,7 @@ The `accessToken` variable should return the stored token received in the login 
 
 This is an abstraction for the async layer of your library. The idea is to avoid forcing the user to
 use a specific async library and give the more flexibility with your OMH Auth implementation. You
-can read more about it [here](/docs/advanced/OMH-Task.md). Here the only function you need to
+can read more about it [here](OMH-Task.md). Here the only function you need to
 implement is:
 
 ```kotlin
@@ -148,5 +154,5 @@ Just don't forget to add your custom implementation as a dependency to the proje
 # Resources
 
 You can always look into our own implementations of the Android OMH Auth
-Core ([GMS](/packages/plugin-google-gms) and [non GMS](/packages/plugin-google-non-gms)) as a
+Core ([GMS](/packages/plugin-google-gms/) and [non GMS](/packages/plugin-google-non-gms/)) as a
 reference to help you develop your own implementation.
