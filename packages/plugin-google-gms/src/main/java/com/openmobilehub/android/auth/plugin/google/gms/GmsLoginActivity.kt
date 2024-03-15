@@ -11,9 +11,9 @@ import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.core.utils.OmhAuthUtils
 import com.openmobilehub.android.auth.plugin.google.gms.util.toOmhLoginException
 
-const val GMS_REQUEST_CODE = 0
+private const val GMS_REQUEST_CODE = 0
 
-class GmsLoginActivity : Activity() {
+internal class GmsLoginActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
