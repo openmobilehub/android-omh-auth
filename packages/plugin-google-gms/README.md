@@ -49,7 +49,7 @@ Save the file and [sync your project with Gradle](https://developer.android.com/
 
 ### Using the Android OMH Core plugin
 
-Please see the advanced documentation on how to use the [Android OMH Core](/docs/advanced/OMH-Core.md) Plugin.
+Please see the advanced documentation on how to use the [Android OMH Core](/packages/core/docs/advanced/Plugins.md) Plugin.
 
 ## Provide the Google OMH Auth Client
 

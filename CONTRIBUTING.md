@@ -91,7 +91,7 @@ This project has documentation in a few places:
 
 A friendly `README.md` files written for many audiences:
 
-- [root project](README.md)
+- [root project](/README.md)
 - [core](packages/core/README.md)
 - [plugin-google-gms](packages/plugin-google-gms/README.md)
 - [plugin-google-non-gms](packages/plugin-google-gms/README.md)
@@ -105,7 +105,7 @@ Readme files belonging to subprojects are included in API documentation auto-gen
 
 You can find more information in the advanced sections of each package:
 
-- [core](/packages/core/docs/Readme.md)
+- [core](/packages/core/README.md)
 
 Generally, all files that are placed inside `packages/<name>/docs/` are included in the custom markdown documentation and is collected by custom Gradle task `copyMarkdownDocs`.
 

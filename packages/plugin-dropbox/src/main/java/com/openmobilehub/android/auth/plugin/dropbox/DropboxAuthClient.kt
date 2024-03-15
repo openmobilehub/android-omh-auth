@@ -3,7 +3,6 @@ package com.openmobilehub.android.auth.plugin.dropbox
 import android.content.Context
 import android.content.Intent
 import com.openmobilehub.android.auth.core.OmhAuthClient
-import com.openmobilehub.android.auth.core.OmhCredentials
 import com.openmobilehub.android.auth.core.async.OmhTask
 import com.openmobilehub.android.auth.core.models.OmhUserProfile
 
@@ -46,7 +45,7 @@ class DropboxAuthClient(
         )
     }
 
-    override fun getCredentials(): OmhCredentials {
+    override fun getCredentials(): DropboxCredentials {
         return DropboxCredentials(dropboxRepository)
     }
 
