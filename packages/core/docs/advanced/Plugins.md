@@ -76,7 +76,7 @@ The only function you have to implement here is:
 fun getCredentials(): OmhCredentials
 ```
 
-More information about OmhCredentials can be found [here](OMH-Credentials.md)
+More information about OmhCredentials can be found [here](./OMH-Credentials.md)
 
 ## Implementing the OMH Auth Factory
 
@@ -111,7 +111,7 @@ The `accessToken` variable should return the stored token received in the login 
 
 This is an abstraction for the async layer of your library. The idea is to avoid forcing the user to
 use a specific async library and give the more flexibility with your OMH Auth implementation. You
-can read more about it [here](OMH-Task.md). Here the only function you need to
+can read more about it [here](./OMH-Task.md). Here the only function you need to
 implement is:
 
 ```kotlin

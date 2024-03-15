@@ -83,13 +83,13 @@ You can verify your code with the following tasks:
 ./gradlew detekt
 ```
 
-## Write documentation
+## Writing documentation
 
 This project has documentation in a few places:
 
 ### Introduction and usage
 
-A friendly `README.md` files written for many audiences:
+Friendly `README.md` files written for many audiences:
 
 - [root project](/README.md)
 - [core](packages/core/README.md)
@@ -107,11 +107,7 @@ You can find more information in the advanced sections of each package:
 
 - [core](/packages/core/README.md)
 
-Generally, all files that are placed inside `packages/<name>/docs/` are included in the custom markdown documentation and is collected by custom Gradle task `copyMarkdownDocs`.
-
-## Build documentation locally
-
-To build the documentation locally, you can use the `buildDocs` task, which in turn runs `dokkaHtmlMultiModule` and `copyMarkdownDocs` tasks.
+Generally, all files that are placed inside `packages/<name>/docs/` are included in the markdown advanced documentation and are collected by custom Gradle task `copyMarkdownDocs`.
 
 ## Releasing a new version
 
@@ -122,27 +118,44 @@ To build the documentation locally, you can use the `buildDocs` task, which in t
 5. Push the version bump commit: `git push`
 6. Push the Git tag: `git push --tags`
 
+## Building documentation locally
+
+To build the documentation locally, you can use the `buildDocs` task, which in turn runs the following tasks:
+
+- `dokkaHtmlMultiModule` - generates HTML API documentation for all modules, outputs are written to `/docs/generated/`
+- `copyMarkdownDocs` - copies and sanitizes markdown files to be processed by Jekyll to `/docs/markdown/`, into directories named `_<subproject_directory_name>`
+
+To locally view the generated HTML documentation, serve the directory `/docs/generated/` locally with a server of choice (e.g. `python3 -m http.server`).
+
+To locally serve the markdown advanced documentation, it is required to have Ruby >= 3 installed. To run a local Jekyll server leveraging filesystem watching & live reloading, execute in `/docs/markdown` the command `bundle exec jekyll serve`. _Note:_ it is still required that each time you make any changes to the documentation in any of the packages, you run the `copyMarkdownDocs` Gradle task. Otherwise, Jekyll will not be provided the copied markdown files and will not process their new versions.
+
 ## Documenting a new module
 
 Provided a new module is introduced to the project, the documentation needs to be configured to include it in auto-generation of HTML documentation.
-
-The following rules for writing markdown files apply:
-
-- Images can be included as usual, however they are required to be present in module-level `images/` directory to be picked up by Gradle scripts & copied to the correct location in the generated HTML documentation.
-
-- All links to local files need to be relative.
 
 ### API documentation and module-level `README.md`
 
 Each module's (except for `apps/auth-sample`) root `README.md` file will be included by default in Dokka documentation generation automatically and used in its listing page.
 
-The root `README.md` files for all projects have to comply with [Dokka file format rules](https://kotlinlang.org/docs/dokka-module-and-package-docs.html#file-format). In case of the OMH project, usually this means that you have to ensure that the first line of a project's top-level readme file is `# Module <project-directory-name>`, e.g. for `packages/plugin-google-gms/README.md` the first line should be: `# Module plugin-google-gms`.
+The following rules for writing module-level markdown files apply:
 
-### Custom documentation
+- Images can be included as usual, however they are required to be present in module-level `images/` directory to be picked up by Gradle scripts & copied to the correct location in the generated HTML documentation.
+- All links to advanced markdown documentation need to be absolute, i.e. point to the full URL under which they are served.
+- The root `README.md` files for all projects have to comply with [Dokka file format rules](https://kotlinlang.org/docs/dokka-module-and-package-docs.html#file-format). In case of the OMH project, usually this means that you have to ensure that the first line of a project's top-level readme file is `# Module <project-directory-name>`, e.g. for `packages/plugin-google-gms/README.md` the first line should be: `# Module plugin-google-gms`.
+
+### Markdown advanced documentation
+
+For markdown advanced documentation, the following rules apply to all files:
+
+- Images can be included as usual, however they are required to be present in module-level `images/` directory to be picked up by Gradle scripts & copied to the correct location in the generated HTML documentation.
+- Relative links to top-level `README.md` files of other modules (e.g. MD files in `packages/googlemaps/...` to reference `packages/plugin-core/README.md`) are not supported - use absolute (`/packages/...`) paths instead
+- Other links to local files can be project-absolute (beginning with `/packages/`) or relative.
+
+Additionally, rules for specific files are presented below.
 
 #### `README.md`
 
-Each module's (except for `apps/auth-sample`) root `README.md` file will NOT be included by default in custom documentation generation automatically, but will be copied as `_README_ORIGINAL.md` to the documentation build directory. This is so as not to force the inclusion of the [front matter](https://jekyllrb.com/docs/front-matter/) in GitHub display of this file and in API docs generated by Dokka. To include such a README in the module's API docs listing page, please create the following file in module-level `docs/` directory:
+Each module's (except for `apps/auth-sample`) root `README.md` file will NOT be included by default in advanced documentation generation automatically, but will be copied as `_README_ORIGINAL.md` to the documentation build directory. This is so as not to force the inclusion of the [front matter](https://jekyllrb.com/docs/front-matter/) in GitHub display of this file and in API docs generated by Dokka. To include such a README in the module's API docs listing page, please create the following file in module-level `docs/` directory:
 
 ```markdown
 ---
@@ -159,7 +172,7 @@ This file is a placeholder README that specifies the [front matter](https://jeky
 
 #### Other files
 
-To include a new module's custom markdown docs residing in its module-level `docs/` directory, in automatic generation of HTML documentation, Jekyll (static website generator) [configuration in `docs/markdown/_config.yml`](/docs/markdown/_config.yml) needs to be updated. Assuming the new module is located in `packages/<<PLUGIN_NAME>>`, it is required to perform the following steps:
+To include a new module's markdown advanced documentation residing in its module-level `docs/` directory, in automatic generation of HTML documentation, Jekyll (static website generator) [configuration in `docs/markdown/_config.yml`](docs/markdown/_config.yml) needs to be updated. Assuming the new module is located in `packages/<<PLUGIN_NAME>>`, it is required to perform the following steps:
 
 1. Add a new collection for the module to `collections`
 
