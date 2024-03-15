@@ -154,5 +154,5 @@ Just don't forget to add your custom implementation as a dependency to the proje
 # Resources
 
 You can always look into our own implementations of the Android OMH Auth
-Core ([GMS](/packages/plugin-google-gms/) and [non GMS](/packages/plugin-google-non-gms/)) as a
+Core ([GMS](https://github.com/openmobilehub/android-omh-auth/tree/main/packages/plugin-google-gms) and [non GMS](https://github.com/openmobilehub/android-omh-auth/tree/main/packages/plugin-google-non-gms)) as a
 reference to help you develop your own implementation.
