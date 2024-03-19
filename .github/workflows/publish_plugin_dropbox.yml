@@ -1,0 +1,12 @@
+name: Publish Dropbox Plugin
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Publish Dropbox Plugin
+    uses: ./.github/workflows/build_and_publish_to_maven_remotely.yml
+    with:
+      package-name: :packages:plugin-dropbox
+    secrets: inherit
