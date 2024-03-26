@@ -39,6 +39,11 @@ buildscript {
     }
 }
 
+downloadLicenses {
+    includeProjectDependencies = true
+    dependencyConfiguration = "debugRuntimeClasspath"
+}
+
 subprojects {
     apply(plugin = "org.jetbrains.dokka")
 
