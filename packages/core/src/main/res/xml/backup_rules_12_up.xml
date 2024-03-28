@@ -7,6 +7,9 @@
         <exclude
             domain="sharedpref"
             path="omh_storage_microsoft.xml" />
+        <exclude
+            domain="sharedpref"
+            path="omh_storage_dropbox.xml" />
     </cloud-backup>
     <device-transfer>
         <exclude
@@ -15,5 +18,8 @@
         <exclude
             domain="sharedpref"
             path="omh_storage_microsoft.xml" />
+        <exclude
+            domain="sharedpref"
+            path="omh_storage_dropbox.xml" />
     </device-transfer>
 </data-extraction-rules>

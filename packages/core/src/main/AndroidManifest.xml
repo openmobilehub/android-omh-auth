@@ -16,6 +16,9 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!--
+        Make sure to add backup rules for providers that use EncryptedSharedPrefs: https://issuetracker.google.com/issues/164901843
+    -->
     <application
         android:dataExtractionRules="@xml/backup_rules_12_up"
         android:fullBackupContent="@xml/backup_rules_11_down" />
