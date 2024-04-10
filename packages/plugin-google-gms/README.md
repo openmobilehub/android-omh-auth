@@ -2,7 +2,8 @@
 
 ## Set up your Google Cloud project for applications with Google Services (Google Auth)
 
-To access Google APIs, generate a unique client_id for your app in the Google API Console. Add the client_id to your app's code and complete the required Cloud Console setup steps:
+To access Google APIs, generate a unique client_id for your app in the Google API Console. Add the
+client_id to your app's code and complete the required Cloud Console setup steps:
 
 ### Steps
 
@@ -25,7 +26,9 @@ To access Google APIs, generate a unique client_id for your app in the Google AP
 ## Add the Client ID to your app
 
 You should not check your Client ID into your version control system, so it is recommended
-storing it in the `local.properties` file, which is located in the root directory of your project. For more information about the `local.properties` file, see [Gradle properties](https://developer.android.com/studio/build#properties-files) [files](https://developer.android.com/studio/build#properties-files).
+storing it in the `local.properties` file, which is located in the root directory of your project.
+For more information about the `local.properties` file,
+see [Gradle properties](https://developer.android.com/studio/build#properties-files) [files](https://developer.android.com/studio/build#properties-files).
 
 1. Open the `local.properties` in your project level directory, and then add the following code.
    Replace `YOUR_GOOGLE_CLIENT_ID` with your API key. `GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID`
@@ -34,26 +37,32 @@ storing it in the `local.properties` file, which is located in the root director
 
 ## Gradle configuration
 
-To incorporate the Google GMS and non-GMS plugin into your project, you have two options: directly include the Android OMH Client libraries dependencies or utilize the Android OMH Core Plugin.
+To incorporate the Google GMS and non-GMS plugin into your project, you have two options: directly
+include the Android OMH Client libraries dependencies or utilize the Android OMH Core Plugin.
 
 ### Directly including the Google GMS and non-GMS dependencies
 
-If you want to incorporate Google plugin into your project without using the Android OMH Core plugin, you have to directly include the Google GMS and non-GMS plugins as a dependency. In the `build.gradle.kts`, add the following implementation statement to the `dependencies{}` section:
+If you want to incorporate Google plugin into your project without using the Android OMH Core
+plugin, you have to directly include the Google GMS and non-GMS plugins as a dependency. In
+the `build.gradle.kts`, add the following implementation statement to the `dependencies{}` section:
 
 ```groovy
-implementation("com.openmobilehub.android.auth:plugin-google-gms:2.0.0-beta")
-implementation("com.openmobilehub.android.auth:plugin-google-non-gms:2.0.0-beta")
+implementation("com.openmobilehub.android.auth:plugin-google-gms:2.0.0-SNAPSHOT")
+implementation("com.openmobilehub.android.auth:plugin-google-non-gms:2.0.0-SNAPSHOT")
 ```
 
-Save the file and [sync your project with Gradle](https://developer.android.com/studio/build#sync-files).
+Save the file
+and [sync your project with Gradle](https://developer.android.com/studio/build#sync-files).
 
 ### Using the Android OMH Core plugin
 
-Please see the advanced documentation on how to use the [Android OMH Core](/packages/core/docs/advanced/Plugins.md) Plugin.
+Please see the advanced documentation on how to use
+the [Android OMH Core](/packages/core/docs/advanced/Plugins.md) Plugin.
 
 ## Provide the Google OMH Auth Client
 
-In the `SingletonModule.kt` file in the `:auth-starter-sample` module add the following function to provide the Google OMH Auth Client:
+In the `SingletonModule.kt` file in the `:auth-starter-sample` module add the following function to
+provide the Google OMH Auth Client:
 
 ```kotlin
 @Provides

@@ -31,24 +31,24 @@ omhConfig {
    bundle("singleBuild") {
       auth {
          gmsService {
-            dependency = "com.openmobilehub.android.auth:plugin-google-gms:2.0.0-beta"
+            dependency = "com.openmobilehub.android.auth:plugin-google-gms:2.0.0-SNAPSHOT"
          }
          nonGmsService {
-            dependency = "com.openmobilehub.android.auth:plugin-google-non-gms:2.0.0-beta"
+            dependency = "com.openmobilehub.android.auth:plugin-google-non-gms:2.0.0-SNAPSHOT"
          }
       }
    }
    bundle("gms") {
       auth {
          gmsService {
-            dependency = "com.openmobilehub.android.auth:plugin-google-gms:2.0.0-beta"
+            dependency = "com.openmobilehub.android.auth:plugin-google-gms:2.0.0-SNAPSHOT"
          }
       }
    }
    bundle("nongms") {
       auth {
          nonGmsService {
-            dependency = "com.openmobilehub.android.auth:plugin-google-non-gms:2.0.0-beta"
+            dependency = "com.openmobilehub.android.auth:plugin-google-non-gms:2.0.0-SNAPSHOT"
          }
       }
    }
@@ -77,8 +77,8 @@ variants will be generated:
     - Define the `Service`. In this example is auth.
     - Define the `ServiceDetails`. In this example are `gmsService` and `nonGmsService`.
     - Define the dependency and the path. In this example
-      are `com.openmobilehub.android.auth:plugin-google-gms:2.0.0-beta`
-      and `com.openmobilehub.android.auth:plugin-google-non-gms:2.0.0-beta`.
+      are `com.openmobilehub.android.auth:plugin-google-gms:2.0.0-SNAPSHOT`
+      and `com.openmobilehub.android.auth:plugin-google-non-gms:2.0.0-SNAPSHOT`.
 
 **Note:** It's important to observe how a single build encompasses both GMS (Google Mobile Services)
 and Non-GMS configurations.
@@ -106,11 +106,11 @@ and Non-GMS configurations.
    and `BuildConfig.AUTH_NON_GMS_PATH` variables.
 5. Now you can select a build variant. To change the build variant Android Studio uses, do one of
    the following:
-   - Select "Build" > "Select Build Variant..." in the menu.
-   - Select "View" > "Tool Windows" > "Build Variants" in the menu.
-   - Click the "Build Variants" tab on the tool window bar.
+    - Select "Build" > "Select Build Variant..." in the menu.
+    - Select "View" > "Tool Windows" > "Build Variants" in the menu.
+    - Click the "Build Variants" tab on the tool window bar.
 6. You can select any of the 3 variants for the `:auth-starter-sample`:
-   - "singleBuild" variant builds for GMS (Google Mobile Services) and Non-GMS devices without
-     changes to the code.(Recommended)
-   - "gms" variant builds for devices that has GMS (Google Mobile Services).
-   - "nongms" variant builds for devices that doesn't have GMS (Google Mobile Services).
+    - "singleBuild" variant builds for GMS (Google Mobile Services) and Non-GMS devices without
+      changes to the code.(Recommended)
+    - "gms" variant builds for devices that has GMS (Google Mobile Services).
+    - "nongms" variant builds for devices that doesn't have GMS (Google Mobile Services).
