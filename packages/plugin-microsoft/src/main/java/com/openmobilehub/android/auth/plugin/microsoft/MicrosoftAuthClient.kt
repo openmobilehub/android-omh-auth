@@ -78,7 +78,11 @@ class MicrosoftAuthClient(
                         )
                     )
                 } else {
-                    continuation.resumeWithException(Exception(response.message()))
+                    continuation.resumeWithException(
+                        Exception(
+                            response.errorBody()?.string()
+                        )
+                    )
                 }
             }
 
