@@ -157,7 +157,15 @@ class LoggedInFragment : Fragment() {
                 Toast.makeText(activity, "Logged Out", Toast.LENGTH_SHORT)
                     .show()
             }
-            .addOnFailure(::showErrorDialog)
+            .addOnFailure {
+                navigateToLogin()
+
+                lifecycleScope.launch(Dispatchers.IO) {
+                    LoginState(requireContext()).loggedOut()
+                }
+
+                showErrorDialog(it)
+            }
             .execute()
 
         cancellableCollector.addCancellable(cancellable)
