@@ -121,6 +121,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
+    implementation("androidx.activity:activity-ktx:1.8.2")
     implementation("com.squareup.picasso:picasso:2.8")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
