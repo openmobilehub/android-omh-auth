@@ -34,6 +34,7 @@ object OmhAuthStatusCodes {
     const val NOT_SUPPORTED = 13
 
     @JvmStatic
+    @Suppress("CyclomaticComplexMethod")
     fun getStatusCodeString(code: Int): String {
         return when (code) {
             SIGN_IN_CANCELED -> "Sign in action cancelled"

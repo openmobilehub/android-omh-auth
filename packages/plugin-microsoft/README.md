@@ -1,5 +1,9 @@
 # Module plugin-microsoft
 
+## Known limitations
+
+- Microsoft plugin doesn't support `revokeToken` method.
+
 ## Set up your Microsoft application
 
 To access Microsoft APIs, generate a unique **Client ID** and **Keystore Hash** for your app in the
