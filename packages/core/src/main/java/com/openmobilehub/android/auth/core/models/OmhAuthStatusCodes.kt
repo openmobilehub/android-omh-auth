@@ -31,8 +31,10 @@ object OmhAuthStatusCodes {
     const val NOT_INITIALIZED = 10
     const val PROVIDER_ERROR = 11
     const val CANCELED = 12
+    const val NOT_SUPPORTED = 13
 
     @JvmStatic
+    @Suppress("CyclomaticComplexMethod")
     fun getStatusCodeString(code: Int): String {
         return when (code) {
             SIGN_IN_CANCELED -> "Sign in action cancelled"
@@ -47,6 +49,7 @@ object OmhAuthStatusCodes {
             SIGN_IN_REQUIRED -> "Sign in required."
             PROVIDER_ERROR -> "Provider error."
             CANCELED -> "Cancelled."
+            NOT_SUPPORTED -> "Method not supported."
             else -> "Unknown status code: $code"
         }
     }
