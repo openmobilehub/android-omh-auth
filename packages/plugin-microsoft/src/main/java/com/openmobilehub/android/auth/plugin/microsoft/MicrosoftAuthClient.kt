@@ -50,7 +50,9 @@ class MicrosoftAuthClient(
     }
 
     override fun revokeToken(): OmhTask<Unit> {
-        return OmhTask(::signOutRequest)
+        return OmhTask({
+            throw OmhAuthException.NotSupportedException()
+        })
     }
 
     override fun signOut(): OmhTask<Unit> {

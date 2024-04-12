@@ -38,6 +38,8 @@ sealed class OmhAuthException(val statusCode: Int) : Exception() {
         override val cause: Throwable? = null
     ) : OmhAuthException(statusCode)
 
+    class NotSupportedException : OmhAuthException(OmhAuthStatusCodes.NOT_SUPPORTED)
+
     override val message: String?
         get() = OmhAuthStatusCodes.getStatusCodeString(statusCode)
 }
