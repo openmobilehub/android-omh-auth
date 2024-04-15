@@ -26,9 +26,9 @@ provider implementations.
 
 <div align="center">
 
-| Non-GMS </br> Pixel 6                                                                                     | GMS </br> Pixel 6                                                                                         |
-| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| <img src="https://github.com/openmobilehub/omh-auth/assets/1755383/6cd96f8d-c5dd-469f-b73b-f1a793597bcb"> | <img src="https://github.com/openmobilehub/omh-auth/assets/1755383/dcf3df18-ce91-45e7-8455-2eb64a814137"> |
+| GMS </br> Google Pixel 7                                                        | Non GMS </br> Huawei Mate P30                                                       |
+| ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| ![](https://github.com/openmobilehub/android-omh-auth/tree/main/assets/gms.gif) | ![](https://github.com/openmobilehub/android-omh-auth/tree/main/assets/non-gms.gif) |
 
 </div>
 
