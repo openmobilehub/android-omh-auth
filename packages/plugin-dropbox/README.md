@@ -2,8 +2,8 @@
 
 ## Set up your Dropbox application
 
-To access Dropbox APIs, generate a unique **App Key** for your app in the Dropbox Console. Add the *
-*App Key** to your app's code and complete the required Dropbox Console setup steps:
+To access Dropbox APIs, generate a unique **App Key** for your app in the Dropbox Console. Add the \*
+\*App Key\*\* to your app's code and complete the required Dropbox Console setup steps:
 
 1. [Go to the Dropbox Console](https://www.dropbox.com/developers/apps).
 2. Click on "Create app" to start creating a new Dropbox application.
@@ -78,7 +78,7 @@ a dependency. In the `build.gradle.kts`, add the following implementation statem
 the `dependencies{}` section:
 
 ```groovy
-implementation("com.openmobilehub.android.auth:plugin-dropbox:2.0.0-SNAPSHOT")
+implementation("com.openmobilehub.android.auth:plugin-dropbox:2.0.0")
 ```
 
 Save the file
