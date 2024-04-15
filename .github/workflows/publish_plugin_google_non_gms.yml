@@ -18,5 +18,4 @@ jobs:
     with:
       package-name: :packages:plugin-google-non-gms
       destination-repository: ${{ github.event.inputs.destination-repository }}
-      destination-repository: ${{ github.event.inputs.destination-repository }}
     secrets: inherit
