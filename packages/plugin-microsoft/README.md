@@ -37,8 +37,8 @@ the required Microsoft Azure setup steps:
 
    You will need the following:
 
-    - Key and Certificate Management Tool (keytool) from the Java Development Kit
-    - openssl-for-windows openssl library for Windows from the Google Code Archive
+   - Key and Certificate Management Tool (keytool) from the Java Development Kit
+   - openssl-for-windows openssl library for Windows from the Google Code Archive
 
    To generate a development key hash, run the following command in a command prompt in the Java SDK
    folder:
@@ -66,14 +66,14 @@ the required Microsoft Azure setup steps:
 
    ### Setting the Signature Hash
 
-    1. Once you generated the debug or the release key hash, add it under **Signature Hash** input
-       and save your changes.
+   1. Once you generated the debug or the release key hash, add it under **Signature Hash** input
+      and save your changes.
 
-    2. Next, click on **View** and copy the **MSAL Configuration** contents into a new file
-       under `/app/res/raw/ms_auth_config.json`.
+   2. Next, click on **View** and copy the **MSAL Configuration** contents into a new file
+      under `/app/res/raw/ms_auth_config.json`.
 
-    3. In the newly created JSON **MSAL Configuration**, add a new key: `account_mode` and set it's
-       value to: `"SINGLE"`.
+   3. In the newly created JSON **MSAL Configuration**, add a new key: `account_mode` and set it's
+      value to: `"SINGLE"`.
 
 ## Edit Your Resources and Manifest
 
@@ -114,7 +114,7 @@ as a dependency. In the `build.gradle.kts`, add the following implementation sta
 the `dependencies{}` section:
 
 ```groovy
-implementation("com.openmobilehub.android.auth:plugin-microsoft:2.0.0-SNAPSHOT")
+implementation("com.openmobilehub.android.auth:plugin-microsoft:2.0.0")
 ```
 
 Save the file

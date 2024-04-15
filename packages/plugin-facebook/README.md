@@ -35,8 +35,8 @@ Meta for Developers setup steps:
 
    You will need the following:
 
-    - Key and Certificate Management Tool (keytool) from the Java Development Kit
-    - openssl-for-windows openssl library for Windows from the Google Code Archive
+   - Key and Certificate Management Tool (keytool) from the Java Development Kit
+   - openssl-for-windows openssl library for Windows from the Google Code Archive
 
    To generate a development key hash, run the following command in a command prompt in the Java SDK
    folder:
@@ -148,7 +148,7 @@ as a dependency. In the `build.gradle.kts`, add the following implementation sta
 the `dependencies{}` section:
 
 ```groovy
-implementation("com.openmobilehub.android.auth:plugin-facebook:2.0.0-SNAPSHOT")
+implementation("com.openmobilehub.android.auth:plugin-facebook:2.0.0")
 ```
 
 Save the file

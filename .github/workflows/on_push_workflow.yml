@@ -5,7 +5,7 @@ name: Android CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 # GITHUB_TOKEN needs to be granted the permissions required to make a Pages deployment
 permissions:
@@ -15,7 +15,8 @@ permissions:
 
 jobs:
   # Build and publish only core package to MavenLocal
-  auth-core:
+  # these artifacts are used by publish_sample_app.yml
+  auth-core-local:
     uses: ./.github/workflows/build_and_publish_to_maven_local.yml
     with:
       output-cache-prefix: mavenLocal-core
@@ -23,8 +24,9 @@ jobs:
     secrets: inherit
 
   # Build and publish all plugins to MavenLocal
-  auth-plugins:
-    needs: auth-core
+  # these artifacts are used by publish_sample_app.yml
+  auth-plugins-local:
+    needs: auth-core-local
     uses: ./.github/workflows/build_and_publish_to_maven_local.yml
     with:
       input-cache-prefix: mavenLocal-core
@@ -32,16 +34,48 @@ jobs:
       gradle-command: "publishPluginsToMavenLocal"
     secrets: inherit
 
+  # Build and publish only core package to Sonatype
+  # this workflow uses local projects
+  auth-core-remote:
+    needs: auth-core-local
+    name: Publish Core Package to Sonatype
+    uses: ./.github/workflows/build_and_publish_to_maven_remotely.yml
+    with:
+      package-name: :packages:core
+      destination-repository: snapshot
+    secrets: inherit
+
+  # Build and publish snapshots of all plugins to Sonatype
+  # this workflow uses local projects
+  auth-plugins-remote:
+    needs: auth-plugins-local
+    name: Publish snapshots of Plugins to Sonatype
+    secrets: inherit
+    strategy:
+      matrix:
+        plugin-name:
+          [
+            "plugin-dropbox",
+            "plugin-facebook",
+            "plugin-google-gms",
+            "plugin-google-non-gms",
+            "plugin-microsoft",
+          ]
+    uses: ./.github/workflows/build_and_publish_to_maven_remotely.yml
+    with:
+      package-name: :packages:${{ matrix.plugin-name }}
+      destination-repository: snapshot
+
   # Build and publish Sample App
   auth-app:
-    needs: auth-plugins
+    needs: auth-plugins-local
     uses: ./.github/workflows/publish_sample_app.yml
     with:
       input-cache-prefix: mavenLocal-core-and-plugins
     secrets: inherit
 
   build-documentation:
-    needs: auth-plugins
+    needs: auth-plugins-local
     name: Build documentation
     runs-on: ubuntu-latest
 
