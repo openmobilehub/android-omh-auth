@@ -26,11 +26,22 @@ provider implementations.
 
 <div align="center">
 
-| GMS </br> Google Pixel 7                                                        | Non GMS </br> Huawei Mate P30                                                       |
-| ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| ![](https://github.com/openmobilehub/android-omh-auth/blob/main/assets/gms.gif) | ![](https://github.com/openmobilehub/android-omh-auth/blob/main/assets/non-gms.gif) |
+| GMS Device                                                                           | Non GMS Device                                                                           |
+|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| ![](https://github.com/openmobilehub/android-omh-auth/blob/main/assets/auth_gms.gif) | ![](https://github.com/openmobilehub/android-omh-auth/blob/main/assets/auth_non_gms.gif) |
 
 </div>
+
+<details>
+  <summary>Show more</summary>
+
+| Facebook login                                                                            | Microsoft login                                                                     | Dropbox login                                                                            |
+|-------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| ![](https://github.com/openmobilehub/android-omh-auth/blob/main/assets/auth_facebook.gif) | ![](https://github.com/openmobilehub/android-omh-auth/blob/main/assets/auth_ms.gif) | ![](https://github.com/openmobilehub/android-omh-auth/blob/main/assets/auth_dropbox.gif) |
+<div align="center">
+
+</div>
+</details>
 
 ## Getting started
 
