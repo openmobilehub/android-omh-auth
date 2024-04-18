@@ -26,18 +26,18 @@ provider implementations.
 
 <div align="center">
 
-| GMS Device                      | Non GMS Device                      |
-|---------------------------------|-------------------------------------|
-| <img src="assets/auth_gms.gif"> | <img src="assets/auth_non_gms.gif"> |
+| GMS Device                                                                           | Non GMS Device                                                                           |
+|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| ![](https://github.com/openmobilehub/android-omh-auth/blob/main/assets/auth_gms.gif) | ![](https://github.com/openmobilehub/android-omh-auth/blob/main/assets/auth_non_gms.gif) |
 
 </div>
 
 <details>
   <summary>Show more</summary>
 
-| Facebook login                       | Microsoft login                    | Dropbox login                       |
-|--------------------------------------|------------------------------------|-------------------------------------|
-| <img src="assets/auth_facebook.gif"> | <img src="assets/auth_ms.gif"> | <img src="assets/auth_dropbox.gif"> |
+| Facebook login                                                                            | Microsoft login                                                                     | Dropbox login                                                                            |
+|-------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| ![](https://github.com/openmobilehub/android-omh-auth/blob/main/assets/auth_facebook.gif) | ![](https://github.com/openmobilehub/android-omh-auth/blob/main/assets/auth_ms.gif) | ![](https://github.com/openmobilehub/android-omh-auth/blob/main/assets/auth_dropbox.gif) |
 <div align="center">
 
 </div>
