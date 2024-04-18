@@ -77,10 +77,10 @@ branch.
 There are different setup requirements based on the provider you will be including into your app.
 Please find the specific setup instruction for the providers below:
 
-- [Google GMS and non-GMS](https://crispy-bassoon-4gvwqw4.pages.github.io/advanced-docs/plugin-google-gms/README)
-- [Facebook](https://crispy-bassoon-4gvwqw4.pages.github.io/advanced-docs/plugin-facebook/README)
-- [Microsoft](https://crispy-bassoon-4gvwqw4.pages.github.io/advanced-docs/plugin-microsoft/README)
-- [Dropbox](https://crispy-bassoon-4gvwqw4.pages.github.io/advanced-docs/plugin-dropbox/README)
+- [Google GMS and non-GMS](https://www.openmobilehub.com/android-omh-auth/advanced-docs/advanced-docs/plugin-google-gms/README)
+- [Facebook](https://www.openmobilehub.com/android-omh-auth/advanced-docs/plugin-facebook/README)
+- [Microsoft](https://www.openmobilehub.com/android-omh-auth/advanced-docs/plugin-microsoft/README)
+- [Dropbox](https://www.openmobilehub.com/android-omh-auth/advanced-docs/plugin-dropbox/README)
 
 ### Adding Auth to your app.
 
@@ -213,15 +213,15 @@ the [specific setup](#provider-specific-setup) instructions for each provider.**
 
 ## Documentation
 
-[Full documentation](https://crispy-bassoon-4gvwqw4.pages.github.io/advanced-docs)
+[Full documentation](https://www.openmobilehub.com/android-omh-auth/advanced-docs)
 
-[Reference API](https://crispy-bassoon-4gvwqw4.pages.github.io/api-docs)
+[Reference API](https://www.openmobilehub.com/android-omh-auth/api-docs)
 
 ## Provider Implementations / Plugins
 
 OMH Auth SDK is open-source, promoting community collaboration and plugin support from other auth
 providers to enhance capabilities and expand supported auth services. You can find more details in
-the "[creating a custom implementation](https://crispy-bassoon-4gvwqw4.pages.github.io/advanced-docs/core/advanced/Plugins)" section.
+the "[creating a custom implementation](https://www.openmobilehub.com/android-omh-auth/advanced-docs/core/advanced/Plugins)" section.
 
 ## Contributing
 
