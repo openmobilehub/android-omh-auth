@@ -72,6 +72,9 @@ git clone --branch code-starter https://github.com/openmobilehub/android-omh-aut
 You can always check what the final result should be in the module `sample-app` in the `main`
 branch.
 
+**Note: Before running the starter code application, make sure to follow
+the [starter code app setup](https://github.com/openmobilehub/android-omh-auth/blob/code-starter/README.md) instructions.**
+
 ### Provider specific setup
 
 There are different setup requirements based on the provider you will be including into your app.

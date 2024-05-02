@@ -19,13 +19,11 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        val properties = gradleLocalProperties(rootDir)
-
-        val facebookAppId = properties["FACEBOOK_APP_ID"] as String
-        val facebookClientToken = properties["FACEBOOK_CLIENT_TOKEN"] as String
-        val microsoftClientId = properties["MICROSOFT_CLIENT_ID"] as String
-        val microsoftSignatureHash = properties["MICROSOFT_SIGNATURE_HASH"] as String
-        val dropboxAppKey = properties["DROPBOX_APP_KEY"] as String
+        val facebookAppId = getValueFromProperties("FACEBOOK_APP_ID")
+        val facebookClientToken = getValueFromProperties("FACEBOOK_CLIENT_TOKEN")
+        val microsoftClientId = getValueFromProperties("MICROSOFT_CLIENT_ID")
+        val microsoftSignatureHash = getValueFromProperties("MICROSOFT_SIGNATURE_HASH")
+        val dropboxAppKey = getValueFromProperties("DROPBOX_APP_KEY")
 
         resValue("string", "facebook_app_id", facebookAppId)
         resValue("string", "facebook_client_token", facebookClientToken)
@@ -153,6 +151,13 @@ fun getValueFromEnvOrProperties(name: String): Any? {
     val localProperties = gradleLocalProperties(file("."))
     return System.getenv(name) ?: localProperties[name]
 }
+
+fun getValueFromProperties(name: String): String {
+    val properties = gradleLocalProperties(rootDir)
+    val property = properties[name] as? String
+    return property ?: throw GradleException("Missing property $name , please add it to the local.properties file")
+}
+
 
 tasks.dokkaHtmlPartial {
     enabled = false
