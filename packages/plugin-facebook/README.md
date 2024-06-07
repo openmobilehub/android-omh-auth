@@ -148,7 +148,7 @@ as a dependency. In the `build.gradle.kts`, add the following implementation sta
 the `dependencies{}` section:
 
 ```groovy
-implementation("com.openmobilehub.android.auth:plugin-facebook:2.0.1")
+implementation("com.openmobilehub.android.auth:plugin-facebook:2.0.2")
 ```
 
 Save the file

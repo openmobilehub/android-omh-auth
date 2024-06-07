@@ -45,12 +45,12 @@ object Versions {
 
     // OMH
     const val omhCore = "2.0.1-beta"
-    const val omhAuthCore = "2.0.1"
-    const val omhGoogleGms = "2.0.1"
-    const val omhGoogleNonGms = "2..0.1"
-    const val omhFacebook = "2.0.1"
-    const val omhMicrosoft = "2.0.1"
-    const val omhDropbox = "2.0.1"
+    const val omhAuthCore = "2.0.2"
+    const val omhGoogleGms = "2.0.2"
+    const val omhGoogleNonGms = "2.0.2"
+    const val omhFacebook = "2.0.2"
+    const val omhMicrosoft = "2.0.2"
+    const val omhDropbox = "2.0.2"
 
     // Google Sign In
     const val googleSignIn = "20.4.1"
