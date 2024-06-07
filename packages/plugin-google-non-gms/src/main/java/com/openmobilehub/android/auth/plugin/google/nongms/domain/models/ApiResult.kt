@@ -16,11 +16,13 @@
 
 package com.openmobilehub.android.auth.plugin.google.nongms.domain.models
 
+import androidx.annotation.Keep
 import com.openmobilehub.android.auth.core.models.OmhAuthException
 import com.openmobilehub.android.auth.core.models.OmhAuthStatusCodes
 import kotlin.jvm.Throws
 import retrofit2.HttpException
 
+@Keep
 internal sealed class ApiResult<out T> {
 
     data class Success<out R>(val data: R) : ApiResult<R>()
