@@ -1,0 +1,4 @@
+-dontwarn com.google.auto.value.AutoValue
+-dontwarn edu.umd.cs.**
+-dontwarn org.bouncycastle.**
+-dontwarn com.microsoft.device.display.DisplayMask
