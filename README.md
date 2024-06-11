@@ -16,7 +16,7 @@ up an Android Studio project and effectively implementing the Android OMH Auth C
 Whether you are new to Android development or an experienced programmer, this guide equips you with
 the knowledge to seamlessly integrate authentication features into your applications. For a broader
 understanding of OMH's philosophy and comprehensive capabilities, visit the official website
-at https://www.openmobilehub.com.
+at https://openmobilehub.org.
 
 ## A single codebase, running seamlessly on any device
 
@@ -80,10 +80,10 @@ the [starter code app setup](https://github.com/openmobilehub/android-omh-auth/b
 There are different setup requirements based on the provider you will be including into your app.
 Please find the specific setup instruction for the providers below:
 
-- [Google GMS and non-GMS](https://www.openmobilehub.com/android-omh-auth/advanced-docs/advanced-docs/plugin-google-gms/README)
-- [Facebook](https://www.openmobilehub.com/android-omh-auth/advanced-docs/plugin-facebook/README)
-- [Microsoft](https://www.openmobilehub.com/android-omh-auth/advanced-docs/plugin-microsoft/README)
-- [Dropbox](https://www.openmobilehub.com/android-omh-auth/advanced-docs/plugin-dropbox/README)
+- [Google GMS and non-GMS](https://openmobilehub.github.io/android-omh-auth/advanced-docs/advanced-docs/plugin-google-gms/README)
+- [Facebook](https://openmobilehub.github.io/android-omh-auth/advanced-docs/plugin-facebook/README)
+- [Microsoft](https://openmobilehub.github.io/android-omh-auth/advanced-docs/plugin-microsoft/README)
+- [Dropbox](https://openmobilehub.github.io/android-omh-auth/advanced-docs/plugin-dropbox/README)
 
 ### Adding Auth to your app.
 
@@ -216,15 +216,15 @@ the [specific setup](#provider-specific-setup) instructions for each provider.**
 
 ## Documentation
 
-[Full documentation](https://www.openmobilehub.com/android-omh-auth/advanced-docs)
+[Full documentation](https://openmobilehub.github.io/android-omh-auth/advanced-docs)
 
-[Reference API](https://www.openmobilehub.com/android-omh-auth/api-docs)
+[Reference API](https://openmobilehub.github.io/android-omh-auth/api-docs)
 
 ## Provider Implementations / Plugins
 
 OMH Auth SDK is open-source, promoting community collaboration and plugin support from other auth
 providers to enhance capabilities and expand supported auth services. You can find more details in
-the "[creating a custom implementation](https://www.openmobilehub.com/android-omh-auth/advanced-docs/core/advanced/Plugins)" section.
+the "[creating a custom implementation](https://openmobilehub.github.io/android-omh-auth/advanced-docs/core/advanced/Plugins)" section.
 
 ## Contributing
 
