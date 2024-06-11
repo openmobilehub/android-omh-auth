@@ -16,7 +16,7 @@ up an Android Studio project and effectively implementing the Android OMH Auth C
 Whether you are new to Android development or an experienced programmer, this guide equips you with
 the knowledge to seamlessly integrate authentication features into your applications. For a broader
 understanding of OMH's philosophy and comprehensive capabilities, visit the official website
-at https://www.openmobilehub.com.
+at https://openmobilehub.org.
 
 ## A single codebase, running seamlessly on any device
 
