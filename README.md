@@ -80,7 +80,7 @@ the [starter code app setup](https://github.com/openmobilehub/android-omh-auth/b
 There are different setup requirements based on the provider you will be including into your app.
 Please find the specific setup instruction for the providers below:
 
-- [Google GMS and non-GMS](https://openmobilehub.github.io/android-omh-auth/advanced-docs/advanced-docs/plugin-google-gms/README)
+- [Google GMS and non-GMS](https://openmobilehub.github.io/android-omh-auth/advanced-docs/plugin-google-gms/README)
 - [Facebook](https://openmobilehub.github.io/android-omh-auth/advanced-docs/plugin-facebook/README)
 - [Microsoft](https://openmobilehub.github.io/android-omh-auth/advanced-docs/plugin-microsoft/README)
 - [Dropbox](https://openmobilehub.github.io/android-omh-auth/advanced-docs/plugin-dropbox/README)
