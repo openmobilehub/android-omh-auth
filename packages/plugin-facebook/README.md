@@ -67,9 +67,7 @@ Meta for Developers setup steps:
    Once you generated the debug and release key hashes, add them under **Key Hashes** section and
    save your changes.
 
-> To enable the email scope: in your [Meta for Developers](https://developers.facebook.com/apps)
-> app, navigate to "Use cases" -> "Customize" -> "Permissions" and click **Add** for the **Email**
-> permissions.
+ 7.  Enable the Email Scope Permissions. Go to [Meta for Developers](https://developers.facebook.com/apps), navigate to **Use cases** -> **Customize** -> **Permissions**, and click **Add** for **Email**.
 
 ## Edit Your Resources and Manifest
 
