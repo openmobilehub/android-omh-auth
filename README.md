@@ -28,7 +28,7 @@ provider implementations.
 
 | GMS Device                                                                           | Non GMS Device                                                                           |
 |--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
-| ![](https://github.com/openmobilehub/android-omh-auth/blob/main/assets/auth_gms.gif) | ![](https://github.com/openmobilehub/android-omh-auth/blob/main/assets/auth_non_gms.gif) |
+| !<img src="https://github.com/openmobilehub/android-omh-auth/blob/main/assets/auth_gms.gif?raw=true" width=250 /> | <img src="https://github.com/openmobilehub/android-omh-auth/blob/main/assets/auth_non_gms.gif?raw=true" width=250 /> |
 
 </div>
 
@@ -37,7 +37,7 @@ provider implementations.
 
 | Facebook login                                                                            | Microsoft login                                                                     | Dropbox login                                                                            |
 |-------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
-| ![](https://github.com/openmobilehub/android-omh-auth/blob/main/assets/auth_facebook.gif) | ![](https://github.com/openmobilehub/android-omh-auth/blob/main/assets/auth_ms.gif) | ![](https://github.com/openmobilehub/android-omh-auth/blob/main/assets/auth_dropbox.gif) |
+| ![](https://github.com/openmobilehub/android-omh-auth/blob/main/assets/auth_facebook.gif?raw=true) | ![](https://github.com/openmobilehub/android-omh-auth/blob/main/assets/auth_ms.gif?raw=true) | ![](https://github.com/openmobilehub/android-omh-auth/blob/main/assets/auth_dropbox.gif?raw=true) |
 <div align="center">
 
 </div>
