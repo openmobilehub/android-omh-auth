@@ -23,7 +23,6 @@ import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
@@ -123,8 +122,7 @@ class LoggedInFragment : Fragment() {
                     tvEmail.text = getString(R.string.email_placeholder, profile.email)
                 }
 
-                Toast.makeText(activity, "User Data Fetched", Toast.LENGTH_SHORT)
-                    .show()
+                showToast("User Data Fetched")
             }
             .addOnFailure(::showErrorDialog)
             .execute()
@@ -136,10 +134,10 @@ class LoggedInFragment : Fragment() {
         val authClient = authClientProvider.getClient(requireContext())
 
         authClient.getCredentials().refreshAccessToken().addOnSuccess { token ->
-            binding?.tvToken?.text = getString(R.string.token_placeholder, token)
+            binding?.tvToken?.text =
+                getString(R.string.token_placeholder, token)
 
-            Toast.makeText(activity, "Auth Token Refreshed", Toast.LENGTH_SHORT)
-                .show()
+            showToast("Auth Token Refreshed")
         }.addOnFailure { e ->
             showErrorDialog(e)
         }.execute()
@@ -150,8 +148,7 @@ class LoggedInFragment : Fragment() {
 
         val cancellable = authClient.revokeToken()
             .addOnSuccess {
-                Toast.makeText(activity, "Auth Token Revoked", Toast.LENGTH_SHORT)
-                    .show()
+                showToast("Auth Token Revoked")
             }
             .addOnFailure(::showErrorDialog)
             .execute()
@@ -170,8 +167,7 @@ class LoggedInFragment : Fragment() {
                     LoginState(requireContext()).loggedOut()
                 }
 
-                Toast.makeText(activity, "Logged Out", Toast.LENGTH_SHORT)
-                    .show()
+                showToast("Logged Out")
             }
             .addOnFailure(::showErrorDialog)
             .execute()
@@ -198,5 +194,9 @@ class LoggedInFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         cancellableCollector.clear()
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
     }
 }
