@@ -2,3 +2,4 @@
 -dontwarn edu.umd.cs.**
 -dontwarn org.bouncycastle.**
 -dontwarn com.microsoft.device.display.DisplayMask
+-keep class com.openmobilehub.android.auth.plugin.microsoft.ApiService { *; }
