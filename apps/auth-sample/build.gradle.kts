@@ -155,7 +155,7 @@ fun getValueFromProperties(name: String): String {
     val properties = gradleLocalProperties(rootDir)
     val property = properties[name] as? String
     return property
-        ?: throw GradleException("Missing property $name , please add it to the local.properties file")
+        ?: throw GradleException("Missing property $name, please add it to the local.properties file")
 }
 
 
