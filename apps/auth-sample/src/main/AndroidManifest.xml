@@ -77,7 +77,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="com.openmobilehub.android.auth.sample.base.DemoApp"
+                    android:host="${applicationId}"
                     android:path="@string/microsoft_path"
                     android:scheme="msauth" />
             </intent-filter>

@@ -16,6 +16,7 @@ android {
     namespace = "com.openmobilehub.android.auth.sample"
 
     defaultConfig {
+        applicationId = "com.openmobilehub.android.auth.sample"
         versionCode = 1
         versionName = "1.0"
 
@@ -32,30 +33,28 @@ android {
         resValue("string", "dropbox_app_key", dropboxAppKey)
         resValue("string", "db_login_protocol_scheme", "db-${dropboxAppKey}")
 
-        file("./src/main/res/raw/ms_auth_config.json").writeText(
-            """
-{
-  "client_id": "$microsoftClientId",
-  "authorization_user_agent": "DEFAULT",
-  "redirect_uri": "msauth://com.openmobilehub.android.auth.sample.base.DemoApp/${
-                URLEncoder.encode(
-                    microsoftSignatureHash,
-                    "UTF-8"
-                )
-            }",
-  "authorities": [
-    {
-      "type": "AAD",
-      "audience": {
-        "type": "AzureADandPersonalMicrosoftAccount",
-        "tenant_id": "common"
-      }
-    }
-  ],
-  "account_mode": "SINGLE"
-}
-            """.trimIndent()
-        )
+        val rawDir = file("./src/main/res/raw")
+        if (!rawDir.exists()) {
+            rawDir.mkdirs()
+        }
+
+        val configJson = """
+            {
+              "client_id": "$microsoftClientId",
+              "authorization_user_agent": "DEFAULT",
+              "redirect_uri": "msauth://$applicationId/${URLEncoder.encode(microsoftSignatureHash, "UTF-8")}",
+              "authorities": [{
+                "type": "AAD",
+                "audience": {
+                  "type": "AzureADandPersonalMicrosoftAccount",
+                  "tenant_id": "common"
+                }
+              }],
+              "account_mode": "SINGLE"
+          }
+        """.trimIndent()
+
+        file("./src/main/res/raw/ms_auth_config.json").writeText(configJson)
     }
 
     signingConfigs {
@@ -155,7 +154,8 @@ fun getValueFromEnvOrProperties(name: String): Any? {
 fun getValueFromProperties(name: String): String {
     val properties = gradleLocalProperties(rootDir)
     val property = properties[name] as? String
-    return property ?: throw GradleException("Missing property $name , please add it to the local.properties file")
+    return property
+        ?: throw GradleException("Missing property $name, please add it to the local.properties file")
 }
 
 

@@ -16,7 +16,7 @@ the required Microsoft Azure setup steps:
    personal Microsoft accounts (e.g. Skype, Xbox)" option is chosen under **Supported account types
    **.
 3. Once created the application, go to the Authentication and add a new Android platform.
-4. Set your app package name (Use "com.openmobilehub.android.auth.sample.base.DemoApp" if you are
+4. Set your app package name (Use "com.openmobilehub.android.auth.sample" if you are
    following the starter-code).
 5. Generate and set your Signature Hash:
 
