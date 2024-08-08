@@ -57,7 +57,7 @@ and [sync your project with Gradle](https://developer.android.com/studio/build#s
 ### Using the Android OMH Core plugin
 
 Please see the advanced documentation on how to use
-the [Android OMH Core](https://www.openmobilehub.com/android-omh-auth/advanced-docs/core/docs/advanced/Plugins.md) Plugin.
+the [Android OMH Core](https://openmobilehub.github.io/android-omh-auth/advanced-docs/core/advanced/OMH-Core) Plugin.
 
 ## Provide the Google OMH Auth Client
 
