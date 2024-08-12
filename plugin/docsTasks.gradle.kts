@@ -5,7 +5,7 @@ fun prefixFilename(prefix: String, file: File): File {
     return File(parentDir, "$prefix$name")
 }
 
-val PREFIX = "advanced-docs"
+val PREFIX = "android-omh-auth/advanced-docs"
 val docsOutputDir = rootProject.file("docs")
 val dokkaDocsOutputDir = File(docsOutputDir, "generated")
 val markdownDocsOutputDirBase = File(docsOutputDir, "markdown")
