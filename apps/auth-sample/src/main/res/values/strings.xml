@@ -11,6 +11,8 @@
     <string name="email_placeholder"><b>Email:</b> %s</string>
     <string name="token_label">Token:</string>
     <string name="token_placeholder">%s</string>
+    <string name="id_token_label">Id Token:</string>
+    <string name="id_token_placeholder">%s</string>
     <string name="get_user">Get user</string>
     <string name="refresh">Refresh</string>
     <string name="revoke_token">Revoke token</string>

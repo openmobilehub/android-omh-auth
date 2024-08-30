@@ -54,6 +54,7 @@ class OmhAuthProvider private constructor(
         context: Context,
         scopes: Collection<String>,
         clientId: String,
+        webClientId: String? = null
     ): OmhAuthClient {
         val omhAuthFactory: OmhAuthFactory = try {
             getOmhAuthFactory(context)
@@ -63,7 +64,7 @@ class OmhAuthProvider private constructor(
                 cause = exception
             )
         }
-        return omhAuthFactory.getAuthClient(context, scopes, clientId)
+        return omhAuthFactory.getAuthClient(context, scopes, clientId, webClientId)
     }
 
     private fun getOmhAuthFactory(context: Context) = when {

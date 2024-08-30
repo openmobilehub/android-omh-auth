@@ -17,6 +17,7 @@
 package com.openmobilehub.android.auth.plugin.google.gms
 
 import android.content.Context
+import android.util.Log
 import androidx.annotation.Keep
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -31,10 +32,14 @@ internal object OmhAuthFactoryImpl : OmhAuthFactory {
     override fun getAuthClient(
         context: Context,
         scopes: Collection<String>,
-        clientId: String
+        clientId: String,
+        webClientId: String? = null
     ): OmhAuthClient {
         val scopeList: MutableList<Scope> = scopes.map(::Scope).toMutableList()
         val gsoBuilder = GoogleSignInOptions.Builder()
+        if (!webClientId.isNullOrEmpty()) {
+            gsoBuilder.requestIdToken(webClientId);
+        }
         scopeList.forEach(gsoBuilder::requestScopes)
         val client: GoogleSignInClient = GoogleSignIn.getClient(context, gsoBuilder.build())
         return OmhAuthClientImpl(client)
