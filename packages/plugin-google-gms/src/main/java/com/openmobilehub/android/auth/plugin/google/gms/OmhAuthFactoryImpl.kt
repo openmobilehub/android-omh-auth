@@ -33,7 +33,7 @@ internal object OmhAuthFactoryImpl : OmhAuthFactory {
         context: Context,
         scopes: Collection<String>,
         clientId: String,
-        webClientId: String? = null
+        webClientId: String?
     ): OmhAuthClient {
         val scopeList: MutableList<Scope> = scopes.map(::Scope).toMutableList()
         val gsoBuilder = GoogleSignInOptions.Builder()
