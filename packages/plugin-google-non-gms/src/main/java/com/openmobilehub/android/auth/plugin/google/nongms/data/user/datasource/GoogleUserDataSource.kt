@@ -64,7 +64,7 @@ internal class GoogleUserDataSource(private val sharedPreferences: SharedPrefere
             putString(Constants.EMAIL_KEY, email)
             putString(Constants.PICTURE_KEY, picture)
             putString(Constants.ID_KEY, id)
-            putString(Constants.GOOGLE_ID_TOKEN, idToken)
+            putString(Constants.GOOGLE_ID_TOKEN_KEY, idToken)
         }
     }
 
@@ -77,7 +77,7 @@ internal class GoogleUserDataSource(private val sharedPreferences: SharedPrefere
         val email = sharedPreferences.getString(Constants.EMAIL_KEY, null)
         val surname = sharedPreferences.getString(Constants.SURNAME_KEY, null)
         val picture = sharedPreferences.getString(Constants.PICTURE_KEY, null)
-        val idToken = sharedPreferences.getString(Constants.GOOGLE_ID_TOKEN, null)
+        val idToken = sharedPreferences.getString(Constants.GOOGLE_ID_TOKEN_KEY, null)
 
         if (name == null || email == null || surname == null) return null
 
