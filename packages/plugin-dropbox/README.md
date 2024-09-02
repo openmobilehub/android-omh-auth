@@ -78,7 +78,7 @@ a dependency. In the `build.gradle.kts`, add the following implementation statem
 the `dependencies{}` section:
 
 ```groovy
-implementation("com.openmobilehub.android.auth:plugin-dropbox:2.0.2")
+implementation("com.openmobilehub.android.auth:plugin-dropbox:2.0.3")
 ```
 
 Save the file

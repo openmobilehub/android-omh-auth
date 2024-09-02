@@ -31,24 +31,24 @@ omhConfig {
    bundle("singleBuild") {
       auth {
          gmsService {
-            dependency = "com.openmobilehub.android.auth:plugin-google-gms:2.0.2"
+            dependency = "com.openmobilehub.android.auth:plugin-google-gms:2.0.3"
          }
          nonGmsService {
-            dependency = "com.openmobilehub.android.auth:plugin-google-non-gms:2.0.2"
+            dependency = "com.openmobilehub.android.auth:plugin-google-non-gms:2.0.3"
          }
       }
    }
    bundle("gms") {
       auth {
          gmsService {
-            dependency = "com.openmobilehub.android.auth:plugin-google-gms:2.0.2"
+            dependency = "com.openmobilehub.android.auth:plugin-google-gms:2.0.3"
          }
       }
    }
    bundle("nongms") {
       auth {
          nonGmsService {
-            dependency = "com.openmobilehub.android.auth:plugin-google-non-gms:2.0.2"
+            dependency = "com.openmobilehub.android.auth:plugin-google-non-gms:2.0.3"
          }
       }
    }
@@ -77,8 +77,8 @@ variants will be generated:
     - Define the `Service`. In this example is auth.
     - Define the `ServiceDetails`. In this example are `gmsService` and `nonGmsService`.
     - Define the dependency and the path. In this example
-      are `com.openmobilehub.android.auth:plugin-google-gms:2.0.2`
-      and `com.openmobilehub.android.auth:plugin-google-non-gms:2.0.2`.
+      are `com.openmobilehub.android.auth:plugin-google-gms:2.0.3`
+      and `com.openmobilehub.android.auth:plugin-google-non-gms:2.0.3`.
 
 **Note:** It's important to observe how a single build encompasses both GMS (Google Mobile Services)
 and Non-GMS configurations.

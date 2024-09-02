@@ -47,8 +47,8 @@ plugin, you have to directly include the Google GMS and non-GMS plugins as a dep
 the `build.gradle.kts`, add the following implementation statement to the `dependencies{}` section:
 
 ```groovy
-implementation("com.openmobilehub.android.auth:plugin-google-gms:2.0.2")
-implementation("com.openmobilehub.android.auth:plugin-google-non-gms:2.0.2")
+implementation("com.openmobilehub.android.auth:plugin-google-gms:2.0.3")
+implementation("com.openmobilehub.android.auth:plugin-google-non-gms:2.0.3")
 ```
 
 Save the file
