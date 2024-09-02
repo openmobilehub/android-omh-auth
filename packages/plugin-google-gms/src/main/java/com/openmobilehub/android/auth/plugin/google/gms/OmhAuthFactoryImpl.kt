@@ -38,7 +38,7 @@ internal object OmhAuthFactoryImpl : OmhAuthFactory {
         val scopeList: MutableList<Scope> = scopes.map(::Scope).toMutableList()
         val gsoBuilder = GoogleSignInOptions.Builder()
         if (!webClientId.isNullOrEmpty()) {
-            gsoBuilder.requestIdToken(webClientId);
+            gsoBuilder.requestIdToken(webClientId)
         }
         scopeList.forEach(gsoBuilder::requestScopes)
         val client: GoogleSignInClient = GoogleSignIn.getClient(context, gsoBuilder.build())
