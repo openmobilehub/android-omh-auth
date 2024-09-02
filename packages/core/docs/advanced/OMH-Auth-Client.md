@@ -50,7 +50,7 @@ Once you have the provider setup, you can obtain the Auth client with the follow
 return omhAuthProvider.provideAuthClient(
     scopes = listOf("openid", "email", "profile"),
     clientId = BuildConfig.GOOGLE_CLIENT_ID,
-    webClientId = "",
+    webClientId = null,
     context = context
 )
 ```
