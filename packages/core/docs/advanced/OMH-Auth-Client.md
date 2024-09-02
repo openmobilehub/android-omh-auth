@@ -59,7 +59,7 @@ The scopes vary according to your needs, but do take into account that dynamic r
 scopes isn't possible with the Android OMH Auth SDK. _Note that the `GOOGLE_CLIENT_ID` should be of
 the Android type if you're trying to login with the Google Provider._
 
-Web Client Id is usefull when you want to obtain idToken that you can then send to backend server for authorizartion purposes. After authentication is completed you can obtain `idToken` from `OmhUserProfile` object.  
+Web Client Id is useful when you want to obtain idToken that you can then send to backend server for authorizartion purposes. After authentication is completed you can obtain `idToken` from `OmhUserProfile` object.  
 
 We'd recommend using the client as a singleton instance as once instantiated, the configuration
 won't change in runtime.
