@@ -17,7 +17,6 @@
 package com.openmobilehub.android.auth.plugin.google.gms
 
 import android.content.Context
-import android.util.Log
 import androidx.annotation.Keep
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
