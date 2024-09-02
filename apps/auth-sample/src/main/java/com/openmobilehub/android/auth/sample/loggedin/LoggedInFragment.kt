@@ -120,6 +120,7 @@ class LoggedInFragment : Fragment() {
                     tvName.text = getString(R.string.name_placeholder, profile.name)
                     tvSurname.text = getString(R.string.surname_placeholder, profile.surname)
                     tvEmail.text = getString(R.string.email_placeholder, profile.email)
+                    tvIdToken.text = getString(R.string.id_token_placeholder, profile.idToken)
                 }
 
                 showToast("User Data Fetched")

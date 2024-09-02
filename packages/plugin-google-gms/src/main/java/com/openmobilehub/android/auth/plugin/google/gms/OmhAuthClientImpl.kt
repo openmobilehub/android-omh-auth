@@ -62,7 +62,8 @@ internal class OmhAuthClientImpl(
             name = givenName,
             surname = familyName,
             email = email,
-            profileImage = photoUrl.toString()
+            profileImage = photoUrl.toString(),
+            idToken = idToken
         )
     }
 

@@ -35,7 +35,8 @@ internal object OmhAuthFactoryImpl : OmhAuthFactory {
     override fun getAuthClient(
         context: Context,
         scopes: Collection<String>,
-        clientId: String
+        clientId: String,
+        webClientId: String?
     ): OmhAuthClient {
         val builder = OmhAuthClientImpl.Builder(clientId)
         scopes.forEach(builder::addScope)

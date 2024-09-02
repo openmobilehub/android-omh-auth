@@ -75,6 +75,7 @@ fun providesGoogleAuthClient(@ApplicationContext context: Context): OmhAuthClien
     return omhAuthProvider.provideAuthClient(
         scopes = listOf("openid", "email", "profile"),
         clientId = BuildConfig.GOOGLE_CLIENT_ID,
+        webClientId = BuildConfig.GOOGLE_WEB_CLIENT_ID,
         context = context
     )
 }

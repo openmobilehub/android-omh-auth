@@ -50,6 +50,7 @@ Once you have the provider setup, you can obtain the Auth client with the follow
 return omhAuthProvider.provideAuthClient(
     scopes = listOf("openid", "email", "profile"),
     clientId = BuildConfig.GOOGLE_CLIENT_ID,
+    webClientId = null,
     context = context
 )
 ```
@@ -57,6 +58,8 @@ return omhAuthProvider.provideAuthClient(
 The scopes vary according to your needs, but do take into account that dynamic requests for more
 scopes isn't possible with the Android OMH Auth SDK. _Note that the `GOOGLE_CLIENT_ID` should be of
 the Android type if you're trying to login with the Google Provider._
+
+Web Client Id is useful when you want to obtain idToken that you can then send to backend server for authorizartion purposes. After authentication is completed you can obtain `idToken` from `OmhUserProfile` object.  
 
 We'd recommend using the client as a singleton instance as once instantiated, the configuration
 won't change in runtime.

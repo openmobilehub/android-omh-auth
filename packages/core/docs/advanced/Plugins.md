@@ -86,7 +86,7 @@ This class will be responsible of instantiating your OMH Auth Client implementat
 to the user as the interface `OmhAuthClient`. The only function to implement here is:
 
 ```kotlin
-fun getAuthClient(context: Context, scopes: Collection<String>, clientId: String): OmhAuthClient
+fun getAuthClient(context: Context, scopes: Collection<String>, clientId: String, webClientId: String?): OmhAuthClient
 ```
 
 You'll have access to the application context in case you need it and the OAuth scopes that the user

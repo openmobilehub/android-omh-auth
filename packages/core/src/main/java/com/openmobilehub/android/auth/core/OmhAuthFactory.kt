@@ -27,5 +27,10 @@ interface OmhAuthFactory {
     /**
      * Provides the [OmhAuthClient] that is the main interactor with the Auth module.
      */
-    fun getAuthClient(context: Context, scopes: Collection<String>, clientId: String): OmhAuthClient
+    fun getAuthClient(
+        context: Context,
+        scopes: Collection<String>,
+        clientId: String,
+        webClientId: String?
+    ): OmhAuthClient
 }

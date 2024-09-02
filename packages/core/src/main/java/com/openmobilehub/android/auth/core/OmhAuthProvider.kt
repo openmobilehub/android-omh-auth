@@ -42,8 +42,7 @@ class OmhAuthProvider private constructor(
      * @param scopes -> your oauth scopes in a collection. Do take into account that non GMS devices
      * won't be able to request more scopes after the first authorization.
      * @param clientId -> your client ID for the Android Application.
-     * @param ownReflectionPath -> provide your own reflection path in case you are implementing
-     * your own OMH module.
+     * @param webClientId -> web client id useful when you want to obtain idToken
      *
      * @return an [OmhAuthClient] to interact with the Auth module.
      * @throws [OmhAuthException.ApiException] when reflection fails for any of the implementations
@@ -54,6 +53,7 @@ class OmhAuthProvider private constructor(
         context: Context,
         scopes: Collection<String>,
         clientId: String,
+        webClientId: String? = null
     ): OmhAuthClient {
         val omhAuthFactory: OmhAuthFactory = try {
             getOmhAuthFactory(context)
@@ -63,7 +63,7 @@ class OmhAuthProvider private constructor(
                 cause = exception
             )
         }
-        return omhAuthFactory.getAuthClient(context, scopes, clientId)
+        return omhAuthFactory.getAuthClient(context, scopes, clientId, webClientId)
     }
 
     private fun getOmhAuthFactory(context: Context) = when {
