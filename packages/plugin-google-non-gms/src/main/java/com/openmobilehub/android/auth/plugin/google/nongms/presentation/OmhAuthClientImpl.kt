@@ -111,4 +111,7 @@ internal class OmhAuthClientImpl(
             return@OmhTask apiResult.extractResult()
         })
     }
+
+    override fun getProviderSdk() =
+        throw UnsupportedOperationException("Google non-gms implementation uses REST API underneath.")
 }

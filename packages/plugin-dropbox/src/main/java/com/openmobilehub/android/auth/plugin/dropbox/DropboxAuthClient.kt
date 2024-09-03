@@ -2,6 +2,7 @@ package com.openmobilehub.android.auth.plugin.dropbox
 
 import android.content.Context
 import android.content.Intent
+import com.dropbox.core.v2.DbxClientV2
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.async.OmhTask
 import com.openmobilehub.android.auth.core.models.OmhUserProfile
@@ -64,4 +65,7 @@ class DropboxAuthClient(
             },
         )
     }
+
+    override fun getProviderSdk(): DbxClientV2 =
+        DropboxClient.getInstance(dropboxRepository.credential)
 }

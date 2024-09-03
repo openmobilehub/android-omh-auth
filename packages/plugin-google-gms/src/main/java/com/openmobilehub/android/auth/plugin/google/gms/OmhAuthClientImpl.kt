@@ -80,4 +80,6 @@ internal class OmhAuthClientImpl(
         val task = googleSignInClient.revokeAccess().mapToOmhExceptions()
         return OmhGmsTask(task)
     }
+
+    override fun getProviderSdk(): GoogleSignInClient = googleSignInClient
 }
