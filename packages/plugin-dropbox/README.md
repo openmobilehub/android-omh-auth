@@ -102,3 +102,15 @@ fun providesDropboxAuthClient(@ApplicationContext context: Context): DropboxAuth
 
 > We'd recommend to store the client as a singleton with your preferred dependency injection library
 > as this will be your only gateway to the OMH Auth SDK and it doesn't change in runtime at all.
+
+## Escape Hatch
+
+This plugin provides an escape hatch to access the native Dropbox Android SDK. This allows developers to use the underlying provider's API directly, should they need to access a feature of the provider that is not supported by the OMH plugin.
+
+You can obtain the Dropbox client instances by casting the result of `getProviderSdk` to `DbxClientV2`:
+
+```kotlin
+import com.dropbox.core.v2.DbxClientV2
+...
+authClient.getProviderSdk() as DbxClientV2
+```

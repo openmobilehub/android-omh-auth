@@ -138,3 +138,15 @@ fun providesMicrosoftAuthClient(@ApplicationContext context: Context): Microsoft
 
 > We'd recommend to store the client as a singleton with your preferred dependency injection library
 > as this will be your only gateway to the OMH Auth SDK and it doesn't change in runtime at all.
+
+## Escape Hatch
+
+This plugin provides an escape hatch to access the native Microsoft Android SDK. This allows developers to use the underlying provider's API directly, should they need to access a feature of the provider that is not supported by the OMH plugin.
+
+You can obtain the application client instances by casting the result of `getProviderSdk` to `ISingleAccountPublicClientApplication`:
+
+```kotlin
+import com.microsoft.identity.client.ISingleAccountPublicClientApplication
+...
+authClient.getProviderSdk() as ISingleAccountPublicClientApplication
+```
