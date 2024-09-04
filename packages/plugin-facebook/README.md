@@ -169,3 +169,15 @@ fun providesFacebookAuthClient(@ApplicationContext context: Context): FacebookAu
 
 > We'd recommend to store the client as a singleton with your preferred dependency injection library
 > as this will be your only gateway to the OMH Auth SDK and it doesn't change in runtime at all.
+
+## Escape Hatch
+
+This plugin provides an escape hatch to access the native Facebook Android SDK. This allows developers to use the underlying provider's API directly, should they need to access a feature of the provider that is not supported by the OMH plugin.
+
+You can obtain the Facebook SDK instances by casting the result of `getProviderSdk` to `FacebookSdk`:
+
+```kotlin
+import com.facebook.FacebookSdk
+...
+authClient.getProviderSdk() as FacebookSdk
+```

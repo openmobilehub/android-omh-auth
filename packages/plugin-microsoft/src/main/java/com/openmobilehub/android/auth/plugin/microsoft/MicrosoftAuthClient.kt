@@ -2,6 +2,7 @@ package com.openmobilehub.android.auth.plugin.microsoft
 
 import android.content.Context
 import android.content.Intent
+import com.microsoft.identity.client.ISingleAccountPublicClientApplication
 import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.async.OmhTask
 import com.openmobilehub.android.auth.core.models.OmhAuthException
@@ -58,6 +59,9 @@ class MicrosoftAuthClient(
     override fun signOut(): OmhTask<Unit> {
         return OmhTask(::signOutRequest)
     }
+
+    override fun getProviderSdk(): ISingleAccountPublicClientApplication =
+        microsoftApplication.getApplication()
 
     internal suspend fun getUserRequest(): OmhUserProfile = suspendCoroutine { continuation ->
         val call =

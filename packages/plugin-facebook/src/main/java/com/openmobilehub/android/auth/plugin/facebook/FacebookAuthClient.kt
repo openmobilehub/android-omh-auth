@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.facebook.AccessToken
+import com.facebook.FacebookSdk
 import com.facebook.GraphRequest
 import com.facebook.HttpMethod
 import com.facebook.Profile
@@ -50,6 +51,8 @@ class FacebookAuthClient(val scopes: ArrayList<String>, val context: Context) :
             LoginManager.getInstance().logOut()
         })
     }
+
+    override fun getProviderSdk() = FacebookSdk
 
     internal suspend fun getUserRequest(): OmhUserProfile = suspendCoroutine { continuation ->
         val request = GraphRequest.newMeRequest(
