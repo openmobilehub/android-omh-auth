@@ -231,6 +231,29 @@ the "[creating a custom implementation](https://openmobilehub.github.io/android-
 Please contribute! We will gladly review any pull requests. Make sure to read
 the [CONTRIBUTING](/CONTRIBUTING.md) page first though.
 
+
+## Troubleshooting
+
+### 2 files found with path 'META-INF/*'
+
+> [!CAUTION]
+>2 files found with path 'META-INF/DEPENDENCIES' from inputs:<br/>\- ~/.gradle/caches/transforms-3/974cf06afa1f6a930c75c22e66ec0fcc/transformed/jetified-httpclient-4.5.13.jar<br/>\- ~/.gradle/caches/transforms-3/435f87d6658aae4740f0a56a1a48eac1/transformed/jetified-httpcore-4.4.15.jar
+
+If you see the above error during the android build process, please add the following code snippet to your [**android/app/build.gradle**](https://github.com/openmobilehub/android-omh-auth/blob/main/apps/auth-sample/build.gradle.kts) file:
+
+```gradle title="apps/auth-sample/build.gradle.kts" {4-6}
+android {
+    // ... other build settings
+
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
+    }
+}
+```
+
+Please also check the related [GitHub issue](https://github.com/auth0/Auth0.Android/issues/598) for more context to the problem.
+
+
 ## License
 
 ```
