@@ -8,11 +8,10 @@ Meta for Developers setup steps:
 
 1. [Go to the Meta for Developers](https://developers.facebook.com/apps).
 2. Click on "Create App" to start creating a new Facebook application.
-3. Go to the App Settings -> Basic.
-4. Set your application **Package Names** (Use "com.openmobilehub.android.auth.sample" if you are
+3. Go to the "App Settings" -> "Use Cases" Tab and select "Customise". Then under "Quickstart" section select Android app and set application details:
+4. Set your application **Package Names** (Use `com.openmobilehub.android.auth.sample"` if you are
    following the starter-code)
-5. Set your application **Class Name** (Use "
-   com.openmobilehub.android.auth.sample.base.MainActivity" if you are following the starter-code)
+5. Set your application **Class Name** (Use `com.openmobilehub.android.auth.sample.base.MainActivity` if you are following the starter-code)
 6. Provide the Development and Release Key Hashes for Your App To ensure the authenticity of the
    interactions between your app and Facebook, you need to supply us with the Android key hash for
    your development environment. If your app has already been published, you should add your release

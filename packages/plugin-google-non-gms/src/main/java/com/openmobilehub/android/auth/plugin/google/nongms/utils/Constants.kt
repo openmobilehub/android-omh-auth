@@ -16,7 +16,9 @@
 
 package com.openmobilehub.android.auth.plugin.google.nongms.utils
 
-internal object Constants {
+object Constants {
+    const val IMPLEMENTATION_PATH
+        = "com.openmobilehub.android.auth.plugin.google.nongms.presentation.OmhAuthFactoryImpl"
     const val PARAM_REDIRECT_URI = "redirect_uri"
     const val PARAM_CLIENT_ID = "client_id"
     const val PARAM_RESPONSE_TYPE = "response_type"

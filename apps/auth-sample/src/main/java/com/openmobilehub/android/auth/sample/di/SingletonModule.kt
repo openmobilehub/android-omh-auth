@@ -21,9 +21,11 @@ import com.openmobilehub.android.auth.core.OmhAuthClient
 import com.openmobilehub.android.auth.core.OmhAuthProvider
 import com.openmobilehub.android.auth.plugin.dropbox.DropboxAuthClient
 import com.openmobilehub.android.auth.plugin.facebook.FacebookAuthClient
+import com.openmobilehub.android.auth.plugin.google.gms.util.Constants
 import com.openmobilehub.android.auth.plugin.microsoft.MicrosoftAuthClient
 import com.openmobilehub.android.auth.sample.BuildConfig
 import com.openmobilehub.android.auth.sample.R
+import com.openmobilehub.android.auth.plugin.google.nongms.utils.Constants as NonGmsConstants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,8 +38,8 @@ object SingletonModule {
     @Provides
     fun providesGoogleAuthClient(@ApplicationContext context: Context): OmhAuthClient {
         val omhAuthProvider = OmhAuthProvider.Builder()
-            .addNonGmsPath("com.openmobilehub.android.auth.plugin.google.nongms.presentation.OmhAuthFactoryImpl")
-            .addGmsPath("com.openmobilehub.android.auth.plugin.google.gms.OmhAuthFactoryImpl")
+            .addNonGmsPath(NonGmsConstants.IMPLEMENTATION_PATH)
+            .addGmsPath(Constants.IMPLEMENTATION_PATH)
             .build()
         return omhAuthProvider.provideAuthClient(
             scopes = listOf("openid", "email", "profile"),
