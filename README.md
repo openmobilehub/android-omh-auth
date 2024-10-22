@@ -93,7 +93,7 @@ out, revoking a token, etc.
 
 #### Initialize client
 
-In order to be able to interact with our OMH Auth client, we need to initialize it first.
+In order to be able to interact with our OMH Auth client, we need to obtain it from given provider.
 
 The snippet below shows how to initialize the OMH Auth client. The `initialize` method returns an `OmhTask`. This is the interface to interact with async functionalities and subscribe to the success or error results. In the `MainActivity.kt`, add the following code to the `onViewCreated()` function:
 
@@ -106,6 +106,24 @@ lifecycleScope.launch(Dispatchers.IO) {
         .execute()
 }
 ```
+
+`initizlize()` method is only required for MS Provider while for others it can be ommited (tho for sakes of conformity we suggest using it for all providers)
+
+For exampl eusage how one can extend initialization please take a look at MS initialize call:
+
+```kotlin
+    override fun initialize(): OmhTask<Unit> {
+        return OmhTask({
+            @Suppress("SwallowedException")
+            try {
+                microsoftApplication.getApplication()
+            } catch (e: OmhAuthException.NotInitializedException) {
+                microsoftApplication.initialize(context, configFileResourceId)
+            }
+        })
+    }
+```
+
 
 #### Get user
 
