@@ -30,6 +30,6 @@ This is the advanced usage documentation for Open Mobile Hub Auth. Browse the to
 
 You can find the source code for OMH Auth at GitHub:
 [android-omh-auth](https://github.com/openmobilehub/android-omh-auth)
-and the corresponding [API docs here](https://openmobilehub.com/android-omh-auth/api-docs)
+and the corresponding [API docs here](https://openmobilehub.github.io/android-omh-auth/api-docs/)
 
 [Open Mobile Hub home page](https://openmobilehub.com)
